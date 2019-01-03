@@ -1,0 +1,30 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "Gradle",
+                "projectName": "Gradle",
+                "workingDirectory": "c:\\Users\\user\\git\\2018OffSeason\\Gradle",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "Gradle",
+                "projectName": "Gradle",
+                "workingDirectory": "c:\\Users\\user\\git\\2018OffSeason\\Gradle",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}

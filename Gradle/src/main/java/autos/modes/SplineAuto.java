@@ -1,13 +1,6 @@
 package autos.modes;
 
-import java.util.Arrays;
-
 import autos.actions.DrivePath;
-import coordinates.Coordinate;
-import coordinates.Heading;
-import coordinates.Pos2D;
-import path.SplineSegmentFiller;
-import path.TrajectoryList;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
 
@@ -35,7 +28,7 @@ public class SplineAuto extends AutoMode{
         // System.out.println("Segments: "+list.getCount());
         // drive = new DrivePath(list, 
 
-        drive = DrivePath.createFromFileOnRoboRio("SplineAuto", "forward1",
+        drive = DrivePath.createFromFileOnRoboRio("SplineAuto", "forward2",
             new TrapezoidalMp.constraints(0, 5*Units.Length.feet, 3*Units.Length.feet));
         System.out.println("Done filling");
     }

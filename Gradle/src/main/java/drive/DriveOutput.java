@@ -59,6 +59,35 @@ public class DriveOutput extends Thread{
         leftSet = vel*(1-Constants.robotWidth*kappa);
     }
 
+    /**
+     * Allows you to define angular vel and translational vel
+     * @param omega angular velocity
+     * @param vel translational velocity
+     */
+    public void setTransformation(double omega, double vel){
+        this.mode = Modes.Velocity;
+        rightSet = vel + Constants.robotWidth*omega/2;
+        leftSet = vel - Constants.robotWidth*omega/2;
+    }
+
+    /**
+     * Outputs no voltage to the motors
+     */
+    public void setNoVoltage(){
+        this.mode = Modes.Voltage;
+        rightSet = 0;
+        leftSet = 0;
+    }
+
+    /**
+     * Set no velocity
+     */
+    public void setNoVelocity(){
+        this.mode = Modes.Voltage;
+        rightSet = 0;
+        leftSet = 0;
+    }
+
     private Drive mDrive = Drive.getInstance();
 
     @Override

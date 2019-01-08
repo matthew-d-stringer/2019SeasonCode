@@ -37,7 +37,7 @@ public class DriveFollower{
 
     public void update(TrajectoryList path, double velocity){
         //TODO: Remove this
-        // velocity = -2*Units.Length.feet;
+        velocity = -2*Units.Length.feet;
         Pos2D robotPos = null; 
         if(velocity < 0)
             robotPos = new Pos2D(PositionTracker.getInstance().getReversePosition());
@@ -47,18 +47,16 @@ public class DriveFollower{
         // System.out.println(goalPosition.display("Goal Pos"));
         // System.out.println(goalPosition == null);
         if(goalPosition == null || goalPosition.getX() == Double.NaN || goalPosition.getY() == Double.NaN){
-            // System.out.println(robotPos.getPos().multC(1/Units.Length.feet).display("Last Known Robot Pos"));
+            System.out.println(robotPos.getPos().multC(1/Units.Length.feet).display("Last Known Robot Pos"));
             SmartDashboard.putString("Follower Message", "Goal Pos is null (HELP)");
         }
         SmartDashboard.putString("Goal Pos", goalPosition.multC(1/Units.Length.feet).display());
         SmartDashboard.putNumber("Dist To Goal Pos", Coordinate.DistanceBetween(robotPos.getPos(), goalPosition)/Units.Length.feet);
         Coordinate vecRobotToGoal = Heading.headingBetween(robotPos.getPos(), goalPosition);
         //TODO: remove only reverse settings
-        // double eta = Heading.getAngleBetween(robotPos.getHeading(), vecRobotToGoal.multC(-1));
-        double eta = Heading.getAngleBetween(robotPos.getHeading(), vecRobotToGoal);
-        // System.out.println("Angle between vectors: "+eta);
-        // double etaSign = Coordinate.crossProduct(robotPos.getHeading(), vecRobotToGoal.multC(-1));
-        double etaSign = Coordinate.crossProduct(robotPos.getHeading(), vecRobotToGoal);
+        double eta = Heading.getAngleBetween(robotPos.getHeading(), vecRobotToGoal.multC(-1));
+        System.out.println("Angle between vectors: "+eta);
+        double etaSign = Coordinate.crossProduct(robotPos.getHeading(), vecRobotToGoal.multC(-1));
         etaSign /= Math.abs(etaSign);
         eta *= etaSign;
 

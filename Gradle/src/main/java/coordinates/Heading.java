@@ -1,5 +1,7 @@
 package coordinates;
 
+import utilPackage.Util;
+
 public class Heading extends Coordinate {
 
 	public static Heading createPolarHeading(double angle, double mag){
@@ -73,10 +75,13 @@ public class Heading extends Coordinate {
 	}
 	
 	public static double headingsToAngle(Heading startHeading, Heading robotPos) {
-//		double robotAngle = Math.atan2(robotPos.getX(), robotPos.getY());
-//		double startAngle = Math.atan2(startHeading.getX(), startHeading.getY());
-//		double cAngle = robotAngle - startAngle;
 		double cAngle = Math.acos(Coordinate.dotProduct(startHeading.normalizeC(), robotPos.normalizeC()));
+		return cAngle;
+	}
+
+	public static double signedHeadingsToAngle(Heading right, Heading left) {
+		double cAngle = Math.acos(Coordinate.dotProduct(right.normalizeC(), left.normalizeC()));
+		cAngle *= Util.checkSign(crossProduct(right, left));
 		return cAngle;
 	}
 	

@@ -61,6 +61,10 @@ public class ProfileHolder{
         return holder[index];
     }
 
+    public void setMinimumVel(double vel){
+        minimumVel = vel;
+    }
+
     public Runnable getGenerateRunnable(){
         return ()->{generate();};
     }

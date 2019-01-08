@@ -66,8 +66,8 @@ public class DriveOutput extends Thread{
      */
     public void setTransformation(double omega, double vel){
         this.mode = Modes.Velocity;
-        rightSet = vel + Constants.robotWidth*omega/2;
-        leftSet = vel - Constants.robotWidth*omega/2;
+        rightSet = vel + Constants.robotWidth*omega;
+        leftSet = vel - Constants.robotWidth*omega;
     }
 
     /**

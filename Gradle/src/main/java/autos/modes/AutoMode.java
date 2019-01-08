@@ -19,6 +19,7 @@ public abstract class AutoMode extends Thread{
     public abstract void auto();
 
     public void runAction(Action action){
+        SmartDashboard.putString("Current Action: ", action.getClass().getName());
         if(!RobotState.isAutonomous())
             return;
         SmartDashboard.putString("Action Message", "Starting Action");

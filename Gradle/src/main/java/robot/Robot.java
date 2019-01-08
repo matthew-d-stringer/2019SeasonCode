@@ -2,6 +2,7 @@ package robot;
 
 import autos.modes.AutoMode;
 import autos.modes.ReverseAuto;
+import autos.modes.SplineAuto;
 import controlBoard.*;
 import coordinates.Coordinate;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -63,7 +64,7 @@ public class Robot extends IterativeRobot {
         PositionTracker.getInstance().setInitPos(new Coordinate());
         PositionTracker.getInstance().robotForward();
         // mode = new TestAutoMode();
-        mode = new ReverseAuto();
+        mode = new SplineAuto();
         mode.start();
     }
 

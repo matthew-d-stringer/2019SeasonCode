@@ -3,6 +3,7 @@ package autos.actions;
 import coordinates.Heading;
 import drive.DriveOutput;
 import drive.PositionTracker;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import path.ProfileHolder;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
@@ -35,6 +36,7 @@ public class DriveTurn extends Action{
         //If robot is left of setpoint, angle is negative
         mp = new ProfileHolder(new TrapezoidalMp(constraints), Heading.headingsToAngle(cHeading, target));
         mp.setMinimumVel(20*Units.Angle.degrees);
+        mp.setTimeSeg(0.01);
         mp.generate();
     }
 
@@ -42,14 +44,17 @@ public class DriveTurn extends Action{
     public void update() {
         Heading cHeading = PositionTracker.getInstance().getPosition().getHeading();
         error = Heading.signedHeadingsToAngle(cHeading, target);
-        double anglularVel = mp.calculateVel(Math.abs(error));
-        anglularVel *= Util.checkSign(error);
+        // double anglularVel = mp.calculateVel(error);
+        // anglularVel *= Util.checkSign(error);
+        double anglularVel = error*constraints.maxVel/(50*Units.Angle.degrees);
+        SmartDashboard.putNumber("Turn error", error);
+        SmartDashboard.putNumber("Angular vel output", anglularVel);
         DriveOutput.getInstance().setTransformation(anglularVel, 0);
     }
 
     @Override
     public boolean isFinished() {
-        return error < thresh;
+        return Math.abs(error) < thresh;
     }
 
     @Override

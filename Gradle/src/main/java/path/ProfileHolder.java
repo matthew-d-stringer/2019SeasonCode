@@ -57,6 +57,8 @@ public class ProfileHolder{
         int index = calcIndex(distance);
         if(index >= totalSegs){
             return 0;
+        }else if(index < 0){
+            return holder[0];
         }
         return holder[index];
     }

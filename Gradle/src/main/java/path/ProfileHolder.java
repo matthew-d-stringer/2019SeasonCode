@@ -50,6 +50,7 @@ public class ProfileHolder{
                 holder[index] = vals[1];
             if(reverse)
                 holder[index] *= -1;
+            System.out.println("Dist: "+vals[0]+" Vel: "+vals[1]);
         }
     }
 

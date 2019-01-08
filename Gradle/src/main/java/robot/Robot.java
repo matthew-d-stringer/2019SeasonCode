@@ -63,8 +63,8 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         PositionTracker.getInstance().setInitPos(new Coordinate());
         PositionTracker.getInstance().robotForward();
-        // mode = new TestAutoMode();
-        mode = new SplineAuto();
+        // mode = new SplineAuto();
+        mode = new ReverseAuto();
         mode.start();
     }
 

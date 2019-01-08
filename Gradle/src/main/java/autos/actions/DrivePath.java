@@ -54,7 +54,6 @@ public class DrivePath extends Action{
         constraints.setpoint = segment.getTotalDistance();
         mp = new TrapezoidalMp(constraints);
         pHolder = new ProfileHolder(mp);
-        pHolder.setReverse(reverse);
         pHolder.setTimeSeg(0.05);
         pHolder.generate();
         // double totalDist = segment.getTotalDistance();
@@ -66,6 +65,8 @@ public class DrivePath extends Action{
     @Override
     public void update() {
         double vel = pHolder.calculateVel(segment.getDistOnPath());
+        if(reverse)
+            vel *= -1;
         follower.update(segment, vel);
         SmartDashboard.putNumber("Current Trajectory ID", segment.getCurrentID());
         isDone = segment.isDone(PositionTracker.getInstance().getPosition().getPos(), driveThresh);

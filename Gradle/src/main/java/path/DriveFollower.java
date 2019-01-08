@@ -28,16 +28,16 @@ public class DriveFollower{
         double outVel = Util.mapRange(Math.abs(curvature), velPoint1, velPoint2);
         outVel = Math.max(outVel, 0.2);
         outVel *= velocity;
+        SmartDashboard.putNumber("Eta", eta);
         SmartDashboard.putNumber("Pure Pursuit Curvature", curvature);
         SmartDashboard.putNumber("Input Vel", velocity);
         SmartDashboard.putNumber("Output Vel", outVel);
-        SmartDashboard.putNumber("Eta", eta);
         DriveOutput.getInstance().setKin(curvature, outVel);
     }
 
     public void update(TrajectoryList path, double velocity){
         //TODO: Remove this
-        // velocity = -2*Units.Length.feet;
+        velocity = 2*Units.Length.feet;
         Pos2D robotPos = null; 
         if(velocity < 0)
             robotPos = new Pos2D(PositionTracker.getInstance().getReversePosition());
@@ -51,16 +51,15 @@ public class DriveFollower{
             SmartDashboard.putString("Follower Message", "Goal Pos is null (HELP)");
         }
         SmartDashboard.putString("Goal Pos", goalPosition.multC(1/Units.Length.feet).display());
-        SmartDashboard.putNumber("Dist To Goal Pos", Coordinate.DistanceBetween(robotPos.getPos(), goalPosition)/Units.Length.feet);
+        SmartDashboard.putNumber("Dist To Goal Pos", 
+            Coordinate.DistanceBetween(robotPos.getPos(), goalPosition)/Units.Length.feet);
         Coordinate vecRobotToGoal = Heading.headingBetween(robotPos.getPos(), goalPosition);
         //TODO: remove only reverse settings
-        // double eta = Heading.getAngleBetween(robotPos.getHeading(), vecRobotToGoal.multC(-1));
-        double eta = Heading.getAngleBetween(robotPos.getHeading(), vecRobotToGoal.multC(1));
-        System.out.println("Angle between vectors: "+eta);
-        // double etaSign = Coordinate.crossProduct(robotPos.getHeading(), vecRobotToGoal.multC(-1));
-        double etaSign = Coordinate.crossProduct(robotPos.getHeading(), vecRobotToGoal.multC(1));
-        etaSign /= Math.abs(etaSign);
+        double eta = Heading.getAngleBetween(robotPos.getHeading(), vecRobotToGoal);
+        double etaSign = Util.checkSign(Coordinate.crossProduct(robotPos.getHeading(), vecRobotToGoal));
         eta *= etaSign;
+        if(velocity < 0)
+            eta *= -1;
 
         switch(mode){
             case PurePuresuit:

@@ -12,8 +12,6 @@ public class ProfileHolder{
     TrapezoidalMp mp;
     double minimumVel = 2*Units.Length.feet;
 
-    boolean reverse = false;
-
     double[] holder;
 
     public ProfileHolder(TrapezoidalMp motionProfile){
@@ -30,10 +28,6 @@ public class ProfileHolder{
         holder = new double[totalSegs];
     }
 
-    public void setReverse(boolean reverse){
-        this.reverse = reverse;
-    }
-
     public void setTimeSeg(double timeSeg){
         this.timeSeg = timeSeg;
     }
@@ -48,8 +42,6 @@ public class ProfileHolder{
                 holder[index] = minimumVel * Util.checkSign(vals[1]);
             else
                 holder[index] = vals[1];
-            if(reverse)
-                holder[index] *= -1;
             System.out.println("Dist: "+vals[0]+" Vel: "+vals[1]);
         }
     }

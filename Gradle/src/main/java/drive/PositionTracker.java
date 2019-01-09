@@ -22,6 +22,7 @@ public class PositionTracker extends Thread implements IPositionTracker{
     private AHRS navx;
     private Coordinate position = new Coordinate();
     private Heading heading = new Heading();
+    private Pos2D fullPos = new Pos2D();
     private double offset;
 
     private PositionTracker(){
@@ -49,22 +50,26 @@ public class PositionTracker extends Thread implements IPositionTracker{
         SmartDashboard.putBoolean("Reset Location", false);
         SmartDashboard.putBoolean("Reset Heading", false);
         offset = 0;
+        heading = new Heading();
         navx.reset();
         while(true){
             double dt = Timer.getFPGATimestamp() - last;
             last = Timer.getFPGATimestamp();
 
-            heading = new Heading();
             heading.setRobotAngle(getAngle());
     
             double leftVel = Drive.getInstance().getLeftVel();
             double rightVel = Drive.getInstance().getRightVel();
             double forwardVelocity = Util.average(Arrays.asList(leftVel, rightVel));
-            heading.setMagnitude(forwardVelocity);
+            Heading special = new Heading(heading);
+            special.setMagnitude(forwardVelocity);
 
-            Pos2D nextPos = new Pos2D(position, new Heading(heading));
+            Pos2D nextPos = new Pos2D(position, special);
             nextPos.getHeading().mult(dt);
             position = nextPos.getEndPos();
+
+            fullPos.setPos(position);
+            fullPos.setHeading(heading);
 
             Timer.delay(0.005);
         }
@@ -75,12 +80,15 @@ public class PositionTracker extends Thread implements IPositionTracker{
     }
 
     @Override
-    public Pos2D getPosition() {
-        return new Pos2D(new Coordinate(position), new Heading(heading));
+    public synchronized Pos2D getPosition() {
+        // return new Pos2D(new Coordinate(position), new Heading(heading));
+        return fullPos;
     }
 
-    public Pos2D getReversePosition(){
-        return new Pos2D(new Coordinate(position), heading.multC(-1).heading());
+    public synchronized Pos2D getReversePosition(){
+        Pos2D output = new Pos2D(fullPos);
+        output.getHeading().multC(-1);
+        return output;
     }
 
     @Override

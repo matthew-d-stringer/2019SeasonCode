@@ -17,12 +17,12 @@ public class ReverseAuto extends AutoMode{
         path.add(new Coordinate(0, 8*Units.Length.feet));
 
         drive = new DrivePath(path, new TrapezoidalMp.constraints(0, 2*Units.Length.feet, 5*Units.Length.feet));
-        drive.setReverse(false);
+        drive.setReverse(true);
     }
 
     @Override
     public void auto() {
-        // PositionTracker.getInstance().robotBackward();
+        PositionTracker.getInstance().robotBackward();
         runAction(drive);
     }
 }

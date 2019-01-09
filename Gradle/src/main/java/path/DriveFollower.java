@@ -21,13 +21,16 @@ public class DriveFollower{
      * @param lookAhead Distance from robot to goal
      * @param velocity desired speed of robot
      */
-    private void updatePurePursuit(double eta, double lookAhead, double velocity){
+    private void updatePurePursuit(double eta, double lookAhead, double velocity, boolean reverse){
         double curvature = (2*Math.sin(eta/2))/lookAhead;
         Coordinate velPoint1 = new Coordinate(0, 1);
         Coordinate velPoint2 = new Coordinate(1, 0.2);
         double outVel = Util.mapRange(Math.abs(curvature), velPoint1, velPoint2);
         outVel = Math.max(outVel, 0.2);
         outVel *= velocity;
+        if(reverse){
+            outVel *= -1;
+        }
         SmartDashboard.putNumber("Eta", eta);
         SmartDashboard.putNumber("Pure Pursuit Curvature", curvature);
         SmartDashboard.putNumber("Input Vel", velocity);
@@ -37,12 +40,19 @@ public class DriveFollower{
 
     public void update(TrajectoryList path, double velocity){
         //TODO: Remove this
-        velocity = 2*Units.Length.feet;
+        // velocity = 2*Units.Length.feet;
         Pos2D robotPos = null; 
-        if(velocity < 0)
-            robotPos = new Pos2D(PositionTracker.getInstance().getReversePosition());
-        else
+        boolean reverse = false;
+        if(velocity < 0){
+            // robotPos = new Pos2D(PositionTracker.getInstance().getReversePosition());
             robotPos = new Pos2D(PositionTracker.getInstance().getPosition());
+            reverse = true;
+            velocity = Math.abs(velocity);
+        }else
+            robotPos = new Pos2D(PositionTracker.getInstance().getPosition());
+        
+        SmartDashboard.putNumber("Follower Heading", robotPos.getHeading().getAngle());
+        SmartDashboard.putString("Follower Heading Full", robotPos.getHeading().display());
         Coordinate goalPosition = path.findGoalPos(robotPos.getPos(), lookAhead);
         // System.out.println(goalPosition.display("Goal Pos"));
         // System.out.println(goalPosition == null);
@@ -54,16 +64,17 @@ public class DriveFollower{
         SmartDashboard.putNumber("Dist To Goal Pos", 
             Coordinate.DistanceBetween(robotPos.getPos(), goalPosition)/Units.Length.feet);
         Coordinate vecRobotToGoal = Heading.headingBetween(robotPos.getPos(), goalPosition);
-        //TODO: remove only reverse settings
+
         double eta = Heading.getAngleBetween(robotPos.getHeading(), vecRobotToGoal);
+        if(reverse){
+            eta = Math.PI - eta;
+        }
         double etaSign = Util.checkSign(Coordinate.crossProduct(robotPos.getHeading(), vecRobotToGoal));
         eta *= etaSign;
-        if(velocity < 0)
-            eta *= -1;
 
         switch(mode){
             case PurePuresuit:
-                updatePurePursuit(eta, lookAhead, velocity);
+                updatePurePursuit(eta, lookAhead, velocity, reverse);
             break;
         }
     }

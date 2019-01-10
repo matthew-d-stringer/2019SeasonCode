@@ -45,6 +45,10 @@ public class DrivePath extends Action{
         this.reverse = reverse;
     }
 
+    public void setThresh(double thresh){
+        driveThresh = thresh;
+    }
+
     public void setMp(TrapezoidalMp mp) {
         this.mp = mp;
     }

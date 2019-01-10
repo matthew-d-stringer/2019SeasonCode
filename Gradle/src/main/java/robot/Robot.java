@@ -1,6 +1,7 @@
 package robot;
 
 import autos.modes.AutoMode;
+import autos.modes.DoubleHatchAuto;
 import autos.modes.ReverseAuto;
 import autos.modes.SplineAuto;
 import controlBoard.*;
@@ -63,7 +64,8 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         PositionTracker.getInstance().setInitPos(new Coordinate());
         PositionTracker.getInstance().robotForward();
-        mode = new SplineAuto();
+        // mode = new SplineAuto();
+        mode = new DoubleHatchAuto();
         // mode = new ReverseAuto();
         mode.start();
     }

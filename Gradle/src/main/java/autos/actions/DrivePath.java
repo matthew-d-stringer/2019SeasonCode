@@ -55,6 +55,7 @@ public class DrivePath extends Action{
 
     @Override
     public void start() {
+        isDone = false;
         constraints.setpoint = segment.getTotalDistance();
         mp = new TrapezoidalMp(constraints);
         pHolder = new ProfileHolder(mp);

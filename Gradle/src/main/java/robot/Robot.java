@@ -4,6 +4,7 @@ import autos.modes.AutoMode;
 import autos.modes.DoubleHatchAuto;
 import autos.modes.ReverseAuto;
 import autos.modes.SplineAuto;
+import autos.modes.TripleHatchAuto;
 import controlBoard.*;
 import coordinates.Coordinate;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -64,8 +65,8 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         PositionTracker.getInstance().setInitPos(new Coordinate());
         PositionTracker.getInstance().robotForward();
-        // mode = new SplineAuto();
-        mode = new DoubleHatchAuto();
+        // mode = new DoubleHatchAuto();
+        mode = new TripleHatchAuto();
         // mode = new ReverseAuto();
         mode.start();
     }

@@ -2,6 +2,7 @@ package robot;
 
 import autos.modes.AutoMode;
 import autos.modes.DoubleHatchAuto;
+import autos.modes.FarNearLeftHatchAuto;
 import autos.modes.ReverseAuto;
 import autos.modes.SplineAuto;
 import autos.modes.TripleHatchAuto;
@@ -66,7 +67,8 @@ public class Robot extends IterativeRobot {
         PositionTracker.getInstance().setInitPos(new Coordinate());
         PositionTracker.getInstance().robotForward();
         // mode = new DoubleHatchAuto();
-        mode = new TripleHatchAuto();
+        // mode = new TripleHatchAuto();
+        mode = new FarNearLeftHatchAuto();
         // mode = new ReverseAuto();
         mode.start();
     }

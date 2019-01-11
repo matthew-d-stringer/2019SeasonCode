@@ -3,6 +3,7 @@ package autos.modes;
 import autos.actions.Action;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import path.DriveFollower;
 
 public abstract class AutoMode extends Thread{
 

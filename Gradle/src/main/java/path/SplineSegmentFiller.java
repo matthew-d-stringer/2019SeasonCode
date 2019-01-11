@@ -25,7 +25,7 @@ public class SplineSegmentFiller{
     }
     Splines splineMode = Splines.CubicSpline;
     Spline cSpline;
-    int pointsPerSpline = 40;
+    int pointsPerSpline = 60;
     
     ArrayList<Pos2D> points;
     TrajectoryList segment = null;

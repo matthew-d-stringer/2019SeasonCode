@@ -41,6 +41,10 @@ public class DrivePath extends Action{
         this.driveThresh = driveThresh;
     }
 
+    public void setlookAhead(double lookAhead){
+        follower.setLookAhead(lookAhead);
+    }
+
     public void setReverse(boolean reverse){
         this.reverse = reverse;
     }

@@ -11,9 +11,13 @@ public class DriveFollower{
     private enum Modes{
         PurePuresuit
     }
-    private final double lookAhead = 3*Units.Length.feet;
+    private double lookAhead = 3*Units.Length.feet;
     //For 1fps, 2ft look ahead
     //For 15fps, 3ft look ahead
+
+    public void setLookAhead(double lookAhead){
+        this.lookAhead = lookAhead;
+    }
 
     /**
      * Uses pure pursuit for robot control
@@ -61,8 +65,8 @@ public class DriveFollower{
             SmartDashboard.putString("Follower Message", "Goal Pos is null (HELP)");
         }
         SmartDashboard.putString("Goal Pos", goalPosition.multC(1/Units.Length.feet).display());
-        SmartDashboard.putNumber("Dist To Goal Pos", 
-            Coordinate.DistanceBetween(robotPos.getPos(), goalPosition)/Units.Length.feet);
+        double distToGoalPos = Coordinate.DistanceBetween(robotPos.getPos(), goalPosition);
+        SmartDashboard.putNumber("Dist To Goal Pos", Units.convertUnits(distToGoalPos, Units.Length.feet));
         Coordinate vecRobotToGoal = Heading.headingBetween(robotPos.getPos(), goalPosition);
 
         double eta = Heading.getAngleBetween(robotPos.getHeading(), vecRobotToGoal);
@@ -74,7 +78,8 @@ public class DriveFollower{
 
         switch(mode){
             case PurePuresuit:
-                updatePurePursuit(eta, lookAhead, velocity, reverse);
+                // updatePurePursuit(eta, lookAhead, velocity, reverse);
+                updatePurePursuit(eta, distToGoalPos, velocity, reverse);
             break;
         }
     }

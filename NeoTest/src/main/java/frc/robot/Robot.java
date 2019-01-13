@@ -92,19 +92,6 @@ public class Robot extends SampleRobot {
     }
   }
 
-  /**
-   * Runs the motors with arcade steering.
-   *
-   * <p>If you wanted to run a similar teleoperated mode with an TimedRobot
-   * you would write:
-   *
-   * <blockquote><pre>{@code
-   * // This function is called periodically during operator control
-   * public void teleopPeriodic() {
-   *     myRobot.arcadeDrive(stick);
-   * }
-   * }</pre></blockquote>
-   */
   @Override
   public void operatorControl() {
     m_robotDrive.setSafetyEnabled(true);

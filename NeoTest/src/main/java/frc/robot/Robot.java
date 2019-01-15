@@ -7,13 +7,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANSparkMax;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SampleRobot;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,8 +21,7 @@ public class Robot extends SampleRobot {
 
 	private final SendableChooser<String> m_chooser = new SendableChooser<>();
 	
-	TalonSRX mTalonSRX;
-	CANSparkMax mCanSparkMax;
+	TalonSRX gripper;
 
   public Robot() {
   }
@@ -35,6 +31,7 @@ public class Robot extends SampleRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto modes", m_chooser);
+    gripper = new TalonSRX(40);
   }
 
   @Override
@@ -45,6 +42,12 @@ public class Robot extends SampleRobot {
 
   @Override
   public void operatorControl() {
+    gripper.set(ControlMode.PercentOutput, 0.5);
+  }
+
+  @Override
+  protected void disabled() {
+    gripper.set(ControlMode.Disabled, 0);
   }
 
   /**

@@ -4,6 +4,8 @@ import coordinates.Coordinate;
 
 import java.util.List;
 
+import org.json.simple.parser.JSONParser;
+
 public class Util {
 	private static JSONParser parser = null;
 	public static JSONParser getParser(){

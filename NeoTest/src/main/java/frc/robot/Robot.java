@@ -18,7 +18,6 @@ public class Robot extends SampleRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
 
-
 	private final SendableChooser<String> m_chooser = new SendableChooser<>();
 	
 	TalonSRX gripper;

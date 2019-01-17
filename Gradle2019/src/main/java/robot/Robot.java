@@ -51,13 +51,13 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        // driveCode();
-        driveOut.set(Modes.Voltage, 6, 6);
+        driveCode();
+        // driveOut.set(Modes.Voltage, 3, 3);
     }
 
     private void driveCode(){
         Coordinate control = controlBoard.getJoystickPos();
-        control = new Coordinate(0, 0.5);
+        // control = new Coordinate(0, 0.5);
         control.mult(12);
         double rightOut = control.getY()+control.getX();
         double leftOut = control.getY()-control.getX();

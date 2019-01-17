@@ -14,7 +14,8 @@ public class ControlBoard extends IControlBoard{
 
     @Override
     public Heading getJoystickPos() {
-        return new Heading(-wheel.getX(), -joy.getY());
+        // return new Heading(-wheel.getX(), -joy.getY());
+        return new Heading(-joy.getX(), -joy.getY());
     }
 
     @Override

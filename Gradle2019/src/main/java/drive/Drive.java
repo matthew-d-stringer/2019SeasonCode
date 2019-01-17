@@ -26,7 +26,7 @@ public class Drive {
     private Drive(){
         //set up drive
         mLeft = new CANSparkMax(Constants.Drive.MLeftNum, MotorType.kBrushless);
-        mRight = new CANSparkMax(Constants.Drive.MRightNum, MotorType.kBrushless);
+		mRight = new CANSparkMax(Constants.Drive.MRightNum, MotorType.kBrushless);
         for(int i = 0; i < 4; i++){
 			slaves[i] = new CANSparkMax(Constants.Drive.slaveNums[i], MotorType.kBrushless);
             if(i < 2){

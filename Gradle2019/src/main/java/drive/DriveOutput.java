@@ -94,10 +94,10 @@ public class DriveOutput extends Thread{
     @Override
     public void run() {
         while(true){
-            if(RobotState.isOperatorControl())
-                mDrive.brake(IdleMode.kBrake);
-            else
-                mDrive.brake(IdleMode.kCoast);
+            // if(RobotState.isOperatorControl())
+            //     mDrive.brake(IdleMode.kBrake);
+            // else
+            mDrive.brake(IdleMode.kCoast);
             switch(mode){
                 case Voltage:
                     mDrive.outputToDrive(rightSet, leftSet);

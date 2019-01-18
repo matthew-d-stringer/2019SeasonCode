@@ -14,8 +14,8 @@ public class Units {
 		public final static double radians = 1;
 		public final static double degrees = 0.01745329252;
 		public final static double revolutions = 6.2832;
-		// public final static double encoderTicks = 0.0015340; //4096 encoder ticks per revolution
-		public final static double encoderTicks = 6.2832; //4096 encoder ticks per revolution
+		public final static double encoderTicks = 0.0015340; //4096 encoder ticks per revolution
+		// public final static double encoderTicks = 6.2832; //4096 encoder ticks per revolution
 	}
 	
 	public static class Mass{

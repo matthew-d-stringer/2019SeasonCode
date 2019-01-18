@@ -7,6 +7,8 @@ import utilPackage.Util;
 
 import java.util.Arrays;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -22,7 +24,7 @@ public class Drive {
 
     CANSparkMax mLeft, mRight;
 	CANSparkMax[] slaves = new CANSparkMax[4];
-	CANEncoder encoderLeft, encoderRight;
+	TalonSRX leftEncoder, rightEncoder;
     private Drive(){
         //set up drive
         mLeft = new CANSparkMax(Constants.Drive.MLeftNum, MotorType.kBrushless);
@@ -35,8 +37,10 @@ public class Drive {
 				slaves[i].follow(mRight);
 			}
 		}
-		encoderLeft = new CANEncoder(mLeft);
-		encoderRight = new CANEncoder(mRight);
+		leftEncoder = Constants.Drive.leftEncoder;
+		leftEncoder.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+		rightEncoder = Constants.Drive.rightEncoder;
+		rightEncoder.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
 	}
 
 	public void display(){
@@ -46,6 +50,9 @@ public class Drive {
 		for(int i =  0; i < 4; i++){
 			SmartDashboard.putNumber("Slave #"+i+" "+data, slaves[i].getAppliedOutput());
 		}
+
+		SmartDashboard.putNumber("Encoder Pos", getEnc()[0]);
+		SmartDashboard.putNumber("Encoder Vel", getEnc()[1]);
 	}
 	
     /**
@@ -53,8 +60,8 @@ public class Drive {
      * @param output X: right voltage, Y: left voltage
      */
     public void outputToDrive(double rightVoltage, double leftVoltage){
-    	mRight.set(-rightVoltage/12);
-        mLeft.set(leftVoltage/12);
+    	mRight.set(rightVoltage/12);
+        mLeft.set(-leftVoltage/12);
     }
 
 	/**
@@ -62,9 +69,7 @@ public class Drive {
 	 * @return [0] = position, [1] = velocity
 	 */
 	public double[]	getEnc(){
-		// double position = (-(mLeft.getSelectedSensorPosition(0)+mRight.getSelectedSensorPosition(0))/2)*
-		// 		Units.Angle.encoderTicks*Units.Length.radians;
-		double position = (-(encoderLeft.getPosition()+encoderRight.getPosition())/2)*
+		double position = (-(leftEncoder.getSelectedSensorPosition(0)+rightEncoder.getSelectedSensorPosition(0))/2)*
 				Units.Angle.encoderTicks*Units.Length.radians;
 		double velocity = Util.average(Arrays.asList(getLeftVel(), getRightVel()));
 		double[] out = {position, velocity};
@@ -75,16 +80,16 @@ public class Drive {
 	 * Returns Left Velocity
 	 */
 	public double getLeftVel(){
-		return -encoderLeft.getVelocity()*
-				Units.Angle.encoderTicks*Units.Length.radians/(1*Units.Time.minutes);
+		return leftEncoder.getSelectedSensorVelocity()*
+				Units.Angle.encoderTicks*Units.Length.radians/(0.1*Units.Time.seconds);
 	}
 
 	/**
 	 * Returns Right Velocity
 	 */
 	public double getRightVel(){
-		return encoderRight.getVelocity()*
-				Units.Angle.encoderTicks*Units.Length.radians/(1*Units.Time.minutes);
+		return -rightEncoder.getSelectedSensorVelocity()*
+				Units.Angle.encoderTicks*Units.Length.radians/(0.1*Units.Time.seconds);
 	}
 
 	public void brake(IdleMode mode){

@@ -41,15 +41,14 @@ public class DriveController {
 		// System.out.println("Error Right: "+errorRight);
 		// System.out.println("Error Left: "+errorLeft);
 
-		feedBack.setX(6.237*errorRight - 0.03589*errorLeft);
-		feedBack.setY(6.237*errorLeft - 0.03589*errorRight);
+		feedBack.setX(0.002842*errorLeft + 0.3579*errorRight);
+		feedBack.setY(0.3579*errorLeft + 0.002842*errorRight);
 		
-		feedForward.setX(1.756*dGoalRight - 0.5702*dGoalLeft - 7.427e-17*goalLeft + 4.702*goalRight);
-		feedForward.setY(1.756*dGoalLeft - 0.5702*dGoalRight + 4.702*goalLeft - 7.427e-17*goalRight);
+		feedForward.setX(0.00861*dGoalLeft + 0.0899*dGoalRight + 1.169e-18*goalLeft + 2.385*goalRight);
+		feedForward.setY( 0.0899*dGoalLeft + 0.00861*dGoalRight + 2.385*goalLeft + 1.169e-18*goalRight);
 		
 		output = feedForward.addC(feedBack);
 		// output = feedForward;
-		// output.mult(-1);
 		return output;
 	}
 	

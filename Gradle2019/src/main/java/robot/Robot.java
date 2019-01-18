@@ -9,6 +9,7 @@ import autos.modes.TripleHatchAuto;
 import controlBoard.*;
 import coordinates.Coordinate;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import utilPackage.Units;
 import drive.Drive;
 import drive.DriveOutput;
 import drive.PositionTracker;
@@ -51,17 +52,20 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
+        // double vel = 2.5*Units.Length.feet;
+        // driveOut.set(Modes.Velocity, vel, vel);
         driveCode();
+        drive.display();
         // driveOut.set(Modes.Voltage, 3, 3);
     }
 
     private void driveCode(){
         Coordinate control = controlBoard.getJoystickPos();
         // control = new Coordinate(0, 0.5);
-        control.mult(12);
+        control.mult(5*Units.Length.feet);
         double rightOut = control.getY()+control.getX();
         double leftOut = control.getY()-control.getX();
-        driveOut.set(Modes.Voltage, rightOut, leftOut);
+        driveOut.set(Modes.Velocity, rightOut, leftOut);
     }
 
     @Override

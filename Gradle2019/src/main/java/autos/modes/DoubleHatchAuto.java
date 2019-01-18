@@ -8,7 +8,7 @@ public class DoubleHatchAuto extends AutoMode{
     DrivePath toRocket, toRefill, loadToRocket;
     public DoubleHatchAuto(){
         TrapezoidalMp.constraints constraints = 
-            new TrapezoidalMp.constraints(0, 10*Units.Length.feet, 5*Units.Length.feet);
+            new TrapezoidalMp.constraints(0, 5*Units.Length.feet, 3*Units.Length.feet);
 
         toRocket = DrivePath.createFromFileOnRoboRio("DoubleHatchAuto", "toRocket", constraints);
         toRocket.setThresh(3*Units.Length.inches);
@@ -24,7 +24,7 @@ public class DoubleHatchAuto extends AutoMode{
     @Override
     public void auto() {
         runAction(toRocket);
-        runAction(toRefill);
-        runAction(loadToRocket);
+        // runAction(toRefill);
+        // runAction(loadToRocket);
     }
 }

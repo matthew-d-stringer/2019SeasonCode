@@ -1,19 +1,14 @@
 package robot;
 
-import autos.modes.AutoMode;
-import autos.modes.DoubleHatchAuto;
-import autos.modes.FarNearLeftHatchAuto;
-import autos.modes.ReverseAuto;
-import autos.modes.SplineAuto;
-import autos.modes.TripleHatchAuto;
+import autos.modes.*;
 import controlBoard.*;
 import coordinates.Coordinate;
-import edu.wpi.first.wpilibj.IterativeRobot;
 import utilPackage.Units;
 import drive.Drive;
 import drive.DriveOutput;
 import drive.PositionTracker;
 import drive.DriveOutput.Modes;
+import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
     private static IControlBoard cb = new ControlBoard();
@@ -72,9 +67,9 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         PositionTracker.getInstance().setInitPos(new Coordinate());
         PositionTracker.getInstance().robotForward();
-        // mode = new DoubleHatchAuto();
+        mode = new DoubleHatchAuto();
         // mode = new TripleHatchAuto();
-        mode = new FarNearLeftHatchAuto();
+        // mode = new FarNearLeftHatchAuto();
         // mode = new ReverseAuto();
         mode.start();
     }

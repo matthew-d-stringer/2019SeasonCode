@@ -1,18 +1,14 @@
 package robot;
 
-import autos.modes.AutoMode;
-import autos.modes.DoubleHatchAuto;
-import autos.modes.FarNearLeftHatchAuto;
-import autos.modes.ReverseAuto;
-import autos.modes.SplineAuto;
-import autos.modes.TripleHatchAuto;
+import autos.modes.*;
 import controlBoard.*;
 import coordinates.Coordinate;
-import edu.wpi.first.wpilibj.IterativeRobot;
+import utilPackage.Units;
 import drive.Drive;
 import drive.DriveOutput;
 import drive.PositionTracker;
 import drive.DriveOutput.Modes;
+import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
     private static IControlBoard cb = new ControlBoard();
@@ -51,24 +47,29 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
+        // double vel = 2.5*Units.Length.feet;
+        // driveOut.set(Modes.Velocity, vel, vel);
         driveCode();
+        drive.display();
+        // driveOut.set(Modes.Voltage, 3, 3);
     }
 
     private void driveCode(){
         Coordinate control = controlBoard.getJoystickPos();
-        control.mult(12);
+        // control = new Coordinate(0, 0.5);
+        control.mult(5*Units.Length.feet);
         double rightOut = control.getY()+control.getX();
         double leftOut = control.getY()-control.getX();
-        driveOut.set(Modes.Voltage, rightOut, leftOut);
+        driveOut.set(Modes.Velocity, rightOut, leftOut);
     }
 
     @Override
     public void autonomousInit() {
         PositionTracker.getInstance().setInitPos(new Coordinate());
         PositionTracker.getInstance().robotForward();
-        // mode = new DoubleHatchAuto();
+        mode = new DoubleHatchAuto();
         // mode = new TripleHatchAuto();
-        mode = new FarNearLeftHatchAuto();
+        // mode = new FarNearLeftHatchAuto();
         // mode = new ReverseAuto();
         mode.start();
     }

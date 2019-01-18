@@ -1,6 +1,7 @@
 package drive;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import coordinates.Coordinate;
 import edu.wpi.first.wpilibj.RobotState;
@@ -55,8 +56,10 @@ public class DriveOutput extends Thread{
      */
     public void setKin(double kappa, double vel){
         this.mode = Modes.Velocity;
-        rightSet = vel*(1+Constants.robotWidth*kappa);
-        leftSet = vel*(1-Constants.robotWidth*kappa);
+        // rightSet = vel*(1+Constants.robotWidth*kappa);
+        // leftSet = vel*(1-Constants.robotWidth*kappa);
+        leftSet = vel*(1+Constants.robotWidth*kappa);
+        rightSet = vel*(1-Constants.robotWidth*kappa);
     }
 
     /**
@@ -83,7 +86,7 @@ public class DriveOutput extends Thread{
      * Set no velocity
      */
     public void setNoVelocity(){
-        this.mode = Modes.Voltage;
+        this.mode = Modes.Velocity;
         rightSet = 0;
         leftSet = 0;
     }
@@ -93,10 +96,10 @@ public class DriveOutput extends Thread{
     @Override
     public void run() {
         while(true){
-            if(RobotState.isOperatorControl())
-                mDrive.brake(NeutralMode.Brake);
-            else
-                mDrive.brake(NeutralMode.Coast);
+            // if(RobotState.isOperatorControl())
+            //     mDrive.brake(IdleMode.kBrake);
+            // else
+            mDrive.brake(IdleMode.kCoast);
             switch(mode){
                 case Voltage:
                     mDrive.outputToDrive(rightSet, leftSet);

@@ -6,7 +6,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import coordinates.*;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import utilPackage.Units;
 import utilPackage.Util;
@@ -19,14 +19,14 @@ public class PositionTracker extends Thread implements IPositionTracker{
         return instance;
     }
 
-    private AHRS navx;
+    private AHRS vmxPi;
     private Coordinate position = new Coordinate();
     private Heading heading = new Heading();
     private Pos2D fullPos = new Pos2D();
     private double offset;
 
     private PositionTracker(){
-        navx = new AHRS(Port.kMXP);
+        vmxPi = new AHRS(Port.kUSB);
         this.start();
     }
 
@@ -34,14 +34,26 @@ public class PositionTracker extends Thread implements IPositionTracker{
         position = new Coordinate(pos);
     }
 
+    public void resetHeading(){
+        // vmxPi.reset();
+        // offset = 0;
+        offset = getRawAngle();
+    }
+
     public void robotForward(){
+        // vmxPi.reset();
+        // offset = 0;
+
         // angle - cangle = 0
-        offset = navx.getAngle();
+        offset = getRawAngle();
     }
 
     public void robotBackward(){
+        // vmxPi.reset();
+        // offset = 180;
+        
         // angle - cangle = 180
-        offset = navx.getAngle() + 180;
+        offset = getRawAngle() + 180;
     }
 
     @Override
@@ -49,9 +61,9 @@ public class PositionTracker extends Thread implements IPositionTracker{
         double last = Timer.getFPGATimestamp();
         SmartDashboard.putBoolean("Reset Location", false);
         SmartDashboard.putBoolean("Reset Heading", false);
-        offset = 0;
         heading = new Heading();
-        navx.reset();
+        resetHeading();
+        Timer.delay(0.02);
         while(true){
             double dt = Timer.getFPGATimestamp() - last;
             last = Timer.getFPGATimestamp();
@@ -75,8 +87,13 @@ public class PositionTracker extends Thread implements IPositionTracker{
         }
     }
 
+    private double getRawAngle(){
+        return vmxPi.getAngle();
+    }
+
     private double getAngle(){
-        return (navx.getAngle()-offset)*Units.Angle.degrees;
+        // return (vmxPi.getAngle()-offset)*Units.Angle.degrees;
+        return (getRawAngle()-offset)*Units.Angle.degrees;
     }
 
     @Override
@@ -112,7 +129,7 @@ public class PositionTracker extends Thread implements IPositionTracker{
             position.mult(1/Units.Length.feet);
             SmartDashboard.putNumber("X direction feet", position.getX());
             SmartDashboard.putNumber("Y direction feet", position.getY());
-            SmartDashboard.putNumber("Angle", navx.getAngle()-offset);
+            SmartDashboard.putNumber("Angle", getAngle()/Units.Angle.degrees);
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -20,7 +20,7 @@ public class Constants {
 		public static int[] slaveNums = {10,12, 13,15}; //left to right
 		public static TalonSRX leftEncoder = new TalonSRX(1);
 		public static TalonSRX rightEncoder = new TalonSRX(5);
-		public static double wheelDiameter = 4.5, // inches
+		public static double wheelDiameter = 5.5, // inches
 				wheelCircumference = wheelDiameter * Math.PI, // inches
 				robotDiameter = 29; // inches (for estimating angle without a gyro)
 	}

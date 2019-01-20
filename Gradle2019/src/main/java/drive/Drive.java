@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -53,6 +52,9 @@ public class Drive {
 
 		SmartDashboard.putNumber("Encoder Pos", getEnc()[0]);
 		SmartDashboard.putNumber("Encoder Vel", getEnc()[1]);
+
+		SmartDashboard.putNumber("Left Encoder Pos", getLeftPosition());
+		SmartDashboard.putNumber("Right Encoder Pos", getRightPosition());
 	}
 	
     /**
@@ -74,6 +76,14 @@ public class Drive {
 		double velocity = Util.average(Arrays.asList(getLeftVel(), getRightVel()));
 		double[] out = {position, velocity};
 		return out;
+	}
+
+	public double getLeftPosition(){
+		return leftEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
+	}
+
+	public double getRightPosition(){
+		return -rightEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
 	}
 
 	/**

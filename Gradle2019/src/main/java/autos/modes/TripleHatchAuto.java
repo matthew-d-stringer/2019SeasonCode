@@ -13,14 +13,14 @@ public class TripleHatchAuto extends AutoMode{
             new TrapezoidalMp.constraints(0, 6*Units.Length.feet, 2*Units.Length.feet);
 
         toRocket = DrivePath.createFromFileOnRoboRio("TripleHatchAuto", "toRocket", constraints);
-        toRocket.setThresh(5*Units.Length.inches);
+        toRocket.setVerticalThresh(5*Units.Length.inches);
 
         toRefill = DrivePath.createFromFileOnRoboRio("TripleHatchAuto", "toRefill", constraints);
         toRefill.setReverse(true);
-        toRefill.setThresh(5*Units.Length.inches);
+        toRefill.setVerticalThresh(5*Units.Length.inches);
 
         loadToRocket = DrivePath.createFromFileOnRoboRio("TripleHatchAuto", "loadToRocket", constraints);
-        loadToRocket.setThresh(5*Units.Length.inches);
+        loadToRocket.setVerticalThresh(5*Units.Length.inches);
     }
 
     @Override

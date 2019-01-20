@@ -7,7 +7,7 @@ import utilPackage.Util;
 public class ProfileHolder{
     double distanceSeg = 12*Units.Length.inches;
     int totalSegs = 0;
-    double timeSeg = 1*Units.Time.seconds;
+    double timeSeg = 0.5*Units.Time.seconds;
     double totalDist; 
     TrapezoidalMp mp;
     double minimumVel = 2*Units.Length.feet;

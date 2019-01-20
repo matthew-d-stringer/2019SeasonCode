@@ -150,19 +150,16 @@ public class Trajectory{
             case CustomSimple:
                 double BetaBack = Util.round(data.getBetaBack(), 8);
                 double BetaFront = Util.round(data.getBetaFront(), 8);
-                System.out.println("Current trajectory: "+id);
 
                 // boolean inFrontRange = Math.abs(data.getA2()) < BetaFront 
                 //     || Util.inErrorRange(Math.abs(data.getA2()), BetaFront, 2*Units.Angle.degrees);
                 boolean inFrontRange = data.getA2() >= -BetaFront && 
                     data.getA2() <= - BetaFront + 180*Units.Angle.degrees;
-                System.out.println("In front range: "+inFrontRange);
 
                 // boolean inBackRange = Math.abs(data.getA1()) < BetaBack
                 //     || Util.inErrorRange(Math.abs(data.getA1()), BetaBack, 2*Units.Angle.degrees);
                 boolean inBackRange = data.getA1() <= BetaBack && 
                     data.getA1() >= BetaBack - 180*Units.Angle.degrees;
-                System.out.println("In back range: "+inBackRange);
 
                 if(data.getQ1() == 0 || data.getQ2() == 0)
                     return true;
@@ -241,6 +238,10 @@ public class Trajectory{
         double cosLambda = Math.cos(data.getA1());
         double distOnPath = data.getQ1()*cosLambda;
         return distOnPath;
+    }
+
+    public double getCrossTrackError(){
+        return data.getEpsilon();
     }
 
     public int getID(){

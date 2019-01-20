@@ -64,20 +64,21 @@ public class PositionTracker extends Thread implements IPositionTracker{
         heading = new Heading();
         resetHeading();
         Timer.delay(0.02);
+        Drive mDrive = Drive.getInstance();
+        double pPosition = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
+        double cPosition = pPosition;
         while(true){
             double dt = Timer.getFPGATimestamp() - last;
             last = Timer.getFPGATimestamp();
 
             heading.setRobotAngle(getAngle());
+            Heading tempHeading = new Heading(heading);
+            
+            pPosition = cPosition;
+            cPosition = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
+            tempHeading.setMagnitude(cPosition - pPosition);
     
-            double leftVel = Drive.getInstance().getLeftVel();
-            double rightVel = Drive.getInstance().getRightVel();
-            double forwardVelocity = Util.average(Arrays.asList(leftVel, rightVel));
-            Heading special = new Heading(heading);
-            special.setMagnitude(forwardVelocity);
-
-            Pos2D nextPos = new Pos2D(position, special);
-            nextPos.getHeading().mult(dt);
+            Pos2D nextPos = new Pos2D(position, tempHeading);
             position = nextPos.getEndPos();
 
             fullPos.setPos(position);

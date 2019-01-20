@@ -9,6 +9,8 @@ import drive.DriveOutput;
 import drive.PositionTracker;
 import drive.DriveOutput.Modes;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
     private static IControlBoard cb = new ControlBoard();
@@ -29,6 +31,7 @@ public class Robot extends IterativeRobot {
         driveOut = DriveOutput.getInstance();
         mRunner = PositionTracker.getInstance();
         driveOut.start();
+        mode = new DoubleHatchAuto();
     }
 
     @Override
@@ -65,20 +68,13 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-        PositionTracker.getInstance().setInitPos(new Coordinate());
         PositionTracker.getInstance().robotForward();
-        mode = new DoubleHatchAuto();
-        // mode = new TripleHatchAuto();
-        // mode = new FarNearLeftHatchAuto();
-        // mode = new ReverseAuto();
         mode.start();
     }
 
     @Override
     public void autonomousPeriodic() {
-        // driveOut.setKin(350*Units.Angle.degrees/(5*Units.Length.feet), 1*Units.Length.feet);
-        // driveOut.setKin(1/(4*Units.Length.feet), 2*Units.Length.feet);
-        // driveOut.set(Modes.Voltage, 12, 12);
+        SmartDashboard.putNumber("Time", Timer.getMatchTime());
     }
 
     @Override

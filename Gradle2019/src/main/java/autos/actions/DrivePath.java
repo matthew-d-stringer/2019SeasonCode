@@ -14,7 +14,8 @@ public class DrivePath extends Action{
     TrajectoryList segment;
     DriveFollower follower;
     boolean isDone = false;
-    double driveThresh = 0.5*Units.Length.feet;
+    double parallelTrackThresh = 0.5*Units.Length.feet;
+    double crossTrackThresh = 0.5*Units.Length.feet;
     TrapezoidalMp mp; 
     TrapezoidalMp.constraints constraints; 
     ProfileHolder pHolder; 
@@ -38,7 +39,7 @@ public class DrivePath extends Action{
         follower = new DriveFollower();
         this.segment = segment;
         this.constraints = constraints;
-        this.driveThresh = driveThresh;
+        this.parallelTrackThresh = driveThresh;
     }
 
     public void setlookAhead(double lookAhead){
@@ -49,8 +50,11 @@ public class DrivePath extends Action{
         this.reverse = reverse;
     }
 
-    public void setThresh(double thresh){
-        driveThresh = thresh;
+    public void setVerticalThresh(double thresh){
+        parallelTrackThresh = thresh;
+    }
+    public void setHorizontalThresh(double thresh){
+        crossTrackThresh = thresh;
     }
 
     public void setMp(TrapezoidalMp mp) {
@@ -74,12 +78,16 @@ public class DrivePath extends Action{
     @Override
     public void update() {
         double vel = pHolder.calculateVel(segment.getDistOnPath());
+        vel = Math.max(2*Units.Length.feet, vel);
         if(reverse)
             vel *= -1;
         follower.update(segment, vel);
         SmartDashboard.putNumber("Current Trajectory ID", segment.getCurrentID());
-        isDone = segment.isDone(PositionTracker.getInstance().getPosition().getPos(), driveThresh);
-        SmartDashboard.putBoolean("DrivePath done?", isDone);
+        SmartDashboard.putNumber("Distance on Path", segment.getDistOnPath());
+        SmartDashboard.putNumber("Total Distance", segment.getTotalDistance());
+        isDone = segment.isDone(PositionTracker.getInstance().getPosition().getPos(), parallelTrackThresh, crossTrackThresh);
+        // isDone = segment.getTotalDistance() - segment.getDistOnPath() < parallelTrackThresh;
+        // SmartDashboard.putBoolean("DrivePath done?", isDone);
     }
 
     @Override
@@ -90,6 +98,5 @@ public class DrivePath extends Action{
     @Override
     public boolean isFinished() {
         return isDone;
-        // return true;
     }
 }

@@ -30,15 +30,12 @@ public abstract class AutoMode extends Thread{
     
     public void runAction(Action action){
         SmartDashboard.putString("Current Action: ", action.getClass().getName());
-        if(!RobotState.isAutonomous())
-            return;
         SmartDashboard.putString("Action Message", "Starting Action");
         action.start();
-        while(!action.isFinished() && RobotState.isAutonomous()){
+        while(!action.isFinished()){
             SmartDashboard.putString("Action Message", "Updating Action");
             try{
                 action.update();
-            //TODO: Fix random spline auto bug
             }catch(RuntimeException e){
                 e.printStackTrace();
             }

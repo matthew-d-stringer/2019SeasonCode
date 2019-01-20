@@ -115,14 +115,16 @@ public class TrajectoryList{
      * Determines whether the robot is in a certain distance of the goal
      * @param robotPos position of the robot
      * @param distanceThresh minimum distance from the end
+     * @param epsilonThresh maximum cross track error
      */
-    public boolean isDone(Coordinate robotPos, double distanceThresh){
+    public boolean isDone(Coordinate robotPos, double distanceThresh, double epsilonThresh){
         Trajectory out = findRelevant(robotPos);
         //if not last trajectory, then ur not done
-        if(out.getID() != last.getID())
-            return false;
-        double cDist = Coordinate.DistanceBetween(robotPos, out.getEnd());
-        return cDist <= distanceThresh;
+        // if(out.getID() != last.getID())
+        //     return false;
+        // double cDist = Coordinate.DistanceBetween(robotPos, out.getEnd());
+        double remainingDist = getTotalDistance() - getDistOnPath();
+        return remainingDist <= distanceThresh && getCrossWidthError() < epsilonThresh;
     }
 
     public int getCount(){
@@ -133,6 +135,10 @@ public class TrajectoryList{
         return current.getID();
     }
 
+    public boolean onLastSegment(){
+        return getCount() == getCurrentID();
+    }
+
     public double getDistOnPath(){
         Trajectory relevantTrajectory = current;
         return relevantTrajectory.beginDist + relevantTrajectory.getDistOnPath();
@@ -140,6 +146,10 @@ public class TrajectoryList{
 
     public double getTotalDistance(){
         return last.beginDist + last.getDistance();
+    }
+
+    public double getCrossWidthError(){
+        return current.getCrossTrackError();
     }
 
     public String display(){

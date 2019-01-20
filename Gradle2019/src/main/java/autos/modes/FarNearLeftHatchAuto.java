@@ -13,7 +13,7 @@ public class FarNearLeftHatchAuto extends AutoMode{
             new TrapezoidalMp.constraints(0, 4*Units.Length.feet, 2*Units.Length.feet);
         
         toFarRocket = DrivePath.createFromFileOnRoboRio("FarNearLeftHatchAuto", "toFarRocket", slow);
-        toFarRocket.setThresh(4*Units.Length.inches);
+        toFarRocket.setVerticalThresh(4*Units.Length.inches);
         toFarRocket.setlookAhead(1.5*Units.Length.feet);
     }
 

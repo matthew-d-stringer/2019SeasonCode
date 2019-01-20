@@ -54,6 +54,10 @@ public class SplineSegmentFiller{
         }
     }
 
+    public void setPointsPerSpline(int num){
+        pointsPerSpline = num;
+    }
+
     public TrajectoryList generate(){
         segment = null;
         for(int i = 0; i < points.size()-1; i++){

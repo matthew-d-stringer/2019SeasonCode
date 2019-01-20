@@ -21,10 +21,19 @@ public class DrivePath extends Action{
     ProfileHolder pHolder; 
     boolean reverse = false;
 
-    public static DrivePath createFromFileOnRoboRio(String fileName, String path, 
+    public static DrivePath createFromFileOnRoboRio(String fileName, String path,
     TrapezoidalMp.constraints constraints){
         String filePath = "/home/lvuser/deploy/Autos/"+fileName+".json";
         SplineSegmentFiller filler = new SplineSegmentFiller(filePath, path);
+        TrajectoryList segment = filler.generate();
+        return new DrivePath(segment, constraints);
+    }
+
+    public static DrivePath createFromFileOnRoboRio(String fileName, String path, 
+    TrapezoidalMp.constraints constraints, int numOfSplines){
+        String filePath = "/home/lvuser/deploy/Autos/"+fileName+".json";
+        SplineSegmentFiller filler = new SplineSegmentFiller(filePath, path);
+        filler.setPointsPerSpline(numOfSplines);
         TrajectoryList segment = filler.generate();
         return new DrivePath(segment, constraints);
     }
@@ -86,8 +95,7 @@ public class DrivePath extends Action{
         SmartDashboard.putNumber("Distance on Path", segment.getDistOnPath());
         SmartDashboard.putNumber("Total Distance", segment.getTotalDistance());
         isDone = segment.isDone(PositionTracker.getInstance().getPosition().getPos(), parallelTrackThresh, crossTrackThresh);
-        // isDone = segment.getTotalDistance() - segment.getDistOnPath() < parallelTrackThresh;
-        // SmartDashboard.putBoolean("DrivePath done?", isDone);
+        SmartDashboard.putBoolean("DrivePath done?", isDone);
     }
 
     @Override

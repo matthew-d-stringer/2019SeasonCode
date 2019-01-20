@@ -26,9 +26,10 @@ public class DriveFollower{
      * @param velocity desired speed of robot
      */
     private void updatePurePursuit(double eta, double lookAhead, double velocity, boolean reverse){
+        lookAhead = Math.max(lookAhead, 1*Units.Length.feet);
         double curvature = (2*Math.sin(eta/2))/lookAhead;
         Coordinate velPoint1 = new Coordinate(0, 1);
-        Coordinate velPoint2 = new Coordinate(1, 0.2);
+        Coordinate velPoint2 = new Coordinate(1, 0.8);
         double outVel = Util.mapRange(Math.abs(curvature), velPoint1, velPoint2);
         outVel = Math.max(outVel, 0.2);
         outVel *= velocity;

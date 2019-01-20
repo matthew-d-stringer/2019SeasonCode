@@ -74,7 +74,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousPeriodic() {
-        SmartDashboard.putNumber("Time", Timer.getMatchTime());
     }
 
     @Override

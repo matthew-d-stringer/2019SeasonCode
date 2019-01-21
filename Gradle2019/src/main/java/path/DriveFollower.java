@@ -15,8 +15,14 @@ public class DriveFollower{
     //For 1fps, 2ft look ahead
     //For 15fps, 3ft look ahead
 
+    private double turnCorrection = 0.8;
+
     public void setLookAhead(double lookAhead){
         this.lookAhead = lookAhead;
+    }
+
+    public void setTurnCorrection(double turnCorrection){
+        this.turnCorrection = turnCorrection;
     }
 
     /**
@@ -29,7 +35,7 @@ public class DriveFollower{
         lookAhead = Math.max(lookAhead, 1*Units.Length.feet);
         double curvature = (2*Math.sin(eta/2))/lookAhead;
         Coordinate velPoint1 = new Coordinate(0, 1);
-        Coordinate velPoint2 = new Coordinate(1, 0.8);
+        Coordinate velPoint2 = new Coordinate(1, turnCorrection);
         double outVel = Util.mapRange(Math.abs(curvature), velPoint1, velPoint2);
         outVel = Math.max(outVel, 0.2);
         outVel *= velocity;

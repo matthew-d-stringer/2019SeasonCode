@@ -55,6 +55,10 @@ public class DrivePath extends Action{
         follower.setLookAhead(lookAhead);
     }
 
+    public void setTurnCorrection(double turnCorrection){
+        follower.setTurnCorrection(turnCorrection);
+    }
+
     public void setReverse(boolean reverse){
         this.reverse = reverse;
     }

@@ -30,7 +30,8 @@ public class Robot extends IterativeRobot {
         mRunner = PositionTracker.getInstance();
         driveOut.start();
         // mode = new DoubleHatchAuto();
-        mode = new FarNearLeftHatchAuto();
+        // mode = new FarNearLeftHatchAuto();
+        mode = new SkidDrive();
     }
 
     @Override

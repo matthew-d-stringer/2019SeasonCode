@@ -71,35 +71,46 @@ public class Drive {
 	 * @return [0] = position, [1] = velocity
 	 */
 	public double[]	getEnc(){
-		double position = (-(leftEncoder.getSelectedSensorPosition(0)+rightEncoder.getSelectedSensorPosition(0))/2)*
-				Units.Angle.encoderTicks*Units.Length.radians;
+		double position = Util.average(Arrays.asList(getLeftPosition(), getRightPosition()));
 		double velocity = Util.average(Arrays.asList(getLeftVel(), getRightVel()));
 		double[] out = {position, velocity};
 		return out;
 	}
 
 	public double getLeftPosition(){
-		return leftEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
+		if(Constants.isCompBot)
+			return -leftEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
+		else 
+			return leftEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
 	}
 
 	public double getRightPosition(){
-		return -rightEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
+		if(Constants.isCompBot)
+			return rightEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
+		else 
+			return -rightEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
 	}
 
 	/**
 	 * Returns Left Velocity
 	 */
 	public double getLeftVel(){
-		return leftEncoder.getSelectedSensorVelocity()*
+		double out = leftEncoder.getSelectedSensorVelocity()*
 				Units.Angle.encoderTicks*Units.Length.radians/(0.1*Units.Time.seconds);
+		if(Constants.isCompBot)
+			out *= -1;
+		return out;
 	}
 
 	/**
 	 * Returns Right Velocity
 	 */
 	public double getRightVel(){
-		return -rightEncoder.getSelectedSensorVelocity()*
+		double out = -rightEncoder.getSelectedSensorVelocity()*
 				Units.Angle.encoderTicks*Units.Length.radians/(0.1*Units.Time.seconds);
+		if(Constants.isCompBot)
+			out *= -1;
+		return out;
 	}
 
 	public void brake(IdleMode mode){

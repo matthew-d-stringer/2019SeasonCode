@@ -1,5 +1,6 @@
 package autos.modes;
 
+import autos.AutoEndedException;
 import autos.actions.DrivePath;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
@@ -28,7 +29,7 @@ public class FarNearLeftHatchAuto extends AutoMode{
     }
 
     @Override
-    public void auto() {
+    public void auto() throws AutoEndedException{
         runAction(toFarRocket);
         runAction(backToStation);
         runAction(toNear);

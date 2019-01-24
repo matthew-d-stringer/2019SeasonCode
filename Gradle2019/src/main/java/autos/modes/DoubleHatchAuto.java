@@ -1,5 +1,6 @@
 package autos.modes;
 
+import autos.AutoEndedException;
 import autos.actions.DrivePath;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
@@ -31,7 +32,7 @@ public class DoubleHatchAuto extends AutoMode{
     }
 
     @Override
-    public void auto() {
+    public void auto() throws AutoEndedException{
         runAction(toRocket);
         runAction(toRefill);
         runAction(loadToRocket);

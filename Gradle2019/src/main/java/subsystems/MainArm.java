@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import coordinates.Coordinate;
 import coordinates.Heading;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
 import utilPackage.Util;
@@ -17,6 +18,7 @@ public class MainArm{
         return instance;
     }
     TalonSRX pivot;
+    DigitalInput reset;
     Coordinate senZero, senNinety;
     Coordinate comRetract, comExtend;
 
@@ -29,12 +31,21 @@ public class MainArm{
 
         comRetract = new Coordinate(Constants.Telescope.lenRetract, Constants.Telescope.comRetract);
         comExtend = new Coordinate(Constants.Telescope.lenExtend, Constants.Telescope.comExtend);
+
+        reset = new DigitalInput(Constants.MainArm.resetNum);
     }
 
     public void periodic(){
         SmartDashboard.putNumber("Raw Arm Enc", pivot.getSelectedSensorPosition());
         SmartDashboard.putNumber("Arm Enc", getAngle());
-        //TODO: add reset;
+
+        SmartDashboard.putBoolean("Arm Reset", getReset());
+        if(getReset())
+            pivot.setSelectedSensorPosition(0);
+    }
+
+    public boolean getReset(){
+        return reset.get();
     }
 
     public double getAngle(){

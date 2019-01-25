@@ -34,6 +34,7 @@ public class Constants {
 
 	public static class MainArm{
 		public static int pivotNum = 1;
+		public static int resetNum = 1;
 
 		public static double mass = 0;
 
@@ -43,6 +44,7 @@ public class Constants {
 
 	public static class Telescope{
 		public static int telescopeNum = 1;
+		public static int resetNum = 1;
 
 		public static double mass = 0;
 
@@ -55,6 +57,7 @@ public class Constants {
 
 	public static class Gripper{
 		public static int pivotNum = 1;
+		public static int resetNum = 1;
 
 		public static double mass = 0;
 		

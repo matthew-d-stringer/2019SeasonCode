@@ -32,6 +32,38 @@ public class Constants {
 				robotDiameter = 29; // inches (for estimating angle without a gyro)
 	}
 
+	public static class MainArm{
+		public static int pivotNum = 1;
+
+		public static double mass = 0;
+
+		public static double zeroDegVal = 0;
+		public static double ninetyDegVal = 0;
+	}
+
+	public static class Telescope{
+		public static int telescopeNum = 1;
+
+		public static double mass = 0;
+
+		public static double retractVal = 0;
+		public static double extendVal = 0;
+
+		public static double lenRetract = 0, lenExtend = 0;
+		public static double comRetract = 0, comExtend = 0;
+	}
+
+	public static class Gripper{
+		public static int pivotNum = 1;
+
+		public static double mass = 0;
+		
+		public static double zeroDegVal = 0;
+		public static double ninetyDegVal = 0;
+
+		public static double comOpen = 0, comClosed = 0, comWithBall = 0;
+	}
+
 	public static void readRobotData() throws Exception{
 		JSONParser parser = Util.getParser();
 		Object tempObj = parser.parse(new FileReader("/home/lvuser/robot.json"));

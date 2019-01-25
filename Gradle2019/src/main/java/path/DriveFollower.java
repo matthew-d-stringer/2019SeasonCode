@@ -50,8 +50,6 @@ public class DriveFollower{
     }
 
     public void update(TrajectoryList path, double velocity){
-        //TODO: Remove this
-        // velocity = 2*Units.Length.feet;
         Pos2D robotPos = null; 
         boolean reverse = false;
         if(velocity < 0){

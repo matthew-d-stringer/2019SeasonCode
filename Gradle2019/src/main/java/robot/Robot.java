@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotState;
 import subsystems.MainArm;
+import subsystems.MainArmControl;
 
 public class Robot extends IterativeRobot {
     private static IControlBoard cb = new ControlBoard();
@@ -22,6 +23,7 @@ public class Robot extends IterativeRobot {
     Drive drive;
     DriveOutput driveOut;
     MainArm arm;
+    MainArmControl armControl;
     IControlBoard controlBoard;
     PositionTracker mRunner;
     AutoMode mode;
@@ -37,7 +39,10 @@ public class Robot extends IterativeRobot {
         drive = Drive.getInstance();
         driveOut = DriveOutput.getInstance();
         mRunner = PositionTracker.getInstance();
+
         arm = MainArm.getInstance();
+        armControl = MainArmControl.getInstance();
+
         driveOut.start();
         // mode = new DoubleHatchAuto();
         // mode = new FarNearLeftHatchAuto();
@@ -61,11 +66,14 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        double vel = 2.5*Units.Length.feet;
-        driveOut.set(Modes.Velocity, vel, vel);
+        armControl.setSetpoint(90*Units.Angle.degrees);
+        armControl.run();
+
+        // double vel = 2.5*Units.Length.feet;
+        // driveOut.set(Modes.Velocity, vel, vel);
         // driveCode();
         // driveOut.set(Modes.Voltage, 3,3);
-        drive.display();
+        // drive.display();
         // driveOut.set(Modes.Voltage, 3, 3);
     }
 

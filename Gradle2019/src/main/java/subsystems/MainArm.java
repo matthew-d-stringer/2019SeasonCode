@@ -1,5 +1,6 @@
 package subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -42,6 +43,10 @@ public class MainArm{
         if(SmartDashboard.getBoolean("Arm Reset", false))
             pivot.setSelectedSensorPosition(0);
         SmartDashboard.putBoolean("Arm Reset", false);
+    }
+
+    public void setVoltage(double voltage){
+        pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
 
     public double getAngle(){

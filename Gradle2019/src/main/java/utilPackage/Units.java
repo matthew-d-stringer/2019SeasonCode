@@ -4,6 +4,7 @@ public class Units {
 	public static class Length{
 		//Everything is converted to Meters
 		public final static double meters = 1;
+		public final static double milimeters = 0.001;
 		public final static double inches = 0.0254;
 		public final static double feet = 0.3048;
 		public final static double radians = 0.06985; //Diameter = 5.5

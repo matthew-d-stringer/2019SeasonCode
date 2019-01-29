@@ -8,6 +8,7 @@ import coordinates.Heading;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
+import utilPackage.Units;
 import utilPackage.Util;
 
 public class MainArm{
@@ -18,7 +19,6 @@ public class MainArm{
         return instance;
     }
     TalonSRX pivot;
-    DigitalInput reset;
     Coordinate senZero, senNinety;
     Coordinate comRetract, comExtend;
 
@@ -32,25 +32,26 @@ public class MainArm{
         comRetract = new Coordinate(Constants.Telescope.lenRetract, Constants.Telescope.comRetract);
         comExtend = new Coordinate(Constants.Telescope.lenExtend, Constants.Telescope.comExtend);
 
-        reset = new DigitalInput(Constants.MainArm.resetNum);
     }
 
     public void periodic(){
         SmartDashboard.putNumber("Raw Arm Enc", pivot.getSelectedSensorPosition());
-        SmartDashboard.putNumber("Arm Enc", getAngle());
+        SmartDashboard.putNumber("Arm Enc", Units.convertUnits(getAngle(), Units.Angle.degrees));
+        SmartDashboard.putNumber("Arm Antigrav", getAntigrav());
 
-        SmartDashboard.putBoolean("Arm Reset", getReset());
-        if(getReset())
+        if(SmartDashboard.getBoolean("Arm Reset", false))
             pivot.setSelectedSensorPosition(0);
-    }
-
-    public boolean getReset(){
-        return reset.get();
+        SmartDashboard.putBoolean("Arm Reset", false);
     }
 
     public double getAngle(){
         return Util.mapRange(pivot.getSelectedSensorPosition(), senZero, senNinety);
     }
+
+    public double getAntigrav(){
+        return 0.32076*getComWithoutGripper().normalizeC().getX();
+    }
+
     public double getComDist(){
         return Util.mapRange(Telescope.getInstance().getDistance(), comRetract, comExtend);
     }

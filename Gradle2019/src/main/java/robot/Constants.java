@@ -16,8 +16,6 @@ public class Constants {
 	 * should look something like this:
 	 */
 	
-	public static int pressureSensorNum = 3;
-	
 	public static double robotWidth = 27*Units.Length.inches;
 
 	public static boolean isCompBot = true;
@@ -33,26 +31,31 @@ public class Constants {
 	}
 
 	public static class MainArm{
-		public static int pivotNum = 1;
-		public static int resetNum = 1;
+		public static int pivotNum = 20;
 
-		public static double mass = 0;
+		public static double mass = 3.57103*Units.Mass.kilograms;
 
-		public static double zeroDegVal = 0;
-		public static double ninetyDegVal = 0;
+		public static double gearRatio = 1/741.88;
+
+		public static double zeroDegVal = 830265;
+		public static double ninetyDegVal = 1487900;
 	}
 
 	public static class Telescope{
 		public static int telescopeNum = 1;
 		public static int resetNum = 1;
 
-		public static double mass = 0;
+		public static double gearRatio = 1/100;
+		public static double radius = 37.5*Units.Length.milimeters;
 
 		public static double retractVal = 0;
 		public static double extendVal = 0;
 
-		public static double lenRetract = 0, lenExtend = 0;
-		public static double comRetract = 0, comExtend = 0;
+		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
+		public static double comRetract = 13.0008*Units.Length.inches, comExtend = 15.8395*Units.Length.inches;
+
+		public static double momentOfInertiaRetracted = 0.50183402;//Kg m^2
+		public static double momentOfInertiaExtended = 0.73688931;//Kg m^2
 	}
 
 	public static class Gripper{

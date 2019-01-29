@@ -47,7 +47,9 @@ public class Telescope{
     }
 
     public double getDistance(){
-        return Util.mapRange(telescope.getSelectedSensorPosition(), senRetract, senExtend);
+        //TODO: undo this
+        // return Util.mapRange(telescope.getSelectedSensorPosition(), senRetract, senExtend);
+        return senRetract.getY();
     }
 
     public Coordinate getEndPos(){

@@ -11,6 +11,7 @@ import drive.DriveOutput.Modes;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotState;
+import subsystems.MainArm;
 
 public class Robot extends IterativeRobot {
     private static IControlBoard cb = new ControlBoard();
@@ -20,6 +21,7 @@ public class Robot extends IterativeRobot {
 
     Drive drive;
     DriveOutput driveOut;
+    MainArm arm;
     IControlBoard controlBoard;
     PositionTracker mRunner;
     AutoMode mode;
@@ -35,6 +37,7 @@ public class Robot extends IterativeRobot {
         drive = Drive.getInstance();
         driveOut = DriveOutput.getInstance();
         mRunner = PositionTracker.getInstance();
+        arm = MainArm.getInstance();
         driveOut.start();
         // mode = new DoubleHatchAuto();
         // mode = new FarNearLeftHatchAuto();
@@ -48,6 +51,7 @@ public class Robot extends IterativeRobot {
         driveOut.display();
         drive.display();
         mRunner.display();
+        arm.periodic();
     }
 
     @Override
@@ -86,6 +90,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void disabledInit() {
-        mode.stop();
+        mode.end();
     }
 }

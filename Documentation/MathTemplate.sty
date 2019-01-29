@@ -1,0 +1,82 @@
+\ProvidesPackage{MathTemplate}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix,arrows}
+\usepackage{graphicx}
+\usepackage{amsmath} 
+\usepackage{amssymb} 
+\usepackage{amsthm}
+\usepackage{enumitem} % to change appearance of enum and item environments
+\usepackage{framed}
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{siunitx}
+\usepackage{subfiles}
+%\usepackage{yhmath}
+% adjust the margins using the geometry package
+\usepackage[left=0.75in, right=0.75in, top=0.75in, bottom=0.75in]{geometry}
+\usepackage[parfill]{parskip}
+ %\usepackage{mathpazo}
+%\usepackage{euler}
+
+% customize the headers using the fancyhdr package
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\usepackage{hyperref}
+
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\newenvironment{hwproblem}[1]{{\large \bfseries Problem #1\,:} \begin{trivlist}\item[]\vspace{-0.5ex}}{\end{trivlist}\vspace{3ex}}
+\newenvironment{hwproblemquestion}[1]{{\bfseries Question #1\,:} \begin{trivlist}\item[]\vspace{-1.5ex}}{\end{trivlist}\vspace{3ex}}
+\newenvironment{lecexercise}[1]{{\large \bfseries Exercise #1\,:} \begin{trivlist}\item[]\vspace{-0.5ex}}{\end{trivlist}\vspace{3ex}}
+\newenvironment{note}[1]{{\large \bfseries Note #1\,:} \begin{trivlist}\item[]\vspace{-0.5ex}}{\end{trivlist}\vspace{3ex}}
+\newenvironment{hwsubpart}[1]{{\bfseries #1\,:} \begin{trivlist}\item[]\vspace{-0.5ex}}{\end{trivlist}\vspace{3ex}}
+
+
+% create theorem style
+\newtheoremstyle{break}% name
+  {}%         Space above, empty = `usual value'
+  {}%         Space below
+  {}%         Body font
+  {}%         Indent amount (empty = no indent, \parindent = para indent)
+  {\bfseries}% Thm head font
+  {.}%        Punctuation after thm head
+  {\newline}% Space after thm head: \newline = linebreak
+  {}%         Thm head spec
+
+\theoremstyle{break}
+\newtheorem{hwquestion}{Question}
+
+\newtheorem{theorem}{Theorem}
+\numberwithin{theorem}{subsection}
+
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{lemma}{Lemma}
+\numberwithin{lemma}{subsection}
+
+\newtheorem{corollary}{Corollary}
+\numberwithin{corollary}{subsection}
+
+
+\newtheorem*{definition}{Definition}
+
+\newtheorem*{note*}{Note}
+
+\newtheorem*{remark}{Remark}
+
+\newtheorem*{hint}{Hint}
+
+\newtheorem*{example}{Example}
+
+\numberwithin{equation}{subsection}
+
+
+
+% customize enumerate and itemize environments
+\setlist[itemize]{labelsep=1ex,itemsep=1.5ex,parsep=0ex,leftmargin=4ex,topsep=0.5ex}
+\setlist[enumerate]{labelsep=1ex,itemsep=1.5ex,parsep=0ex,leftmargin=4ex,topsep=0.5ex}

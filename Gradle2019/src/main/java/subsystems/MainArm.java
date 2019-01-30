@@ -22,6 +22,7 @@ public class MainArm{
     TalonSRX pivot;
     Coordinate senZero, senNinety;
     Coordinate comRetract, comExtend;
+    double maxVoltage = 0;
 
     private MainArm(){
         pivot = new TalonSRX(Constants.MainArm.pivotNum);
@@ -45,7 +46,13 @@ public class MainArm{
         SmartDashboard.putBoolean("Arm Reset", false);
     }
 
+    public void setMaxVoltage(double maxVoltage){
+        this.maxVoltage = maxVoltage;
+    }
+
     public void setVoltage(double voltage){
+        voltage = Math.min(voltage, maxVoltage);
+        voltage = Math.max(voltage, -maxVoltage);
         pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
 

@@ -11,6 +11,7 @@ import drive.DriveOutput.Modes;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsystems.MainArm;
 import subsystems.MainArmControl;
 
@@ -47,6 +48,8 @@ public class Robot extends IterativeRobot {
         // mode = new DoubleHatchAuto();
         // mode = new FarNearLeftHatchAuto();
         mode = new SkidDrive();
+
+        SmartDashboard.putNumber("Arm Setpoint", 90);
     }
 
     @Override
@@ -62,11 +65,12 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopInit() {
         driveOut.set(Modes.Voltage, 0,0);
+        arm.setMaxVoltage(3);
     }
 
     @Override
     public void teleopPeriodic() {
-        armControl.setSetpoint(90*Units.Angle.degrees);
+        armControl.setSetpoint(SmartDashboard.getNumber("Arm Setpoint", 90)*Units.Angle.degrees);
         armControl.run();
 
         // double vel = 2.5*Units.Length.feet;
@@ -99,5 +103,10 @@ public class Robot extends IterativeRobot {
     @Override
     public void disabledInit() {
         mode.end();
+    }
+
+    @Override
+    public void testPeriodic() {
+        arm.setVoltage(-3);
     }
 }

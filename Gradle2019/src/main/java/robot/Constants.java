@@ -37,8 +37,8 @@ public class Constants {
 
 		public static double gearRatio = 1/741.88;
 
-		public static double zeroDegVal = 830265;
-		public static double ninetyDegVal = 1487900;
+		public static double zeroDegVal = 800000;
+		public static double ninetyDegVal = 1491946;
 	}
 
 	public static class Telescope{

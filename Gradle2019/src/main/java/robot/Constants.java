@@ -33,12 +33,12 @@ public class Constants {
 	public static class MainArm{
 		public static int pivotNum = 20;
 
-		public static double mass = 3.57103*Units.Mass.kilograms;
+		public static double mass = 6.362332*Units.Mass.kilograms;
 
 		public static double gearRatio = 1/373.33;
 
-		public static double zeroDegVal = 800000;
-		public static double ninetyDegVal = 1491946;
+		public static double zeroDegVal = 856;
+		public static double ninetyDegVal = 1903;
 	}
 
 	public static class Telescope{
@@ -52,10 +52,10 @@ public class Constants {
 		public static double extendVal = 0;
 
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
-		public static double comRetract = 13.0008*Units.Length.inches, comExtend = 15.8395*Units.Length.inches;
+		public static double comRetract = 0.43391551*Units.Length.meters, comExtend = 0.57042751*Units.Length.meters;
 
-		public static double momentOfInertiaRetracted = 0.50183402;//Kg m^2
-		public static double momentOfInertiaExtended = 0.73688931;//Kg m^2
+		public static double momentOfInertiaRetracted = 1.48278951;//Kg m^2
+		public static double momentOfInertiaExtended = 2.69233476;//Kg m^2
 	}
 
 	public static class Gripper{

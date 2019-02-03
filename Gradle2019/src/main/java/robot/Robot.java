@@ -3,6 +3,7 @@ package robot;
 import autos.modes.*;
 import controlBoard.*;
 import coordinates.Coordinate;
+import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
 import drive.Drive;
 import drive.DriveOutput;
@@ -11,6 +12,7 @@ import drive.DriveOutput.Modes;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsystems.MainArm;
 import subsystems.MainArmControl;
@@ -61,16 +63,25 @@ public class Robot extends IterativeRobot {
         mRunner.display();
         arm.periodic();
     }
+    
+    TrapezoidalMp mp;
+    Timer time = new Timer();
 
     @Override
     public void teleopInit() {
         driveOut.set(Modes.Voltage, 0,0);
-        arm.setMaxVoltage(3);
+        double setpoint = SmartDashboard.getNumber("Arm Setpoint", 90)*Units.Angle.degrees;
+        TrapezoidalMp.constraints constraints = new TrapezoidalMp.constraints(setpoint, 
+            2*Units.Angle.revolutions, 
+            0.333*Units.Angle.revolutions);
+        mp = new TrapezoidalMp(arm.getAngle(), constraints);
+
+        time.start();
     }
 
     @Override
     public void teleopPeriodic() {
-        armControl.setSetpoint(SmartDashboard.getNumber("Arm Setpoint", 90)*Units.Angle.degrees);
+        armControl.setSetpoint(mp.Calculate(time.get())[0]);
         armControl.run();
 
         // double vel = 2.5*Units.Length.feet;

@@ -48,7 +48,10 @@ public class MainArmControl{
                 double error = setpoint - arm.getAngle();
                 double feedForward = arm.getAntigrav();
                 dError.Calculate(error, time.get());
-                double feedBack = 16.6291*error + 5.3113*dError.getOut();
+                double p = 6.6961;
+                double d = 2.3200;
+                double feedBack = p*error + d*dError.getOut();
+                // arm.setVoltage(feedForward);
                 arm.setVoltage(feedForward+feedBack);
                 break;
         }

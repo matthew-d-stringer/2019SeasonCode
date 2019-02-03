@@ -35,7 +35,7 @@ public class Constants {
 
 		public static double mass = 3.57103*Units.Mass.kilograms;
 
-		public static double gearRatio = 1/741.88;
+		public static double gearRatio = 1/373.33;
 
 		public static double zeroDegVal = 800000;
 		public static double ninetyDegVal = 1491946;

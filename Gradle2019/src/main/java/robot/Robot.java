@@ -3,6 +3,7 @@ package robot;
 import autos.modes.*;
 import controlBoard.*;
 import coordinates.Coordinate;
+import utilPackage.FancyDrive;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
 import drive.Drive;
@@ -35,6 +36,8 @@ public class Robot extends IterativeRobot {
     PositionTracker mRunner;
     AutoMode mode;
 
+    FancyDrive driveCode;
+
     @Override
     public void robotInit() {
         try{
@@ -57,6 +60,8 @@ public class Robot extends IterativeRobot {
         // mode = new DoubleHatchAuto();
         // mode = new FarNearLeftHatchAuto();
         mode = new SkidDrive();
+
+        driveCode = new FancyDrive();
 
         SmartDashboard.putNumber("Arm Setpoint", 90);
     }
@@ -100,14 +105,16 @@ public class Robot extends IterativeRobot {
         // arm.setVoltage(arm.getAntigrav());
 
         // armControl.setSetpoint(mp.Calculate(time.get())[0]);
-        armControl.setSetpoint(20*Units.Angle.degrees);
-        armControl.run();
+
+        // armControl.setSetpoint(20*Units.Angle.degrees);
+        // armControl.run();
 
         // telescope.setVoltage(1);
         // telescope.setVoltage(telescope.getAntigrav());
         // telescopeControl.setSetpoint(Constants.Telescope.lenExtend);
-        telescopeControl.setSetpoint(mpTelescope.Calculate(time.get())[0]);
-        telescopeControl.run();
+
+        // telescopeControl.setSetpoint(mpTelescope.Calculate(time.get())[0]);
+        // telescopeControl.run();
 
 
         // double vel = 2.5*Units.Length.feet;
@@ -116,12 +123,14 @@ public class Robot extends IterativeRobot {
         // driveOut.set(Modes.Voltage, 3,3);
         // drive.display();
         // driveOut.set(Modes.Voltage, 3, 3);
+
+        driveCode.run();
     }
 
     private void driveCode(){
         Coordinate control = controlBoard.getJoystickPos();
         // control = new Coordinate(0, 0.5);
-        control.mult(5*Units.Length.feet);
+        control.mult(10*Units.Length.feet, 16*Units.Length.feet);
         double rightOut = control.getY()+control.getX();
         double leftOut = control.getY()-control.getX();
         driveOut.set(Modes.Velocity, rightOut, leftOut);

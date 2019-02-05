@@ -7,6 +7,8 @@ public abstract class IControlBoard{
     public abstract Heading getJoystickPos();
     public abstract double getWheelPos();
 
+    public abstract boolean quickTurn();
+
     public abstract boolean gripperUp();
     public abstract boolean gripperDown();
 

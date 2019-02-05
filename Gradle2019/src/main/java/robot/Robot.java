@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsystems.MainArm;
 import subsystems.MainArmControl;
+import subsystems.Telescope;
+import subsystems.TelescopeControl;
 
 public class Robot extends IterativeRobot {
     private static IControlBoard cb = new ControlBoard();
@@ -27,6 +29,8 @@ public class Robot extends IterativeRobot {
     DriveOutput driveOut;
     MainArm arm;
     MainArmControl armControl;
+    Telescope telescope;
+    TelescopeControl telescopeControl;
     IControlBoard controlBoard;
     PositionTracker mRunner;
     AutoMode mode;
@@ -46,6 +50,9 @@ public class Robot extends IterativeRobot {
         arm = MainArm.getInstance();
         armControl = MainArmControl.getInstance();
 
+        telescope = Telescope.getInstance();
+        telescopeControl = TelescopeControl.getInstance();
+
         driveOut.start();
         // mode = new DoubleHatchAuto();
         // mode = new FarNearLeftHatchAuto();
@@ -62,9 +69,10 @@ public class Robot extends IterativeRobot {
         drive.display();
         mRunner.display();
         arm.periodic();
+        telescope.periodic();
     }
     
-    TrapezoidalMp mp;
+    TrapezoidalMp mp, mpTelescope;
     Timer time = new Timer();
 
     @Override
@@ -76,13 +84,31 @@ public class Robot extends IterativeRobot {
             0.333*Units.Angle.revolutions);
         mp = new TrapezoidalMp(arm.getAngle(), constraints);
 
+        TrapezoidalMp.constraints constraints2 = new TrapezoidalMp.constraints(Constants.Telescope.lenExtend, 
+            60*Units.Length.inches, 
+            40*Units.Length.inches);
+        mpTelescope = new TrapezoidalMp(telescope.getDistance(), constraints2);
+
+
         time.start();
     }
 
     @Override
     public void teleopPeriodic() {
-        armControl.setSetpoint(mp.Calculate(time.get())[0]);
+        // double setpoint = SmartDashboard.getNumber("Arm Setpoint", 90)*Units.Angle.degrees;
+        // armControl.setSetpoint(setpoint);
+        // arm.setVoltage(arm.getAntigrav());
+
+        // armControl.setSetpoint(mp.Calculate(time.get())[0]);
+        armControl.setSetpoint(20*Units.Angle.degrees);
         armControl.run();
+
+        // telescope.setVoltage(1);
+        // telescope.setVoltage(telescope.getAntigrav());
+        // telescopeControl.setSetpoint(Constants.Telescope.lenExtend);
+        telescopeControl.setSetpoint(mpTelescope.Calculate(time.get())[0]);
+        telescopeControl.run();
+
 
         // double vel = 2.5*Units.Length.feet;
         // driveOut.set(Modes.Velocity, vel, vel);

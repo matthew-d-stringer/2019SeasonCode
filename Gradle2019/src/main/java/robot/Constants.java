@@ -37,19 +37,21 @@ public class Constants {
 
 		public static double gearRatio = 1/373.33;
 
-		public static double zeroDegVal = 856;
-		public static double ninetyDegVal = 1903;
+		public static double zeroDegVal = 990;
+		public static double ninetyDegVal = 2030;
 	}
 
 	public static class Telescope{
-		public static int telescopeNum = 1;
-		public static int resetNum = 1;
+		public static int telescopeNum = 21;
+		public static int resetNum = 8;
+
+		public static double mass = 2.53139782*Units.Mass.kilograms;
 
 		public static double gearRatio = 1/100;
 		public static double radius = 37.5*Units.Length.milimeters;
 
 		public static double retractVal = 0;
-		public static double extendVal = 0;
+		public static double extendVal = 4712;
 
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
 		public static double comRetract = 0.43391551*Units.Length.meters, comExtend = 0.57042751*Units.Length.meters;

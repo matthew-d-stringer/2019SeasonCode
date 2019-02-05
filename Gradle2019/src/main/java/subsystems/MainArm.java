@@ -54,7 +54,8 @@ public class MainArm{
     }
 
     public double getAntigrav(){
-        return 1.3102*getComWithoutGripper().normalizeC().getX();
+        // return 1.2*getComWithoutGripper().normalizeC().getX();
+        return 2.8227*getComWithoutGripper().getX();
     }
 
     public double getComDist(){

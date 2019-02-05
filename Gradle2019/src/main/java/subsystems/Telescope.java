@@ -1,5 +1,6 @@
 package subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -28,12 +29,13 @@ public class Telescope{
         senRetract = new Coordinate(Constants.Telescope.retractVal, Constants.Telescope.lenRetract);
         senExtend = new Coordinate(Constants.Telescope.extendVal, Constants.Telescope.lenExtend);
 
-        reset = new DigitalInput(Constants.Telescope.resetNum);
+        reset = new DigitalInput(7);
     }
 
     public void periodic(){
-        SmartDashboard.putNumber("Raw Telescope Enc", telescope.getSelectedSensorPosition());
-        SmartDashboard.putNumber("Telescope Enc", getDistance());
+        SmartDashboard.putNumber("Raw Telescope Enc", telescope.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Telescope Distance", getDistance());
+        SmartDashboard.putNumber("Telescope Antigrav", getAntigrav());
         SmartDashboard.putString("Main Arm Endpoint", getEndPos().display());
         
         SmartDashboard.putBoolean("Telescope reset", getReset());
@@ -43,13 +45,22 @@ public class Telescope{
     }
 
     public boolean getReset(){
-        return reset.get();
+        return !reset.get();
+    }
+
+    public void setVoltage(double voltage){
+        SmartDashboard.putNumber("Telescope voltage out", voltage);
+        telescope.set(ControlMode.PercentOutput, voltage/12);
+    }
+
+    public double getAntigrav(){
+        return 1*Math.sin(MainArm.getInstance().getAngle());
     }
 
     public double getDistance(){
         //TODO: undo this
-        // return Util.mapRange(telescope.getSelectedSensorPosition(), senRetract, senExtend);
-        return senRetract.getY();
+        return Util.mapRange(telescope.getSelectedSensorPosition(0), senRetract, senExtend);
+        // return senRetract.getY();
     }
 
     public Coordinate getEndPos(){

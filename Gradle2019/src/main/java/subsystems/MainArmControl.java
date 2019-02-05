@@ -45,11 +45,11 @@ public class MainArmControl{
             case reset:
                 break;
             case running:
-                double error = setpoint - arm.getAngle();
                 double feedForward = arm.getAntigrav();
+                double error = setpoint - arm.getAngle();
                 dError.Calculate(error, time.get());
-                double p = 6.6961;
-                double d = 2.3200;
+                double p = 9.1056;
+                double d = 2.3169;
                 double feedBack = p*error + d*dError.getOut();
                 // arm.setVoltage(feedForward);
                 arm.setVoltage(feedForward+feedBack);

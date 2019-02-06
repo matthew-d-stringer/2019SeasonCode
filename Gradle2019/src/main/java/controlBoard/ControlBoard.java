@@ -4,12 +4,13 @@ import coordinates.Heading;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class ControlBoard extends IControlBoard{
-    Joystick joy, wheel, buttonPad;
+    Joystick joy, wheel, buttonPad, coJoy;
 
     public ControlBoard(){
         joy = new Joystick(0);
         wheel = new Joystick(1);
         buttonPad = new Joystick(2);
+        coJoy = new Joystick(3);
     }
 
     @Override
@@ -23,48 +24,12 @@ public class ControlBoard extends IControlBoard{
         return wheel.getX();
     }
 
+    public Heading getCoJoyPos(){
+        return new Heading(coJoy.getX(), -coJoy.getY());
+    }
+
     @Override
     public boolean quickTurn() {
         return wheel.getRawButton(7);
-    }
-
-    @Override
-    public boolean gripperUp() {
-        return buttonPad.getRawButton(8);
-    }
-
-    @Override
-    public boolean gripperDown() {
-        return buttonPad.getRawButton(13);
-    }
-
-    @Override
-    public boolean elevatorUp() {
-        return buttonPad.getRawButton(23);
-    }
-
-    @Override
-    public boolean elevatorDown() {
-        return buttonPad.getRawButton(24);
-    }
-
-    @Override
-    public boolean armUp() {
-        return buttonPad.getRawButton(21);
-    }
-
-    @Override
-    public boolean armDown() {
-        return buttonPad.getRawButton(22);
-    }
-
-    @Override
-    public boolean vault() {
-        return buttonPad.getRawButton(12);
-    }
-
-    @Override
-    public boolean Switch() {
-        return buttonPad.getRawButton(14);
     }
 }

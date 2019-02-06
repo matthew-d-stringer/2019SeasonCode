@@ -3,6 +3,7 @@ package robot;
 import autos.modes.*;
 import controlBoard.*;
 import coordinates.Coordinate;
+import coordinates.Heading;
 import utilPackage.FancyDrive;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import subsystems.ArmSystemControl;
 import subsystems.MainArm;
 import subsystems.MainArmControl;
 import subsystems.Telescope;
@@ -29,9 +31,10 @@ public class Robot extends IterativeRobot {
     Drive drive;
     DriveOutput driveOut;
     MainArm arm;
-    MainArmControl armControl;
     Telescope telescope;
-    TelescopeControl telescopeControl;
+
+    ArmSystemControl armControl;
+
     IControlBoard controlBoard;
     PositionTracker mRunner;
     AutoMode mode;
@@ -51,10 +54,7 @@ public class Robot extends IterativeRobot {
         mRunner = PositionTracker.getInstance();
 
         arm = MainArm.getInstance();
-        armControl = MainArmControl.getInstance();
-
         telescope = Telescope.getInstance();
-        telescopeControl = TelescopeControl.getInstance();
 
         driveOut.start();
         // mode = new DoubleHatchAuto();
@@ -63,6 +63,9 @@ public class Robot extends IterativeRobot {
 
         driveCode = new FancyDrive();
 
+        armControl = ArmSystemControl.getInstance();
+        armControl.start();
+
         SmartDashboard.putNumber("Arm Setpoint", 90);
     }
 
@@ -70,6 +73,7 @@ public class Robot extends IterativeRobot {
     public void robotPeriodic(){
         // SmartDashboard.putNumber("Right Vel SI", 0);
         // SmartDashboard.putNumber("Left Vel SI", 0);
+        controlBoard.display();
         driveOut.display();
         drive.display();
         mRunner.display();
@@ -80,42 +84,27 @@ public class Robot extends IterativeRobot {
     TrapezoidalMp mp, mpTelescope;
     Timer time = new Timer();
 
+    Heading armPos;
+
     @Override
     public void teleopInit() {
         driveOut.set(Modes.Voltage, 0,0);
-        double setpoint = SmartDashboard.getNumber("Arm Setpoint", 90)*Units.Angle.degrees;
-        TrapezoidalMp.constraints constraints = new TrapezoidalMp.constraints(setpoint, 
-            2*Units.Angle.revolutions, 
-            0.333*Units.Angle.revolutions);
-        mp = new TrapezoidalMp(arm.getAngle(), constraints);
-
-        TrapezoidalMp.constraints constraints2 = new TrapezoidalMp.constraints(Constants.Telescope.lenExtend, 
-            60*Units.Length.inches, 
-            40*Units.Length.inches);
-        mpTelescope = new TrapezoidalMp(telescope.getDistance(), constraints2);
-
+        // armPos = Heading.createPolarHeading(-45*Units.Angle.degrees, Constants.Telescope.lenRetract);
+        // armPos = telescope.getEndPos().heading();
+        armPos = new Heading(20*Units.Length.inches, -20.5*Units.Length.inches);
+        // armPos = new Heading(9*Units.Length.inches, 39*Units.Length.inches);
+        armControl.setArmPosition(armPos);
+        // armControl.setSetpoints(0*Units.Angle.degrees, 0);
 
         time.start();
     }
 
     @Override
     public void teleopPeriodic() {
-        // double setpoint = SmartDashboard.getNumber("Arm Setpoint", 90)*Units.Angle.degrees;
-        // armControl.setSetpoint(setpoint);
-        // arm.setVoltage(arm.getAntigrav());
-
-        // armControl.setSetpoint(mp.Calculate(time.get())[0]);
-
-        // armControl.setSetpoint(20*Units.Angle.degrees);
-        // armControl.run();
-
-        // telescope.setVoltage(1);
-        // telescope.setVoltage(telescope.getAntigrav());
-        // telescopeControl.setSetpoint(Constants.Telescope.lenExtend);
-
-        // telescopeControl.setSetpoint(mpTelescope.Calculate(time.get())[0]);
-        // telescopeControl.run();
-
+        armPos.add(controlBoard.getCoJoyPos().multC(10*Units.Length.inches*0.02));
+        arm.adjustToArm(armPos);
+        armControl.setArmPosition(armPos);
+        SmartDashboard.putString("Arm pos set", armPos.display());
 
         // double vel = 2.5*Units.Length.feet;
         // driveOut.set(Modes.Velocity, vel, vel);
@@ -124,7 +113,7 @@ public class Robot extends IterativeRobot {
         // drive.display();
         // driveOut.set(Modes.Voltage, 3, 3);
 
-        driveCode.run();
+        // driveCode.run();
     }
 
     private void driveCode(){

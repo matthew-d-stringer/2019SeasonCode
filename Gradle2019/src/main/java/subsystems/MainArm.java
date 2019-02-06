@@ -39,6 +39,7 @@ public class MainArm{
         SmartDashboard.putNumber("Raw Arm Enc", pivot.getSelectedSensorPosition());
         SmartDashboard.putNumber("Arm Enc", Units.convertUnits(getAngle(), Units.Angle.degrees));
         SmartDashboard.putNumber("Arm Antigrav", getAntigrav());
+        SmartDashboard.putString("Arm end pos(inches)", Telescope.getInstance().getEndPos().multC(1/Units.Length.inches).display());
 
         if(SmartDashboard.getBoolean("Arm Reset", false))
             pivot.setSelectedSensorPosition(0);
@@ -72,5 +73,12 @@ public class MainArm{
         Coordinate com = comofArm.multC(Constants.MainArm.mass).addC(comofGrip.multC(Constants.Gripper.mass));
         com.mult(1/(Constants.MainArm.mass + Constants.Gripper.mass));
         return com;
+    }
+
+    public Coordinate adjustToArm(Coordinate pos){
+        double mag = pos.getMagnitude();
+        mag = Util.forceInRange(mag, Constants.Telescope.lenRetract, Constants.Telescope.lenExtend);
+        pos.setMagnitude(mag);
+        return pos;
     }
 }

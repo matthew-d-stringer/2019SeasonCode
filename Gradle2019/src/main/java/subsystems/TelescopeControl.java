@@ -40,6 +40,14 @@ public class TelescopeControl{
         this.setpoint = setpoint;
     }
 
+    public double getSetpoint(){
+        return setpoint;
+    }
+
+    public boolean isRunning(){
+        return state == States.running;
+    }
+
     public void run(){
         SmartDashboard.putString("Telescope state", state.toString());
         // setSetpoint(SmartDashboard.getNumber("Telescope setpoint", 0)*Units.Length.inches);
@@ -63,9 +71,12 @@ public class TelescopeControl{
                 double p = 75.3160;
                 double d = 11.7167;
                 double error = setpoint - telescope.getDistance();
+                if(MainArm.getInstance().getAngle() < -60*Units.Angle.degrees){
+                    error = Constants.Telescope.lenRetract - telescope.getDistance();
+                }
                 SmartDashboard.putNumber("Telescope error", error);
                 derror.Calculate(error, time.get());
-                double feedback = p*error + d*derror.getOut();
+                double feedback = p*error - d*derror.getOut();
                 // telescope.setVoltage(feedforward);
                 telescope.setVoltage(feedforward+feedback);
                 break;

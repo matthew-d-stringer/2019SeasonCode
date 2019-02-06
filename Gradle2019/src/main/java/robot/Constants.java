@@ -43,7 +43,7 @@ public class Constants {
 
 	public static class Telescope{
 		public static int telescopeNum = 21;
-		public static int resetNum = 8;
+		public static int resetNum = 7;
 
 		public static double mass = 2.53139782*Units.Mass.kilograms;
 

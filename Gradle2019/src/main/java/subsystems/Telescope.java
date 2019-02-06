@@ -29,7 +29,7 @@ public class Telescope{
         senRetract = new Coordinate(Constants.Telescope.retractVal, Constants.Telescope.lenRetract);
         senExtend = new Coordinate(Constants.Telescope.extendVal, Constants.Telescope.lenExtend);
 
-        reset = new DigitalInput(7);
+        reset = new DigitalInput(Constants.Telescope.resetNum);
     }
 
     public void periodic(){

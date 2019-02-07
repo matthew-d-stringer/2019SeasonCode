@@ -57,16 +57,15 @@ public class Robot extends IterativeRobot {
         telescope = Telescope.getInstance();
 
         driveOut.start();
-        // mode = new DoubleHatchAuto();
+        mode = new DoubleHatchAuto();
         // mode = new FarNearLeftHatchAuto();
-        mode = new SkidDrive();
+        // mode = new SkidDrive();
 
         driveCode = new FancyDrive();
 
         armControl = ArmSystemControl.getInstance();
-        armControl.start();
-
-        SmartDashboard.putNumber("Arm Setpoint", 90);
+        // armControl.start();
+        arm.disable(true);
     }
 
     @Override
@@ -90,8 +89,9 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         driveOut.set(Modes.Voltage, 0,0);
         // armPos = Heading.createPolarHeading(-45*Units.Angle.degrees, Constants.Telescope.lenRetract);
+        armPos = Heading.createPolarHeading(0*Units.Angle.degrees, Constants.Telescope.lenExtend);
         // armPos = telescope.getEndPos().heading();
-        armPos = new Heading(20*Units.Length.inches, -20.5*Units.Length.inches);
+        // armPos = new Heading(20*Units.Length.inches, -20.5*Units.Length.inches);
         // armPos = new Heading(9*Units.Length.inches, 39*Units.Length.inches);
         armControl.setArmPosition(armPos);
         // armControl.setSetpoints(0*Units.Angle.degrees, 0);
@@ -101,8 +101,8 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        armPos.add(controlBoard.getCoJoyPos().multC(10*Units.Length.inches*0.02));
-        arm.adjustToArm(armPos);
+        // armPos.add(controlBoard.getCoJoyPos().multC(10*Units.Length.inches*0.02));
+        // arm.adjustToArm(armPos);
         armControl.setArmPosition(armPos);
         SmartDashboard.putString("Arm pos set", armPos.display());
 
@@ -128,16 +128,19 @@ public class Robot extends IterativeRobot {
     @Override
     public void autonomousInit() {
         PositionTracker.getInstance().robotForward();
+        driveOut.setNoVoltage();
         mode.start();
     }
 
     @Override
     public void autonomousPeriodic() {
+        // double vel = 2*Units.Length.feet;
+        // driveOut.set(Modes.Velocity, vel, vel);
     }
 
     @Override
     public void disabledInit() {
-        mode.end();
+        // mode.end();
     }
 
     @Override

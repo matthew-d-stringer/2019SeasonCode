@@ -23,6 +23,8 @@ public class MainArm{
     Coordinate senZero, senNinety;
     Coordinate comRetract, comExtend;
 
+    private boolean disable = false;
+
     private MainArm(){
         pivot = new TalonSRX(Constants.MainArm.pivotNum);
         pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
@@ -46,7 +48,14 @@ public class MainArm{
         SmartDashboard.putBoolean("Arm Reset", false);
     }
 
+    public void disable(boolean disable){
+        this.disable = disable;
+    }
+
     public void setVoltage(double voltage){
+        if(disable){
+            voltage = 0;
+        }
         pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
 

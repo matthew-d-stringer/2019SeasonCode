@@ -13,20 +13,20 @@ public class DoubleHatchAuto extends AutoMode{
         TrapezoidalMp.constraints constraints = 
             new TrapezoidalMp.constraints(0, 16*Units.Length.feet, 10*Units.Length.feet);
         TrapezoidalMp.constraints slow = 
-            new TrapezoidalMp.constraints(0, 8*Units.Length.feet, 5*Units.Length.feet);
+            new TrapezoidalMp.constraints(0, 5*Units.Length.feet, 3*Units.Length.feet);
 
-        toRocket = DrivePath.createFromFileOnRoboRio("DoubleHatchAuto", "toRocket", constraints);
+        toRocket = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "toRocket", constraints);
         toRocket.setVerticalThresh(0.5*Units.Length.inches);
         // toRocket.setlookAhead(2*Units.Length.feet);
 
-        toRefill = DrivePath.createFromFileOnRoboRio("DoubleHatchAuto", "toRefill", constraints);
+        toRefill = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "toRefill", slow);
         toRefill.setReverse(true);
         toRefill.setVerticalThresh(1*Units.Length.inches);
 
-        loadToRocket = DrivePath.createFromFileOnRoboRio("DoubleHatchAuto", "loadToRocket", constraints);
+        loadToRocket = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "loadToRocket", slow);
         loadToRocket.setVerticalThresh(0.5*Units.Length.inches);
 
-        backToStation = DrivePath.createFromFileOnRoboRio("DoubleHatchAuto", "backToStation", slow);
+        backToStation = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "backToStation", slow);
         backToStation.setVerticalThresh(1*Units.Length.inches);
         backToStation.setReverse(true);
     }

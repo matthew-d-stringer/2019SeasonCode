@@ -62,21 +62,28 @@ public class PositionTracker extends Thread implements IPositionTracker{
         SmartDashboard.putBoolean("Reset Location", false);
         SmartDashboard.putBoolean("Reset Heading", false);
         heading = new Heading();
+        heading.setRobotAngle(getAngle());
+        Heading pHeading = new Heading(heading);
         resetHeading();
         Timer.delay(0.02);
         Drive mDrive = Drive.getInstance();
-        double pPosition = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
-        double cPosition = pPosition;
+        double pCircum = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
+        double cCircum = pCircum;
         while(true){
             double dt = Timer.getFPGATimestamp() - last;
             last = Timer.getFPGATimestamp();
 
+            pHeading.setAngle(heading.getAngle());
             heading.setRobotAngle(getAngle());
-            Heading tempHeading = new Heading(heading);
+            Heading tempHeading = Heading.headingBetween(heading, pHeading).normalize().heading();
             
-            pPosition = cPosition;
-            cPosition = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
-            tempHeading.setMagnitude(cPosition - pPosition);
+            pCircum = cCircum;
+            cCircum = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
+            double dCircum = cCircum - pCircum;
+            double dAngle = Heading.headingsToAngle(pHeading, heading);
+            double radius = dCircum/dAngle;
+            double distance = radius*Math.sqrt(2-2*Math.cos(dAngle));
+            tempHeading.setMagnitude(distance);
     
             Pos2D nextPos = new Pos2D(position, tempHeading);
             position = nextPos.getEndPos();

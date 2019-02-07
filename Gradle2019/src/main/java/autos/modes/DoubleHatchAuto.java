@@ -15,7 +15,7 @@ public class DoubleHatchAuto extends AutoMode{
         TrapezoidalMp.constraints slow = 
             new TrapezoidalMp.constraints(0, 5*Units.Length.feet, 3*Units.Length.feet);
 
-        toRocket = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "toRocket", constraints);
+        toRocket = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "toRocket", slow);
         toRocket.setVerticalThresh(0.5*Units.Length.inches);
         // toRocket.setlookAhead(2*Units.Length.feet);
 

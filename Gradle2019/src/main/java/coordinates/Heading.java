@@ -70,7 +70,7 @@ public class Heading extends Coordinate {
 	public static Heading headingBetween(Coordinate pt1, Coordinate pt2){
 //		double angle = Math.atan2(pt2.getY() - pt1.getY(), pt2.getX() - pt1.getX());
 //		Heading out = new Heading(angle);
-		Heading out = new Heading(pt2.getX()-pt1.getX(), pt2.getY()-pt1.getY());
+		Heading out = new Heading(pt2.getX()+pt1.getX(), pt2.getY()+pt1.getY());
 		return out;
 	}
 	

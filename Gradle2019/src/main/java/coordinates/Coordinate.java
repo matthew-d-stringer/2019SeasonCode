@@ -31,6 +31,12 @@ public class Coordinate {
 	public void setX(double x) {
 		this.x = x;
 	}
+	public void setXMaintainMag(double x){
+		double length = getMagnitude();
+		double y = Math.sqrt(length*length - x*x);
+		this.x = x;
+		this.y = y;
+	}
 
 	public double getY() {
 		return y;
@@ -39,6 +45,13 @@ public class Coordinate {
 	public void setY(double y) {
 		this.y = y;
 	}
+	public void setYMaintainMag(double y){
+		double length = getMagnitude();
+		double x = Math.sqrt(length*length - y*y);
+		this.x = x;
+		this.y = y;
+	}
+
 
 	public void setXY(double x, double y){
 		this.x = x;

@@ -35,9 +35,9 @@ public class Constants {
 
 		public static double mass = 6.362332*Units.Mass.kilograms;
 
-		public static double gearRatio = 1/373.33;
+		public static double gearRatio = 1/318.58;
 
-		public static double zeroDegVal = 990;
+		public static double zeroDegVal = 1060;
 		public static double ninetyDegVal = 2030;
 	}
 
@@ -51,7 +51,7 @@ public class Constants {
 		public static double radius = 37.5*Units.Length.milimeters;
 
 		public static double retractVal = 0;
-		public static double extendVal = 4712;
+		public static double extendVal = 4968;
 
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
 		public static double comRetract = 0.43391551*Units.Length.meters, comExtend = 0.57042751*Units.Length.meters;

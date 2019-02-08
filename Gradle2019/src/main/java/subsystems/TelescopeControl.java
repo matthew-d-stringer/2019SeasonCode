@@ -54,7 +54,10 @@ public class TelescopeControl{
         switch(state){
             case disabled:
                 if(RobotState.isEnabled()){
-                    state = States.reset;
+                    state = States.running;
+                    telescope.setVoltage(telescope.getAntigrav());
+                    time.start();
+                    derror.Calculate(setpoint - telescope.getDistance(), time.get());
                 }
                 break;
             case reset:
@@ -68,8 +71,8 @@ public class TelescopeControl{
                 break;
             case running:
                 double feedforward = telescope.getAntigrav();
-                double p = 75.3160;
-                double d = 11.7167;
+                double p = 39.7135;
+                double d = 3.5453;
                 double error = setpoint - telescope.getDistance();
                 if(MainArm.getInstance().getAngle() < -60*Units.Angle.degrees){
                     error = Constants.Telescope.lenRetract - telescope.getDistance();

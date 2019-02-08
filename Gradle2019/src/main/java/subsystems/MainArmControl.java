@@ -71,8 +71,8 @@ public class MainArmControl{
                 double feedForward = arm.getAntigrav();
                 double error = setpoint - arm.getAngle();
                 dError.Calculate(error, time.get());
-                double p = 10.3780;
-                double d = 2.9035;
+                double p = 12.4906;
+                double d = 1.3815;
                 double feedBack = p*error + d*dError.getOut();
                 SmartDashboard.putNumber("Arm Error", error);
                 // arm.setVoltage(feedForward);

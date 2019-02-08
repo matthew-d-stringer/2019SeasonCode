@@ -64,8 +64,8 @@ public class Robot extends IterativeRobot {
         driveCode = new FancyDrive();
 
         armControl = ArmSystemControl.getInstance();
-        // armControl.start();
-        arm.disable(true);
+        armControl.start();
+        // arm.disable(true);
     }
 
     @Override
@@ -88,30 +88,44 @@ public class Robot extends IterativeRobot {
     @Override
     public void teleopInit() {
         driveOut.set(Modes.Voltage, 0,0);
-        // armPos = Heading.createPolarHeading(-45*Units.Angle.degrees, Constants.Telescope.lenRetract);
-        armPos = Heading.createPolarHeading(0*Units.Angle.degrees, Constants.Telescope.lenExtend);
+        armPos = Heading.createPolarHeading(-45*Units.Angle.degrees, Constants.Telescope.lenRetract);
+
+        // armPos = Heading.createPolarHeading(0*Units.Angle.degrees, Constants.Telescope.lenExtend);
+
         // armPos = telescope.getEndPos().heading();
         // armPos = new Heading(20*Units.Length.inches, -20.5*Units.Length.inches);
         // armPos = new Heading(9*Units.Length.inches, 39*Units.Length.inches);
+
         armControl.setArmPosition(armPos);
         // armControl.setSetpoints(0*Units.Angle.degrees, 0);
-
-        time.start();
+        last = Timer.getFPGATimestamp();
     }
 
+    double last = Timer.getFPGATimestamp();
     @Override
     public void teleopPeriodic() {
-        // armPos.add(controlBoard.getCoJoyPos().multC(10*Units.Length.inches*0.02));
+        double dt = Timer.getFPGATimestamp() - last;
+        last = dt + last;
+        Coordinate increase = controlBoard.getCoJoyPos().multC(10*Units.Length.inches*dt);
+        if(armPos.getY() < 0 && armPos.getX() >= 0){
+            increase.setX(Math.max(0, increase.getX()));
+        }
+        // armPos.add(increase);
         // arm.adjustToArm(armPos);
+        if(controlBoard.armToInside()){
+            armPos.setAngle(-90*Units.Angle.degrees);
+            armPos.setMagnitude(Constants.Telescope.lenRetract);
+        }
+        if(controlBoard.armToHatchPickup()){
+            armPos.setMagnitude(controlBoard.armLength());
+            armPos.setYMaintainMag(-20.5*Units.Length.inches);
+        }
+        if(controlBoard.armToHatchSecondLevel()){
+            armPos.setMagnitude(controlBoard.armLength());
+            armPos.setYMaintainMag(8*Units.Length.inches);
+        }
         armControl.setArmPosition(armPos);
         SmartDashboard.putString("Arm pos set", armPos.display());
-
-        // double vel = 2.5*Units.Length.feet;
-        // driveOut.set(Modes.Velocity, vel, vel);
-        // driveCode();
-        // driveOut.set(Modes.Voltage, 3,3);
-        // drive.display();
-        // driveOut.set(Modes.Voltage, 3, 3);
 
         // driveCode.run();
     }

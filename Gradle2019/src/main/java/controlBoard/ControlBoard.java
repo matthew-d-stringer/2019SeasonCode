@@ -2,6 +2,7 @@ package controlBoard;
 
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.Joystick;
+import robot.Constants;
 
 public class ControlBoard extends IControlBoard{
     Joystick joy, wheel, buttonPad, coJoy;
@@ -24,12 +25,45 @@ public class ControlBoard extends IControlBoard{
         return wheel.getX();
     }
 
+    @Override
     public Heading getCoJoyPos(){
-        return new Heading(coJoy.getX(), -coJoy.getY());
+        Heading out = new Heading();
+        if(Math.abs(coJoy.getX()) > 0.1){
+            out.setX(coJoy.getX());
+        }
+        if(Math.abs(coJoy.getY()) > 0.1){
+            out.setY(-coJoy.getY());
+        }
+        return out;
+    }
+
+    @Override
+    public double getCoJoySlider() {
+        return (coJoy.getRawAxis(2)+1)/2;
+    }
+
+    @Override
+    public double armLength() {
+        return (Constants.Telescope.lenExtend - Constants.Telescope.lenRetract)*getCoJoySlider()+Constants.Telescope.lenRetract;
     }
 
     @Override
     public boolean quickTurn() {
         return wheel.getRawButton(7);
+    }
+
+    @Override
+    public boolean armToInside() {
+        return coJoy.getRawButton(2);
+    }
+
+    @Override
+    public boolean armToHatchPickup() {
+        return coJoy.getRawButton(6);
+    }
+
+    @Override
+    public boolean armToHatchSecondLevel() {
+        return coJoy.getRawButton(4);
     }
 }

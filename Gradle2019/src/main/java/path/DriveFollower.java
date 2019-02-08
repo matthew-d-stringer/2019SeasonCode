@@ -72,7 +72,7 @@ public class DriveFollower{
         SmartDashboard.putString("Goal Pos", goalPosition.multC(1/Units.Length.feet).display());
         double distToGoalPos = Coordinate.DistanceBetween(robotPos.getPos(), goalPosition);
         SmartDashboard.putNumber("Dist To Goal Pos", Units.convertUnits(distToGoalPos, Units.Length.feet));
-        Coordinate vecRobotToGoal = Heading.headingBetween(robotPos.getPos(), goalPosition);
+        Coordinate vecRobotToGoal = Heading.headingBetweenPoints(robotPos.getPos(), goalPosition);
 
         double eta = Heading.getAngleBetween(robotPos.getHeading(), vecRobotToGoal);
         if(reverse){

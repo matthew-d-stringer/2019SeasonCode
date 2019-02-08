@@ -67,10 +67,27 @@ public class Heading extends Coordinate {
 		return new Heading(x, -y);
 	}
 	
-	public static Heading headingBetween(Coordinate pt1, Coordinate pt2){
-//		double angle = Math.atan2(pt2.getY() - pt1.getY(), pt2.getX() - pt1.getX());
-//		Heading out = new Heading(angle);
-		Heading out = new Heading(pt2.getX()+pt1.getX(), pt2.getY()+pt1.getY());
+	/**
+	 * Finds the heading the connects two points
+	 * @param pt1 first point
+	 * @param pt2 second point
+	 * @return heading = pt2-pt1
+	 */
+	public static Heading headingBetweenPoints(Coordinate pt1, Coordinate pt2){
+		double angle = Math.atan2(pt2.getY() - pt1.getY(), pt2.getX() - pt1.getX());
+		Heading out = new Heading(angle);
+		// Heading out = new Heading(pt2.getX()+pt1.getX(), pt2.getY()+pt1.getY());
+		return out;
+	}
+
+	/**
+	 * Find the heading thats bisects two other headings
+	 * @param h1 heading 1
+	 * @param h2 heading 2
+	 * @return heading = norm(h2 + h1)
+	 */
+	public static Heading headingBetweenHeadings(Heading h1, Heading h2){
+		Heading out = new Heading(h2.getX()+h1.getX(), h2.getY()+h1.getY());
 		return out;
 	}
 	

@@ -136,6 +136,7 @@ public class Robot extends IterativeRobot {
     public void autonomousPeriodic() {
         // double vel = 2*Units.Length.feet;
         // driveOut.set(Modes.Velocity, vel, vel);
+        // driveOut.setKin(-1, 0.3);
     }
 
     @Override
@@ -145,6 +146,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void testPeriodic() {
-        arm.setVoltage(-3);
+        // arm.setVoltage(-3);
     }
 }

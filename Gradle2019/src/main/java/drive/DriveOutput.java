@@ -56,8 +56,7 @@ public class DriveOutput extends Thread{
      */
     public void setKin(double kappa, double vel){
         this.mode = Modes.Velocity;
-        // rightSet = vel*(1+Constants.robotWidth*kappa);
-        // leftSet = vel*(1-Constants.robotWidth*kappa);
+        //works on comp
         leftSet = vel*(1+Constants.robotWidth*kappa);
         rightSet = vel*(1-Constants.robotWidth*kappa);
     }

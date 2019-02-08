@@ -80,7 +80,7 @@ public class PositionTracker extends Thread implements IPositionTracker{
             pHeading.setAngle(heading.getAngle());
             heading.setRobotAngle(getAngle());
             // Heading tempHeading = new Heading(heading);
-            Heading tempHeading = Heading.headingBetween(heading, pHeading);
+            Heading tempHeading = Heading.headingBetweenHeadings(heading, pHeading);
             
             pCircum = cCircum;
             cCircum = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
@@ -96,7 +96,8 @@ public class PositionTracker extends Thread implements IPositionTracker{
             // System.out.println("dAngle: "+dAngle);
             double radius = dCircum/dAngle;
             double distance;
-            if(!Double.isFinite(radius) || Double.isNaN(radius) || radius == 0){
+            if(!Double.isFinite(radius) || Double.isNaN(radius) || radius == 0 || 
+                Util.inErrorRange(dAngle/dt, 0, 1*Units.Angle.degrees)){
                 distance = dCircum;
             }else{
                 distance = radius*Math.sqrt(Math.max(2-2*Math.cos(dAngle), 0));

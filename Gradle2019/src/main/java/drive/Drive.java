@@ -62,8 +62,8 @@ public class Drive {
      * @param output X: right voltage, Y: left voltage
      */
     public void outputToDrive(double rightVoltage, double leftVoltage){
-    	mRight.set(rightVoltage/12);
-        mLeft.set(-leftVoltage/12);
+		mRight.set(rightVoltage/12);
+		mLeft.set(-leftVoltage/12);
     }
 
 	/**

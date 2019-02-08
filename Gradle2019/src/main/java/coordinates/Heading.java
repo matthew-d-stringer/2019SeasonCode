@@ -74,8 +74,11 @@ public class Heading extends Coordinate {
 		return out;
 	}
 	
-	public static double headingsToAngle(Heading startHeading, Heading robotPos) {
-		double cAngle = Math.acos(Coordinate.dotProduct(startHeading.normalizeC(), robotPos.normalizeC()));
+	public static double headingsToAngle(Heading vec1, Heading vec2) {
+		double dotProduct = Coordinate.dotProduct(vec1.normalizeC(), vec2.normalizeC());
+		dotProduct = Math.max(dotProduct, -1);
+		dotProduct = Math.min(dotProduct, 1);
+		double cAngle = Math.acos(dotProduct);
 		return cAngle;
 	}
 

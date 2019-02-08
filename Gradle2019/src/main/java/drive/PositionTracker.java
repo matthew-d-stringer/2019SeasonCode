@@ -8,6 +8,7 @@ import coordinates.*;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.Constants;
 import utilPackage.Units;
 import utilPackage.Util;
 
@@ -69,6 +70,9 @@ public class PositionTracker extends Thread implements IPositionTracker{
         Drive mDrive = Drive.getInstance();
         double pCircum = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
         double cCircum = pCircum;
+
+        double cAngle = getEncoderAngle(mDrive);
+        double pAngle = cAngle;
         while(true){
             double dt = Timer.getFPGATimestamp() - last;
             last = Timer.getFPGATimestamp();
@@ -81,19 +85,25 @@ public class PositionTracker extends Thread implements IPositionTracker{
             pCircum = cCircum;
             cCircum = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
             double dCircum = cCircum - pCircum;
-            System.out.println("dCircum: "+dCircum);
-            double dAngle = Heading.headingsToAngle(pHeading, heading);
+            // System.out.println("dCircum: "+dCircum);
+            pAngle = cAngle;
+            cAngle = getEncoderAngle(mDrive);
+            double dAngle = Math.abs(cAngle - pAngle);
+
+            // if(dAngle == Double.NaN){
+            //     dAngle = 0;
+            // }
+            // System.out.println("dAngle: "+dAngle);
             double radius = dCircum/dAngle;
-            // System.out.println("Radius: "+radius);
             double distance;
-            if(radius == Double.NaN || radius == Double.POSITIVE_INFINITY || 
-                radius == Double.NEGATIVE_INFINITY || radius == 0){
+            if(!Double.isFinite(radius) || Double.isNaN(radius) || radius == 0){
                 distance = dCircum;
             }else{
-                distance = radius*Math.sqrt(2-2*Math.cos(dAngle));
+                distance = radius*Math.sqrt(Math.max(2-2*Math.cos(dAngle), 0));
+                // System.out.println("Radius: "+radius);
+                // System.out.println("Distance: "+distance+"\n");
             }
-            System.out.println("Distance: "+distance);
-            distance = dCircum;
+            // distance = dCircum;
             tempHeading.setMagnitude(distance);
     
             Pos2D nextPos = new Pos2D(position, tempHeading);
@@ -102,7 +112,7 @@ public class PositionTracker extends Thread implements IPositionTracker{
             fullPos.setPos(position);
             fullPos.setHeading(heading);
 
-            Timer.delay(0.005);
+            // Timer.delay(0.001);
         }
     }
 
@@ -113,6 +123,10 @@ public class PositionTracker extends Thread implements IPositionTracker{
     private double getAngle(){
         // return (vmxPi.getAngle()-offset)*Units.Angle.degrees;
         return (getRawAngle()-offset)*Units.Angle.degrees;
+    }
+    
+    private double getEncoderAngle(Drive drive){
+        return (drive.getLeftPosition() - drive.getRightPosition())/(Constants.robotWidth);
     }
 
     @Override

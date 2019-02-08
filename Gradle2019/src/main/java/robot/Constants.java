@@ -16,7 +16,7 @@ public class Constants {
 	 * should look something like this:
 	 */
 	
-	public static double robotWidth = 27*Units.Length.inches;
+	public static double robotWidth = 26*Units.Length.inches;
 
 	public static boolean isCompBot = true;
 

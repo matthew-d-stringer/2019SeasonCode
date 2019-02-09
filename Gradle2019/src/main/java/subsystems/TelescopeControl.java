@@ -54,10 +54,10 @@ public class TelescopeControl{
         switch(state){
             case disabled:
                 if(RobotState.isEnabled()){
-                    state = States.running;
-                    telescope.setVoltage(telescope.getAntigrav());
-                    time.start();
-                    derror.Calculate(setpoint - telescope.getDistance(), time.get());
+                    state = States.reset;
+                    // telescope.setVoltage(telescope.getAntigrav());
+                    // time.start();
+                    // derror.Calculate(setpoint - telescope.getDistance(), time.get());
                 }
                 break;
             case reset:

@@ -27,7 +27,7 @@ public class MainArm{
 
     private MainArm(){
         pivot = new TalonSRX(Constants.MainArm.pivotNum);
-        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
 
         senZero = new Coordinate(Constants.MainArm.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.MainArm.ninetyDegVal, Math.PI/2);
@@ -40,6 +40,7 @@ public class MainArm{
     public void periodic(){
         SmartDashboard.putNumber("Raw Arm Enc", pivot.getSelectedSensorPosition());
         SmartDashboard.putNumber("Arm Enc", Units.convertUnits(getAngle(), Units.Angle.degrees));
+        SmartDashboard.putNumber("Arm Enc Vel", Units.convertUnits(getAngleVel(), Units.Angle.degrees));
         SmartDashboard.putNumber("Arm Antigrav", getAntigrav());
         SmartDashboard.putString("Arm end pos(inches)", Telescope.getInstance().getEndPos().multC(1/Units.Length.inches).display());
 
@@ -62,10 +63,13 @@ public class MainArm{
     public double getAngle(){
         return Util.mapRange(pivot.getSelectedSensorPosition(), senZero, senNinety);
     }
+    public double getAngleVel(){
+        return pivot.getSelectedSensorVelocity()*Util.slope(senZero, senNinety)/0.1;
+    }
 
     public double getAntigrav(){
         // return 1.2*getComWithoutGripper().normalizeC().getX();
-        return 3.3079*getComWithoutGripper().getX();
+        return 3.3079*getComWithoutGripper().getX()+0.021374*getAngleVel();
     }
 
     public double getComDist(){

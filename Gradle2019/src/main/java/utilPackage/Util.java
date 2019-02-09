@@ -82,6 +82,10 @@ public class Util {
 		double y = ((pt2.getY() - pt1.getY())/(pt2.getX()-pt1.getX()))*(x-pt1.getX()) + pt1.getY();
 		return y;
 	}
+
+	public static double slope(Coordinate pt1, Coordinate pt2){
+		return (pt2.getY() - pt1.getY())/(pt2.getX() - pt1.getX());
+	}
 	
 //	public static void main(String[] args) {
 //		for(double time = 0; time <= 5; time+=0.5){

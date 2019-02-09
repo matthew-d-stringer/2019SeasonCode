@@ -31,11 +31,14 @@ public class Coordinate {
 	public void setX(double x) {
 		this.x = x;
 	}
-	public void setXMaintainMag(double x){
+	public void setXMaintainMag(double x, boolean invert){
 		double length = getMagnitude();
 		double y = Math.sqrt(length*length - x*x);
 		this.x = x;
-		this.y = y;
+		if(invert)
+			this.y = -y;
+		else
+			this.y = y;
 	}
 
 	public double getY() {
@@ -45,10 +48,13 @@ public class Coordinate {
 	public void setY(double y) {
 		this.y = y;
 	}
-	public void setYMaintainMag(double y){
+	public void setYMaintainMag(double y, boolean invert){
 		double length = getMagnitude();
 		double x = Math.sqrt(length*length - y*y);
-		this.x = x;
+		if(invert)
+			this.x = -x;
+		else
+			this.x = x;
 		this.y = y;
 	}
 

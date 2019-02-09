@@ -108,8 +108,11 @@ public class MainArmControl{
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 if(setpoint < arm.getAngle() && arm.getAngle() < Math.PI/2){
-                    feedBack = Math.min(feedBack, arm.getAntigrav());
-                    feedBack = Math.max(feedBack, -2);
+                    feedBack = Math.min(feedBack, arm.getAntigrav()); //max up
+                    feedBack = Math.max(feedBack, -3); //max down
+                }else if(setpoint > arm.getAngle() && arm.getAngle() > Math.PI/2){
+                    feedBack = Math.max(feedBack, arm.getAntigrav()); //max up
+                    feedBack = Math.min(feedBack, 2); //max down
                 }
                 // SmartDashboard.putNumber("Arm Setpoint", mp.getConstraints().setpoint/Units.Angle.degrees);
                 // SmartDashboard.putNumber("Arm Temp Setpoint", tempSetpoint/Units.Angle.degrees);
@@ -118,5 +121,9 @@ public class MainArmControl{
                 arm.setVoltage(feedForward+feedBack);
                 break;
         }
+    }
+
+    public boolean mpFinished(){
+        return time.get() - mpStartTime >= mp.getEndTime();
     }
 }

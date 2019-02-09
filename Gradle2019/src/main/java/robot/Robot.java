@@ -118,11 +118,16 @@ public class Robot extends IterativeRobot {
         }
         if(controlBoard.armToHatchPickup()){
             armPos.setMagnitude(controlBoard.armLength());
-            armPos.setYMaintainMag(-20.5*Units.Length.inches);
+            armPos.setYMaintainMag(-20.5*Units.Length.inches, controlBoard.flipArm());
         }
         if(controlBoard.armToHatchSecondLevel()){
             armPos.setMagnitude(controlBoard.armLength());
-            armPos.setYMaintainMag(8*Units.Length.inches);
+            armPos.setYMaintainMag(8*Units.Length.inches, controlBoard.flipArm());
+        }
+        if(controlBoard.armToHatchThirdLevel()){
+            double y = 30*Units.Length.inches;
+            armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
+            armPos.setYMaintainMag(y,controlBoard.flipArm());
         }
         armControl.setArmPosition(armPos);
         SmartDashboard.putString("Arm pos set", armPos.display());

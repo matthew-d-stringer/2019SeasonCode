@@ -53,17 +53,27 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
+    public boolean flipArm() {
+        return buttonPad.getRawButton(9);
+    }
+
+    @Override
     public boolean armToInside() {
         return coJoy.getRawButton(2);
     }
 
     @Override
     public boolean armToHatchPickup() {
-        return coJoy.getRawButton(6);
+        return buttonPad.getRawButton(23);//23
     }
 
     @Override
     public boolean armToHatchSecondLevel() {
-        return coJoy.getRawButton(4);
+        return buttonPad.getRawButton(20);
+    }
+    
+    @Override
+    public boolean armToHatchThirdLevel() {
+        return buttonPad.getRawButton(17);
     }
 }

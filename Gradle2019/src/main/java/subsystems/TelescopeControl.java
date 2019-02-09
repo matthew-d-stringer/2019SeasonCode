@@ -73,7 +73,11 @@ public class TelescopeControl{
                 double feedforward = telescope.getAntigrav();
                 double p = 39.7135;
                 double d = 3.5453;
-                double error = setpoint - telescope.getDistance();
+                double error;
+                if(MainArmControl.getInstance().mpFinished())
+                    error = setpoint - telescope.getDistance();
+                else 
+                    error = Constants.Telescope.lenRetract - telescope.getDistance();
                 if(MainArm.getInstance().getAngle() < -60*Units.Angle.degrees){
                     error = Constants.Telescope.lenRetract - telescope.getDistance();
                 }

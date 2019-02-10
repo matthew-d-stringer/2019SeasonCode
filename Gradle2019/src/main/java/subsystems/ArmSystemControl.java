@@ -61,7 +61,7 @@ public class ArmSystemControl extends Thread{
                 case running:
                     break;
             }
-            Timer.delay(0.005);
+            Timer.delay(0.007);
         }
     }
 }

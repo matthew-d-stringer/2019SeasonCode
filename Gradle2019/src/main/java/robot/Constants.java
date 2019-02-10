@@ -37,8 +37,8 @@ public class Constants {
 
 		public static double gearRatio = 1/318.58;
 
-		public static double zeroDegVal = 1060;
-		public static double ninetyDegVal = 2030;
+		public static double zeroDegVal = 1120;
+		public static double ninetyDegVal = 2053;
 	}
 
 	public static class Telescope{
@@ -61,8 +61,8 @@ public class Constants {
 	}
 
 	public static class Gripper{
-		public static int pivotNum = 1;
-		public static int resetNum = 1;
+		public static int pivotNum = 30;
+		public static int resetNum = 9;
 
 		public static double mass = 0;
 		

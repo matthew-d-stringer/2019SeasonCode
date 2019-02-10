@@ -42,7 +42,7 @@ public class Gripper{
     }
 
     public boolean getReset(){
-        return reset.get();
+        return !reset.get();
     }
 
     public double getRelAngle(){

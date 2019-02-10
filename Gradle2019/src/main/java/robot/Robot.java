@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsystems.ArmSystemControl;
+import subsystems.Gripper;
 import subsystems.MainArm;
 import subsystems.MainArmControl;
 import subsystems.Telescope;
@@ -32,6 +33,7 @@ public class Robot extends IterativeRobot {
     DriveOutput driveOut;
     MainArm arm;
     Telescope telescope;
+    Gripper gripper;
 
     ArmSystemControl armControl;
 
@@ -55,6 +57,7 @@ public class Robot extends IterativeRobot {
 
         arm = MainArm.getInstance();
         telescope = Telescope.getInstance();
+        gripper = Gripper.getInstance();
 
         driveOut.start();
         mode = new DoubleHatchAuto();
@@ -78,8 +81,9 @@ public class Robot extends IterativeRobot {
         mRunner.display();
         arm.periodic();
         telescope.periodic();
+        gripper.periodic();
     }
-    
+
     TrapezoidalMp mp, mpTelescope;
     Timer time = new Timer();
 
@@ -106,12 +110,6 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         double dt = Timer.getFPGATimestamp() - last;
         last = dt + last;
-        Coordinate increase = controlBoard.getCoJoyPos().multC(10*Units.Length.inches*dt);
-        if(armPos.getY() < 0 && armPos.getX() >= 0){
-            increase.setX(Math.max(0, increase.getX()));
-        }
-        // armPos.add(increase);
-        // arm.adjustToArm(armPos);
         if(controlBoard.armToInside()){
             armPos.setAngle(-90*Units.Angle.degrees);
             armPos.setMagnitude(Constants.Telescope.lenRetract);
@@ -122,7 +120,7 @@ public class Robot extends IterativeRobot {
         }
         if(controlBoard.armToHatchSecondLevel()){
             armPos.setMagnitude(controlBoard.armLength());
-            armPos.setYMaintainMag(8*Units.Length.inches, controlBoard.flipArm());
+            armPos.setYMaintainMag(5*Units.Length.inches, controlBoard.flipArm());
         }
         if(controlBoard.armToHatchThirdLevel()){
             double y = 30*Units.Length.inches;
@@ -132,7 +130,7 @@ public class Robot extends IterativeRobot {
         armControl.setArmPosition(armPos);
         SmartDashboard.putString("Arm pos set", armPos.display());
 
-        // driveCode.run();
+        driveCode.run();
     }
 
     private void driveCode(){

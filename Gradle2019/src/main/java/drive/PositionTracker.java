@@ -113,7 +113,7 @@ public class PositionTracker extends Thread implements IPositionTracker{
             fullPos.setPos(position);
             fullPos.setHeading(heading);
 
-            // Timer.delay(0.001);
+            Timer.delay(0.005);
         }
     }
 

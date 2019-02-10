@@ -111,7 +111,7 @@ public class DriveOutput extends Thread{
                     mDrive.outputToDrive(out.getX(), out.getY());
                     break;
             }
-            Timer.delay(0.005);
+            Timer.delay(0.006);
         }
     }
 

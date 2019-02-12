@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsystems.ArmSystemControl;
 import subsystems.Gripper;
+import subsystems.LEDController;
 import subsystems.MainArm;
 import subsystems.MainArmControl;
 import subsystems.Telescope;
@@ -42,6 +43,8 @@ public class Robot extends IterativeRobot {
     AutoMode mode;
 
     FancyDrive driveCode;
+
+    LEDController led;
 
     @Override
     public void robotInit() {
@@ -69,6 +72,9 @@ public class Robot extends IterativeRobot {
         armControl = ArmSystemControl.getInstance();
         armControl.start();
         // arm.disable(true);
+
+        led = LEDController.getInstance();
+        led.setLED(true);
     }
 
     @Override

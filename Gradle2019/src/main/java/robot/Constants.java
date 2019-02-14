@@ -33,9 +33,9 @@ public class Constants {
 	public static class MainArm{
 		public static int pivotNum = 20;
 
-		public static double mass = 6.362332*Units.Mass.kilograms;
+		public static double mass = 8.69052712-5.104*Units.Mass.kilograms;
 
-		public static double gearRatio = 1/318.58;
+		public static double gearRatio = 1/557.51;
 
 		public static double zeroDegVal = 1120;
 		public static double ninetyDegVal = 2053;
@@ -54,22 +54,28 @@ public class Constants {
 		public static double extendVal = 4968;
 
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
-		public static double comRetract = 0.43391551*Units.Length.meters, comExtend = 0.57042751*Units.Length.meters;
+		public static double comRetract = 0.3291279*Units.Length.meters, comExtend = 0.3996022*Units.Length.meters;
 
-		public static double momentOfInertiaRetracted = 1.48278951;//Kg m^2
-		public static double momentOfInertiaExtended = 2.69233476;//Kg m^2
+		public static double momentOfInertiaRetracted = 0.5029945;//Kg m^2
+		public static double momentOfInertiaExtended = 0.73141154;//Kg m^2
 	}
 
 	public static class Gripper{
-		public static int pivotNum = 30;
-		public static int resetNum = 9;
+		public static int pivotNum = 40;
+		public static int resetNum = 8;
 
-		public static double mass = 0;
+		public static double mass = 5.104*Units.Mass.kilograms;
+		public static double momentOfInertia = 0.352305668;
+		public static double comLength = 0.10397782*Units.Length.meters;
+		public static double angleOffsetFromHatch = 0.51953129*Units.Angle.radians;
+		public static double gearRatio; //TODO: update this
 		
-		public static double zeroDegVal = 0;
+		public static double zeroDegVal = 3660;
 		public static double ninetyDegVal = 0;
+		public static double maxAngle = 90*Units.Angle.degrees; 
+		public static double minAngle = -112*Units.Angle.degrees; 
 
-		public static double comOpen = 0, comClosed = 0, comWithBall = 0;
+		public static double com = 0, comWithBall = 0;
 	}
 
 	public static void readRobotData() throws Exception{

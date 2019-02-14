@@ -24,6 +24,7 @@ public class PositionTracker extends Thread implements IPositionTracker{
     private Coordinate position = new Coordinate();
     private Heading heading = new Heading();
     private Pos2D fullPos = new Pos2D();
+    private Pos2D visionData;
     private double offset;
 
     private PositionTracker(){
@@ -110,7 +111,15 @@ public class PositionTracker extends Thread implements IPositionTracker{
             Pos2D nextPos = new Pos2D(position, tempHeading);
             position = nextPos.getEndPos();
 
-            fullPos.setPos(position);
+            if(visionData != null){
+                Coordinate newPos = new Coordinate();
+                final double visionSetting = 0.3;
+                newPos = position.multC(1-visionSetting).addC(visionData.multC(visionSetting));
+                fullPos.setPos(newPos);
+            }else{
+                fullPos.setPos(position);
+            }
+
             fullPos.setHeading(heading);
 
             Timer.delay(0.005);
@@ -145,6 +154,10 @@ public class PositionTracker extends Thread implements IPositionTracker{
     @Override
     public Heading getVelocity() {
         return new Heading(heading);
+    }
+
+    public synchronized void setVisionPos(Pos2D visionData){
+        this.visionData = visionData;
     }
 
     public void display(){

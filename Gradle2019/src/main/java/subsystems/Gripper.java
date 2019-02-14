@@ -1,5 +1,6 @@
 package subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -8,6 +9,7 @@ import coordinates.Heading;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
+import utilPackage.Units;
 import utilPackage.Util;
 
 public class Gripper{
@@ -24,16 +26,16 @@ public class Gripper{
 
     private Gripper(){
         pivot = new TalonSRX(Constants.Gripper.pivotNum);
-        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         senZero = new Coordinate(Constants.Gripper.zeroDegVal, 0);
-        senNinety = new Coordinate(Constants.Gripper.zeroDegVal, Math.PI/2);
+        senNinety = new Coordinate(Constants.Gripper.ninetyDegVal, Math.PI/2);
         reset = new DigitalInput(Constants.Gripper.resetNum);
     }
 
     public void periodic(){
         SmartDashboard.putNumber("Raw Gripper Enc", pivot.getSelectedSensorPosition());
-        SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle());
-        SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle());
+        SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle()/Units.Angle.degrees);
+        SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle()/Units.Angle.degrees);
 
         SmartDashboard.putBoolean("Gripper Reset", getReset());
 
@@ -45,22 +47,67 @@ public class Gripper{
         return !reset.get();
     }
 
-    public double getRelAngle(){
-        return Util.mapRange(pivot.getSelectedSensorPosition(), senZero, senNinety);
+    /**
+     * Sets voltage to motor
+     * @param voltage positive is up, negative is down
+     */
+    public void setVoltage(double voltage){
+        pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
+
+    /**
+     * Calculates relative angle
+     */
+    public double getRelAngle(){
+        return Util.mapRange(pivot.getSelectedSensorPosition(), senNinety, senZero);
+    }
+    /**
+     * Calculates angle velocity of gripper 
+     */
+    public double getRelAngleVel(){
+        return pivot.getSelectedSensorVelocity()*Util.slope(senNinety, senZero);
+    }
+    /**
+     * Returns angle of gripper that is based off of the angle of the arm
+     */
     public double getAbsAngle(){
         return MainArm.getInstance().getAngle() + getRelAngle();
     }
-    //TODO: complete this function
-    public double getComDist(){
-        return Constants.Gripper.comClosed;
+    /**
+     * Returns the angle of the Center of mass of the gripper
+     */
+    public double getRelComAngle(){
+        return getRelAngle() + Constants.Gripper.angleOffsetFromHatch;
     }
+    /**
+     * Returns the angle of the Center of mass of the gripper including the arm
+     */
+    public double getAbsComAngle(){
+        return getRelComAngle() + MainArm.getInstance().getAngle();
+    }
+    //TODO: complete this function
+    /**
+     * Calculates the distance the center of mass is from the gripper
+     */
+    public double getComDist(){
+        return Constants.Gripper.com;
+    }
+    /**
+     * Calculates center of mass where the gripper pivot is the origin
+     */
     public Coordinate getCom(){
-        Heading out = new Heading(getAbsAngle());
+        Heading out = new Heading(getAbsComAngle());
         out.setMagnitude(getComDist());
         return out;
     }
+    /**
+     * Calculates center of mass where the arm pivot is the origin
+     */
     public Coordinate getAbsCom(){
         return getCom().add(Telescope.getInstance().getEndPos());
+    }
+
+    public double getAntigrav(){
+        return 2.2247*getCom().getX();
     }
 }

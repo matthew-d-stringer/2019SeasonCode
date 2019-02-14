@@ -4,6 +4,7 @@ import autos.modes.*;
 import controlBoard.*;
 import coordinates.Coordinate;
 import coordinates.Heading;
+import coordinates.Pos2D;
 import utilPackage.FancyDrive;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
@@ -23,6 +24,7 @@ import subsystems.MainArm;
 import subsystems.MainArmControl;
 import subsystems.Telescope;
 import subsystems.TelescopeControl;
+import udp.Client;
 
 public class Robot extends IterativeRobot {
     private static IControlBoard cb = new ControlBoard();
@@ -88,6 +90,9 @@ public class Robot extends IterativeRobot {
         arm.periodic();
         telescope.periodic();
         gripper.periodic();
+
+        // Pos2D visionData = Client.getInstance().updateVision(PositionTracker.getInstance().getPosition());
+        // SmartDashboard.putString("Vision Position", visionData.getPos().display());
     }
 
     TrapezoidalMp mp, mpTelescope;

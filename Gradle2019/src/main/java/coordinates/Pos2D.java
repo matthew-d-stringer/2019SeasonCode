@@ -70,6 +70,10 @@ public class Pos2D {
 		this.heading = heading;
 		return this;
 	}
+	public Pos2D setHeading(double x, double y) {
+		this.heading = new Heading(x, y);
+		return this;
+	}
 	
 	public Coordinate multC(double c){
 		Pos2D out = new Pos2D(this);

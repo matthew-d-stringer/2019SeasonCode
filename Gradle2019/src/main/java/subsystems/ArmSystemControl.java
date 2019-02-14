@@ -22,11 +22,13 @@ public class ArmSystemControl extends Thread{
 
     MainArmControl arm;
     TelescopeControl telescope;
+    GripperControl gripper;
     States state;
 
     private ArmSystemControl(){
         arm = MainArmControl.getInstance();
         telescope = TelescopeControl.getInstance();
+        gripper = GripperControl.getInstance();
         state = States.disabled;
     }
 
@@ -47,6 +49,7 @@ public class ArmSystemControl extends Thread{
         while(true){
             arm.run();
             telescope.run();
+            gripper.run();
             switch(state){
                 case disabled:
                     if(RobotState.isEnabled()){
@@ -54,7 +57,7 @@ public class ArmSystemControl extends Thread{
                     }
                     break;
                 case reset:
-                    if(arm.isRunning() && telescope.isRunning()){
+                    if(arm.isRunning() && telescope.isRunning() && gripper.isRunning()){
                         state = States.running;
                     }
                     break;

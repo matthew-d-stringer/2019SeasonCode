@@ -36,7 +36,7 @@ public class GripperControl{
     public void run(){
         switch(state){
             case disabled:
-                if(RobotState.isEnabled()){
+                if(RobotState.isEnabled() && TelescopeControl.getInstance().isRunning()){
                     state = States.reset;
                 }
                 break;
@@ -47,7 +47,14 @@ public class GripperControl{
                 }
                 break;
             case running:
-                gripper.setVoltage(gripper.getAntigrav());
+                double feedforward = gripper.getAntigrav();
+                double p = 15.2339;
+                double d = 0.6684;
+                double error = setpoint - gripper.getRelAngle();
+                double dError = -gripper.getRelAngleVel();
+                double feedback = p*error + d*dError;
+                // gripper.setVoltage(feedforward);
+                gripper.setVoltage(feedforward+feedback);
                 break;
         }
     }

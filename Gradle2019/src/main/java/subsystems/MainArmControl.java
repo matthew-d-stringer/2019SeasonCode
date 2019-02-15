@@ -4,6 +4,7 @@ import coordinates.Heading;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.Constants;
 import utilPackage.Derivative;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
@@ -26,7 +27,6 @@ public class MainArmControl{
     States state = States.disabled;
     double setpoint = 0;
     MainArm arm;
-    Derivative dError;
     double mpMaxVel = 1*Units.Angle.revolutions;
     double mpMaxAcc = 1*Units.Angle.revolutions;
     volatile TrapezoidalMp mp;
@@ -81,15 +81,18 @@ public class MainArmControl{
         switch(state){
             case disabled:
                 if(RobotState.isEnabled()){
-                    setpoint = arm.getAngle();
-                    dError = new Derivative();
-                    time.start();
-                    state = States.running;
-                    mpStartTime = time.get();
-                    mpStartAngle = arm.getAngle();
+                    state = States.reset;
                 }
                 break;
             case reset:
+                TelescopeControl telescope = TelescopeControl.getInstance();
+                if(telescope.isRunning() && Telescope.getInstance().getDistance() < Constants.Telescope.lenRetract + 0.02){
+                    setpoint = arm.getAngle();
+                    time.start();
+                    mpStartTime = time.get();
+                    mpStartAngle = arm.getAngle();
+                    state = States.running;
+                }
                 break;
             case running:
                 if(RobotState.isEnabled() && !wasEnabled){
@@ -101,7 +104,6 @@ public class MainArmControl{
                 double feedForward = arm.getAntigrav();
                 // double error = setpoint - arm.getAngle();
                 double error = tempSetpoint - arm.getAngle();
-                // dError.Calculate(error, time.get());
                 double dError = -arm.getAngleVel();
                 double p = 13.3109;
                 double d = 1.4268;

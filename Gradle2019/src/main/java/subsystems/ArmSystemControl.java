@@ -20,12 +20,19 @@ public class ArmSystemControl extends Thread{
         running;
     }
 
+    public static enum GripperMode{
+        hatch,
+        cargo;
+    }
+    GripperMode gMode;
+
     MainArmControl arm;
     TelescopeControl telescope;
     GripperControl gripper;
     States state;
 
     private ArmSystemControl(){
+        gMode = GripperMode.hatch;
         arm = MainArmControl.getInstance();
         telescope = TelescopeControl.getInstance();
         gripper = GripperControl.getInstance();
@@ -42,6 +49,10 @@ public class ArmSystemControl extends Thread{
     public void setSetpoints(double armSetpoint, double telescopeSetpoint){
         arm.setSetpoint(armSetpoint);
         telescope.setSetpoint(telescopeSetpoint);
+    }
+
+    public void setGriperMode(GripperMode mode){
+        gMode = mode;
     }
 
     @Override
@@ -62,6 +73,20 @@ public class ArmSystemControl extends Thread{
                     }
                     break;
                 case running:
+                    double armAngle = MainArm.getInstance().getAngle();
+                    if(armAngle < Math.PI/2){
+                        if(gMode == GripperMode.hatch){
+                            gripper.setSetpoint(-armAngle);
+                        }else{
+                            gripper.setSetpoint(-Math.PI/2 - armAngle);
+                        }
+                    }else{
+                        if(gMode == GripperMode.hatch){
+                            gripper.setSetpoint(Math.PI - armAngle);
+                        }else{
+                            gripper.setSetpoint(Math.PI - Math.PI/2 - armAngle);
+                        }
+                    }
                     break;
             }
             Timer.delay(0.007);

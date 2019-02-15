@@ -24,6 +24,7 @@ import subsystems.MainArm;
 import subsystems.MainArmControl;
 import subsystems.Telescope;
 import subsystems.TelescopeControl;
+import subsystems.ArmSystemControl.GripperMode;
 import udp.Client;
 
 public class Robot extends IterativeRobot {
@@ -73,10 +74,11 @@ public class Robot extends IterativeRobot {
 
         armControl = ArmSystemControl.getInstance();
         armControl.start();
-        // arm.disable(true);
+        arm.disable(true);
 
-        led = LEDController.getInstance();
-        led.setLED(true);
+        //TODO: reenable this
+        // led = LEDController.getInstance();
+        // led.setLED(true);
     }
 
     @Override

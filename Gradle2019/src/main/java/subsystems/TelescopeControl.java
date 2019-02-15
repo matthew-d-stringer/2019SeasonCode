@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
 import utilPackage.Derivative;
 import utilPackage.Units;
+import utilPackage.Util;
 
 public class TelescopeControl{
     private static TelescopeControl instance = null;
@@ -88,5 +89,9 @@ public class TelescopeControl{
                 telescope.setVoltage(feedforward+feedback);
                 break;
         }
+    }
+
+    public boolean inErrorRange(double range){
+        return Util.inErrorRange(setpoint, telescope.getDistance(), range);
     }
 }

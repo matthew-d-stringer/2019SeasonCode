@@ -57,6 +57,7 @@ public class MainArm{
         if(disable){
             voltage = 0;
         }
+        // voltage = Util.forceInRange(voltage, -4, 4);
         pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
 

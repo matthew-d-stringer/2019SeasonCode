@@ -1,5 +1,6 @@
 package subsystems;
 
+import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
@@ -29,6 +30,9 @@ public class MainArmControl{
     MainArm arm;
     double mpMaxVel = 1*Units.Angle.revolutions;
     double mpMaxAcc = 1*Units.Angle.revolutions;
+    double mpAcc = mpMaxAcc;
+    Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
+    Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 0.25*Units.Angle.revolutions);
     volatile TrapezoidalMp mp;
     Timer time = new Timer();
     double mpStartTime, mpStartAngle;
@@ -46,6 +50,7 @@ public class MainArmControl{
         if(!Util.inErrorRange(set, setpoint, 5*Units.Angle.degrees)){
             mpStartTime = time.get();
             mpStartAngle = arm.getAngle();
+            mpAcc = calculateAcc(set, mpStartAngle, mpMaxAcc);
         }
         setpoint = set;
         // mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
@@ -66,9 +71,19 @@ public class MainArmControl{
         if(!Util.inErrorRange(tSet, setpoint, 5*Units.Angle.degrees)){
             mpStartTime = time.get();
             mpStartAngle = arm.getAngle();
+            mpAcc = calculateAcc(tSet, mpStartAngle, mpMaxAcc);
         }
         setpoint = tSet;
         mp.updateConstraints(mpStartAngle, new TrapezoidalMp.constraints(tSet-mpStartAngle, mpMaxVel, mpMaxAcc));
+    }
+
+    private double calculateAcc(double setpoint, double angle, double maxAcc){
+        double dist = Math.abs(setpoint - angle);
+        if(!Util.inErrorRange(dist, 0, 10*Units.Angle.degrees)){
+            return Util.mapRange(dist, mpAccCalc1, mpAccCalc2);
+        }else{
+            return maxAcc;
+        }
     }
 
     public boolean isRunning(){
@@ -100,18 +115,20 @@ public class MainArmControl{
                 }
                 wasEnabled = RobotState.isEnabled();
 
-                double tempSetpoint = mp.Calculate(time.get() - mpStartTime)[0];
+                double mpSetpoint = mp.Calculate(time.get() - mpStartTime)[0];
                 double feedForward = arm.getAntigrav();
                 // double error = setpoint - arm.getAngle();
-                double error = tempSetpoint - arm.getAngle();
+                double error = mpSetpoint - arm.getAngle();
                 double dError = -arm.getAngleVel();
-                double p = 13.3109;
-                double d = 1.4268;
+                double p = 13.4358;
+                double d = 1.5713;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
+                //If going down in front of bot
                 if(setpoint < arm.getAngle() && arm.getAngle() < Math.PI/2){
                     feedBack = Math.min(feedBack, 1+arm.getAntigrav()); //max up
-                    feedBack = Math.max(feedBack, -3); //max down
+                    feedBack = Math.max(feedBack, -2); //max down
+                //If going down in back of bot
                 }else if(setpoint > arm.getAngle() && arm.getAngle() > Math.PI/2){
                     feedBack = Math.max(feedBack, 1+arm.getAntigrav()); //max up
                     feedBack = Math.min(feedBack, 7+arm.getAngle()); //max down
@@ -127,5 +144,12 @@ public class MainArmControl{
 
     public boolean mpFinished(){
         return time.get() - mpStartTime >= mp.getEndTime();
+    }
+
+    public boolean inErrorRange(double range){
+        if(isRunning())
+            return Util.inErrorRange(setpoint, arm.getAngle(), range);
+        else
+            return false;
     }
 }

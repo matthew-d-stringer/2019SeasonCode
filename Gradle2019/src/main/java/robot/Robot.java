@@ -74,7 +74,7 @@ public class Robot extends IterativeRobot {
 
         armControl = ArmSystemControl.getInstance();
         armControl.start();
-        arm.disable(true);
+        // arm.disable(true);
 
         //TODO: reenable this
         // led = LEDController.getInstance();
@@ -123,6 +123,13 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         double dt = Timer.getFPGATimestamp() - last;
         last = dt + last;
+
+        if(controlBoard.isCargoMode()){
+            armControl.setGriperMode(GripperMode.cargo);
+        }else{
+            armControl.setGriperMode(GripperMode.hatch);
+        }
+
         if(controlBoard.armToInside()){
             armPos.setAngle(-90*Units.Angle.degrees);
             armPos.setMagnitude(Constants.Telescope.lenRetract);

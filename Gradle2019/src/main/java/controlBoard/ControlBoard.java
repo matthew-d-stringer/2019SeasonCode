@@ -53,6 +53,11 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
+    public boolean isCargoMode() {
+        return buttonPad.getRawButton(10);
+    }
+
+    @Override
     public boolean flipArm() {
         return buttonPad.getRawButton(9);
     }

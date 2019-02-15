@@ -4,6 +4,7 @@ import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
+import utilPackage.Units;
 
 public class ArmSystemControl extends Thread{
     private static ArmSystemControl instance = null;
@@ -91,5 +92,12 @@ public class ArmSystemControl extends Thread{
             }
             Timer.delay(0.007);
         }
+    }
+
+    public boolean isDone(){
+        boolean out = arm.inErrorRange(5*Units.Angle.degrees); 
+        out &= arm.mpFinished();
+        out &= telescope.inErrorRange(1*Units.Length.inches);
+        return out;
     }
 }

@@ -12,6 +12,7 @@ public abstract class IControlBoard{
 
     public abstract boolean quickTurn();
 
+    public abstract boolean isCargoMode();
     public abstract boolean flipArm();
     public abstract boolean armToInside();
     public abstract boolean armToHatchPickup();

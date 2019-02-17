@@ -7,6 +7,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
 import utilPackage.Units;
@@ -22,6 +25,8 @@ public class Gripper{
 
     TalonSRX pivot;
     Coordinate senZero, senNinety;
+    DoubleSolenoid hatch;
+    Solenoid grip;
     DigitalInput reset;
 
     private Gripper(){
@@ -30,6 +35,9 @@ public class Gripper{
         senZero = new Coordinate(Constants.Gripper.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.Gripper.ninetyDegVal, Math.PI/2);
         reset = new DigitalInput(Constants.Gripper.resetNum);
+
+        hatch = new DoubleSolenoid(Constants.Gripper.hatchNums[0], Constants.Gripper.hatchNums[1]);
+        grip = new Solenoid(Constants.Gripper.gripNum);
     }
 
     public void periodic(){
@@ -53,6 +61,14 @@ public class Gripper{
      */
     public void setVoltage(double voltage){
         pivot.set(ControlMode.PercentOutput, -voltage/12);
+    }
+
+    public void hatchLock(){
+        hatch.set(Value.kReverse);
+    }
+
+    public void hatchRelease(){
+        hatch.set(Value.kForward);
     }
 
     /**

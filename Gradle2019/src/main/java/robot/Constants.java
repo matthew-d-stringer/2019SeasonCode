@@ -64,6 +64,9 @@ public class Constants {
 		public static int pivotNum = 40;
 		public static int resetNum = 8;
 
+		public static int[] hatchNums = {6,2};
+		public static int gripNum = 5;
+
 		public static double mass = 5.104*Units.Mass.kilograms;
 		public static double momentOfInertia = 0.352305668;
 		public static double comLength = 0.10397782*Units.Length.meters;
@@ -76,6 +79,16 @@ public class Constants {
 		public static double minAngle = -112*Units.Angle.degrees; 
 
 		public static double com = 0, comWithBall = 0;
+	}
+
+	public static class Climber{
+		public static int climbNum = 30;
+
+		public static double topVal = 244;
+		public static double bottomVal = -272000;
+
+		public static double topLen = 0;
+		public static double bottomLen = 1;
 	}
 
 	public static void readRobotData() throws Exception{

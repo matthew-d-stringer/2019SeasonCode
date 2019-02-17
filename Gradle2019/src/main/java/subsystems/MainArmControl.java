@@ -131,7 +131,7 @@ public class MainArmControl{
                 //If going down in back of bot
                 }else if(setpoint > arm.getAngle() && arm.getAngle() > Math.PI/2){
                     feedBack = Math.max(feedBack, 1+arm.getAntigrav()); //max up
-                    feedBack = Math.min(feedBack, 7+arm.getAngle()); //max down
+                    feedBack = Math.min(feedBack, 4+arm.getAngle()); //max down
                 }
                 // SmartDashboard.putNumber("Arm Setpoint", mp.getConstraints().setpoint/Units.Angle.degrees);
                 // SmartDashboard.putNumber("Arm Temp Setpoint", tempSetpoint/Units.Angle.degrees);

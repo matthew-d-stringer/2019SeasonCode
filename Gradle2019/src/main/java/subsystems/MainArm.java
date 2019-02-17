@@ -27,7 +27,7 @@ public class MainArm{
 
     private MainArm(){
         pivot = new TalonSRX(Constants.MainArm.pivotNum);
-        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
 
         senZero = new Coordinate(Constants.MainArm.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.MainArm.ninetyDegVal, Math.PI/2);

@@ -36,6 +36,10 @@ public class PositionTracker extends Thread implements IPositionTracker{
         position = new Coordinate(pos);
     }
 
+    public void setInitPosFeet(Coordinate pos){
+        position = pos.multC(Units.Length.feet);
+    }
+
     public void resetHeading(){
         // vmxPi.reset();
         // offset = 0;

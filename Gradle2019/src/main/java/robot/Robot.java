@@ -8,6 +8,7 @@ import coordinates.Pos2D;
 import utilPackage.FancyDrive;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
+import utilPackage.Util;
 import drive.Drive;
 import drive.DriveOutput;
 import drive.PositionTracker;
@@ -18,6 +19,8 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsystems.ArmSystemControl;
+import subsystems.Climber;
+import subsystems.ClimberControl;
 import subsystems.Gripper;
 import subsystems.LEDController;
 import subsystems.MainArm;
@@ -38,8 +41,13 @@ public class Robot extends IterativeRobot {
     MainArm arm;
     Telescope telescope;
     Gripper gripper;
+    Climber climber;
 
     ArmSystemControl armControl;
+    ClimberControl climberControl;
+
+    ArmSetpoints setpoints;
+    TeleopPaths teleopPaths;
 
     IControlBoard controlBoard;
     PositionTracker mRunner;
@@ -64,6 +72,7 @@ public class Robot extends IterativeRobot {
         arm = MainArm.getInstance();
         telescope = Telescope.getInstance();
         gripper = Gripper.getInstance();
+        climber = Climber.getInstance();
 
         driveOut.start();
         mode = new DoubleHatchAuto();
@@ -72,8 +81,12 @@ public class Robot extends IterativeRobot {
 
         driveCode = new FancyDrive();
 
+        setpoints = new ArmSetpoints();
+        teleopPaths = new TeleopPaths(driveCode);
+
+        climberControl = ClimberControl.getInstance();
         armControl = ArmSystemControl.getInstance();
-        armControl.start();
+        // armControl.start();
         // arm.disable(true);
 
         //TODO: reenable this
@@ -92,6 +105,7 @@ public class Robot extends IterativeRobot {
         arm.periodic();
         telescope.periodic();
         gripper.periodic();
+        climber.periodic();
 
         // Pos2D visionData = Client.getInstance().updateVision(PositionTracker.getInstance().getPosition());
         // SmartDashboard.putString("Vision Position", visionData.getPos().display());
@@ -116,6 +130,7 @@ public class Robot extends IterativeRobot {
         armControl.setArmPosition(armPos);
         // armControl.setSetpoints(0*Units.Angle.degrees, 0);
         last = Timer.getFPGATimestamp();
+        mRunner.setInitPosFeet(new Coordinate(2.20, 1.74));
     }
 
     double last = Timer.getFPGATimestamp();
@@ -135,22 +150,50 @@ public class Robot extends IterativeRobot {
             armPos.setMagnitude(Constants.Telescope.lenRetract);
         }
         if(controlBoard.armToHatchPickup()){
-            armPos.setMagnitude(controlBoard.armLength());
-            armPos.setYMaintainMag(-20.5*Units.Length.inches, controlBoard.flipArm());
+            // low = incrementPreset(low);
+            // armPos.setMagnitude(controlBoard.armLength());
+            armPos.setMagnitude(Constants.Telescope.lenExtend);
+            // armPos.setYMaintainMag(setpoints.getLow(), controlBoard.flipArm());
+            armPos.setYMaintainMag(-25.5*Units.Length.inches, controlBoard.flipArm());
         }
-        if(controlBoard.armToHatchSecondLevel()){
-            armPos.setMagnitude(controlBoard.armLength());
-            armPos.setYMaintainMag(5*Units.Length.inches, controlBoard.flipArm());
-        }
-        if(controlBoard.armToHatchThirdLevel()){
-            double y = 30*Units.Length.inches;
-            armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
-            armPos.setYMaintainMag(y,controlBoard.flipArm());
-        }
+        // if(controlBoard.armToHatchSecondLevel()){
+        //     // mid = incrementPreset(mid);
+        //     armPos.setMagnitude(controlBoard.armLength());
+        //     armPos.setYMaintainMag(setpoints.getMid(), controlBoard.flipArm());
+        // }
+        // if(controlBoard.armToHatchThirdLevel()){
+        //     // high = incrementPreset(high);
+        //     double y = setpoints.getHigh();
+        //     armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
+        //     armPos.setYMaintainMag(y,controlBoard.flipArm());
+        // }
         armControl.setArmPosition(armPos);
         SmartDashboard.putString("Arm pos set", armPos.display());
 
-        driveCode.run();
+        if(controlBoard.climbUp()){
+            climberControl.setMode(ClimberControl.Modes.climbUp);
+        }else if(controlBoard.climbDown()){
+            climberControl.setMode(ClimberControl.Modes.climbDown);
+        }else{
+            climberControl.setMode(ClimberControl.Modes.hold);
+        }
+
+        if(controlBoard.hatchShoot()){
+            gripper.hatchRelease();
+        }else{
+            gripper.hatchLock();
+        }
+
+        // teleopPaths.run();
+        // driveCode.run();
+    }
+
+    private double incrementPreset(double cVal){
+        double joyY = controlBoard.getCoJoyPos().getY();
+        if(Util.inErrorRange(joyY, 0, 0.1)){
+            return cVal;
+        }
+        return cVal + joyY * Units.Length.inches * 0.005;
     }
 
     private void driveCode(){
@@ -183,6 +226,15 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void testPeriodic() {
-        // arm.setVoltage(-3);
+        // arm.disable(true);
+        // arm.setVoltage(3);
+        if(controlBoard.climbUp()){
+            climberControl.setMode(ClimberControl.Modes.climbUp);
+        }else if(controlBoard.climbDown()){
+            climberControl.setMode(ClimberControl.Modes.climbDown);
+        }else{
+            climberControl.setMode(ClimberControl.Modes.hold);
+        }
+        climberControl.run();
     }
 }

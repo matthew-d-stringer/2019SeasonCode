@@ -86,8 +86,8 @@ public class Robot extends IterativeRobot {
 
         climberControl = ClimberControl.getInstance();
         armControl = ArmSystemControl.getInstance();
-        // armControl.start();
-        // arm.disable(true);
+        armControl.start();
+        arm.disable(true);
 
         //TODO: reenable this
         // led = LEDController.getInstance();
@@ -130,7 +130,8 @@ public class Robot extends IterativeRobot {
         armControl.setArmPosition(armPos);
         // armControl.setSetpoints(0*Units.Angle.degrees, 0);
         last = Timer.getFPGATimestamp();
-        mRunner.setInitPosFeet(new Coordinate(2.20, 1.74));
+        mRunner.setInitPosFeet(2.20, 1.74);
+        mRunner.robotForward();
     }
 
     double last = Timer.getFPGATimestamp();
@@ -184,8 +185,8 @@ public class Robot extends IterativeRobot {
             gripper.hatchLock();
         }
 
-        // teleopPaths.run();
-        // driveCode.run();
+        teleopPaths.run();
+        driveCode.run();
     }
 
     private double incrementPreset(double cVal){
@@ -228,13 +229,15 @@ public class Robot extends IterativeRobot {
     public void testPeriodic() {
         // arm.disable(true);
         // arm.setVoltage(3);
-        if(controlBoard.climbUp()){
-            climberControl.setMode(ClimberControl.Modes.climbUp);
-        }else if(controlBoard.climbDown()){
-            climberControl.setMode(ClimberControl.Modes.climbDown);
-        }else{
-            climberControl.setMode(ClimberControl.Modes.hold);
-        }
-        climberControl.run();
+        // if(controlBoard.climbUp()){
+        //     climberControl.setMode(ClimberControl.Modes.climbUp);
+        // }else if(controlBoard.climbDown()){
+        //     climberControl.setMode(ClimberControl.Modes.climbDown);
+        // }else{
+        //     climberControl.setMode(ClimberControl.Modes.hold);
+        // }
+        // climberControl.run();
+
+        climber.setVoltage(2);
     }
 }

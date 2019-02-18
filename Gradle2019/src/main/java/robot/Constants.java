@@ -84,8 +84,8 @@ public class Constants {
 	public static class Climber{
 		public static int climbNum = 30;
 
-		public static double topVal = 244;
-		public static double bottomVal = -272000;
+		public static double topVal = 0;
+		public static double bottomVal = -272000+244;
 
 		public static double topLen = 0;
 		public static double bottomLen = 1;

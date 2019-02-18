@@ -36,8 +36,8 @@ public class PositionTracker extends Thread implements IPositionTracker{
         position = new Coordinate(pos);
     }
 
-    public void setInitPosFeet(Coordinate pos){
-        position = pos.multC(Units.Length.feet);
+    public void setInitPosFeet(double x, double y){
+        position = new Coordinate(x, y).mult(Units.Length.feet);
     }
 
     public void resetHeading(){

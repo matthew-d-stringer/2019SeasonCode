@@ -15,7 +15,7 @@ public class DriveFollower{
     //For 1fps, 2ft look ahead
     //For 15fps, 3ft look ahead
 
-    private double turnCorrection = 0.8;
+    private double turnCorrection = 0.15;
 
     public void setLookAhead(double lookAhead){
         this.lookAhead = lookAhead;

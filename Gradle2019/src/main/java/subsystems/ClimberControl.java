@@ -36,6 +36,7 @@ public class ClimberControl{
             case disabled:
                 if(RobotState.isEnabled()){
                     mode = Modes.hold;
+                    climb.reset();
                 }
                 break;
             case hold:
@@ -50,9 +51,14 @@ public class ClimberControl{
             case climbUp:
                 if(!Util.inErrorRange(climb.getClimbLen(), 1, 0.03))
                     climb.setVoltage(-2+climb.getAntigrav());
+                else
+                    climb.setVoltage(climb.getAntigrav());
                 break;
             case climbDown:
-                climb.setVoltage(2+climb.getAntigrav());
+                if(climb.getClimbLen() >= 0.01)
+                    climb.setVoltage(4+climb.getAntigrav());
+                else
+                    climb.setVoltage(climb.getAntigrav());
                 break;
         }
     }

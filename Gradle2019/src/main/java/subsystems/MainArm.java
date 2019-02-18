@@ -35,6 +35,7 @@ public class MainArm{
         comRetract = new Coordinate(Constants.Telescope.lenRetract, Constants.Telescope.comRetract);
         comExtend = new Coordinate(Constants.Telescope.lenExtend, Constants.Telescope.comExtend);
 
+        SmartDashboard.putBoolean("Arm Reset", false);
     }
 
     public void periodic(){
@@ -44,9 +45,10 @@ public class MainArm{
         SmartDashboard.putNumber("Arm Antigrav", getAntigrav());
         SmartDashboard.putString("Arm end pos(inches)", Telescope.getInstance().getEndPos().multC(1/Units.Length.inches).display());
 
-        if(SmartDashboard.getBoolean("Arm Reset", false))
+        if(SmartDashboard.getBoolean("Arm Reset", false)){
             pivot.setSelectedSensorPosition(0);
-        SmartDashboard.putBoolean("Arm Reset", false);
+            SmartDashboard.putBoolean("Arm Reset", false);
+        }
     }
 
     public void disable(boolean disable){

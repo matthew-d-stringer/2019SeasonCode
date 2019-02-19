@@ -60,7 +60,7 @@ public class MainArm{
             voltage = 0;
         }
         // voltage = Util.forceInRange(voltage, -4, 4);
-        pivot.set(ControlMode.PercentOutput, -voltage/12);
+        pivot.set(ControlMode.PercentOutput, voltage/12);
     }
 
     public double getAngle(){
@@ -72,7 +72,7 @@ public class MainArm{
 
     public double getAntigrav(){
         // return 1.2*getComWithoutGripper().normalizeC().getX();
-        return 2.6188*getCom().getX()+0.03333*getAngleVel();
+        return 1.8332*getCom().getX()+0.047614*getAngleVel();
     }
 
     public double getComDist(){

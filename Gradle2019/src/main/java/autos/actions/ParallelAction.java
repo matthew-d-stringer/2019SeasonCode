@@ -20,7 +20,8 @@ public class ParallelAction extends Action{
     @Override
     public void update() {
         for(Action action : actions){
-            action.update();
+            if(!action.isFinished())
+                action.update();
         }
     }
 

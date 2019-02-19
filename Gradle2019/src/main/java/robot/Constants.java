@@ -23,8 +23,8 @@ public class Constants {
 	public static class Drive{
 		public static int MLeftNum = 11, MRightNum = 14;
 		public static int[] slaveNums = {10,12, 13,15}; //left to right
-		public static TalonSRX rightEncoder = new TalonSRX(50);
-		public static TalonSRX leftEncoder = new TalonSRX(51);
+		public static TalonSRX rightEncoder = new TalonSRX(41);
+		public static TalonSRX leftEncoder = new TalonSRX(22);
 		public static double wheelDiameter = 5.5, // inches
 				wheelCircumference = wheelDiameter * Math.PI, // inches
 				robotDiameter = 29; // inches (for estimating angle without a gyro)
@@ -37,8 +37,10 @@ public class Constants {
 
 		public static double gearRatio = 1/557.51;
 
-		public static double zeroDegVal = 1120;
-		public static double ninetyDegVal = 2053;
+		public static double zeroDegVal = 1007;
+		public static double ninetyDegVal = 2007;
+
+		public static double insideAngle = -65*Units.Angle.degrees;
 	}
 
 	public static class Telescope{
@@ -51,7 +53,7 @@ public class Constants {
 		public static double radius = 37.5*Units.Length.milimeters;
 
 		public static double retractVal = 0;
-		public static double extendVal = 4968;
+		public static double extendVal = 4877;
 
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
 		public static double comRetract = 0.3291279*Units.Length.meters, comExtend = 0.3996022*Units.Length.meters;
@@ -62,6 +64,7 @@ public class Constants {
 
 	public static class Gripper{
 		public static int pivotNum = 40;
+		public static int rollerNum = 41;
 		public static int resetNum = 8;
 
 		public static int[] hatchNums = {6,2};
@@ -85,7 +88,7 @@ public class Constants {
 		public static int climbNum = 30;
 
 		public static double topVal = 0;
-		public static double bottomVal = -272000+244;
+		public static double bottomVal = -1987149;
 
 		public static double topLen = 0;
 		public static double bottomLen = 1;

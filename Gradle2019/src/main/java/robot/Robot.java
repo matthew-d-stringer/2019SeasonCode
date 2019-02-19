@@ -86,8 +86,8 @@ public class Robot extends IterativeRobot {
 
         climberControl = ClimberControl.getInstance();
         armControl = ArmSystemControl.getInstance();
-        armControl.start();
-        arm.disable(true);
+        // armControl.start();
+        // arm.disable(true);
 
         //TODO: reenable this
         // led = LEDController.getInstance();
@@ -139,53 +139,101 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         double dt = Timer.getFPGATimestamp() - last;
         last = dt + last;
+        
+        // if(controlBoard.armToBallPickup()){
+        //     armPos.setXY(30*Units.Length.inches, -32*Units.Length.inches);
+        // }
 
-        if(controlBoard.isCargoMode()){
-            armControl.setGriperMode(GripperMode.cargo);
-        }else{
-            armControl.setGriperMode(GripperMode.hatch);
-        }
+        // if(controlBoard.ballPistonGrab()){
+        //     gripper.grab();
+        // }else{
+        //     gripper.unGrab();
+        // }
 
-        if(controlBoard.armToInside()){
-            armPos.setAngle(-90*Units.Angle.degrees);
-            armPos.setMagnitude(Constants.Telescope.lenRetract);
-        }
-        if(controlBoard.armToHatchPickup()){
-            // low = incrementPreset(low);
-            // armPos.setMagnitude(controlBoard.armLength());
-            armPos.setMagnitude(Constants.Telescope.lenExtend);
-            // armPos.setYMaintainMag(setpoints.getLow(), controlBoard.flipArm());
-            armPos.setYMaintainMag(-25.5*Units.Length.inches, controlBoard.flipArm());
-        }
-        // if(controlBoard.armToHatchSecondLevel()){
-        //     // mid = incrementPreset(mid);
+        // if(controlBoard.armToInside()){
+        //     armPos.setAngle(-90*Units.Angle.degrees);
+        //     armPos.setMagnitude(Constants.Telescope.lenRetract);
+        // }
+        // if(controlBoard.armToHatchPickup()){
+        //     double len = controlBoard.armLength();
+        //     if(Double.isNaN(len)){
+        //         len = Constants.Telescope.lenRetract;
+        //     }
         //     armPos.setMagnitude(controlBoard.armLength());
-        //     armPos.setYMaintainMag(setpoints.getMid(), controlBoard.flipArm());
+        //     if(controlBoard.isCargoMode()){
+        //         setpoints.incrementBallLow(controlBoard.getCoJoyPos().getY());
+        //         armPos.setYMaintainMag(setpoints.getBallLow(), controlBoard.flipArm());
+        //     }else{
+        //         setpoints.incrementHatchLow(controlBoard.getCoJoyPos().getY());
+        //         armPos.setYMaintainMag(setpoints.getHatchLow(), controlBoard.flipArm());
+        //     }
+        //     // armPos.setYMaintainMag(-25.5*Units.Length.inches, controlBoard.flipArm());
+        // }
+        // if(controlBoard.armToHatchSecondLevel()){
+        //     armPos.setMagnitude(controlBoard.armLength());
+        //     if(controlBoard.isCargoMode()){
+        //         setpoints.incrementBallMid(controlBoard.getCoJoyPos().getY());
+        //         armPos.setYMaintainMag(setpoints.getBallMid(), controlBoard.flipArm());
+        //     }else{
+        //         setpoints.incrementHatchMid(controlBoard.getCoJoyPos().getY());
+        //         armPos.setYMaintainMag(setpoints.getHatchMid(), controlBoard.flipArm());
+        //     }
         // }
         // if(controlBoard.armToHatchThirdLevel()){
         //     // high = incrementPreset(high);
-        //     double y = setpoints.getHigh();
+        //     double y;
+        //     if(controlBoard.isCargoMode()){
+        //         setpoints.incrementBallHigh(controlBoard.getCoJoyPos().getY());
+        //         y = setpoints.getBallHigh();
+        //     }else{
+        //         setpoints.incrementHatchHigh(controlBoard.getCoJoyPos().getY());
+        //         y = setpoints.getHatchHigh();
+        //     }
         //     armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
         //     armPos.setYMaintainMag(y,controlBoard.flipArm());
         // }
-        armControl.setArmPosition(armPos);
-        SmartDashboard.putString("Arm pos set", armPos.display());
+        // armControl.setArmPosition(armPos);
+        // SmartDashboard.putString("Arm pos set", armPos.display());
 
+        climberControl.run();
         if(controlBoard.climbUp()){
-            climberControl.setMode(ClimberControl.Modes.climbUp);
+            // climberControl.setMode(ClimberControl.Modes.climbUp);
+            climber.setVoltage(-2);
         }else if(controlBoard.climbDown()){
-            climberControl.setMode(ClimberControl.Modes.climbDown);
+            // climberControl.setMode(ClimberControl.Modes.climbDown);
+            climber.setVoltage(4);
         }else{
-            climberControl.setMode(ClimberControl.Modes.hold);
+            // climberControl.setMode(ClimberControl.Modes.hold);
+            climber.setVoltage(0);
         }
 
-        if(controlBoard.hatchShoot()){
-            gripper.hatchRelease();
-        }else{
-            gripper.hatchLock();
-        }
+        // if(controlBoard.isCargoMode()){
+        //     if(armPos.getY() < -28*Units.Length.inches){
+        //         armControl.setGriperMode(GripperMode.cargoPickup);
+        //     }else{
+        //         armControl.setGriperMode(GripperMode.cargo);
+        //     }
+        // }else{
+        //     armControl.setGriperMode(GripperMode.hatch);
+        // }
 
-        teleopPaths.run();
+        // if(controlBoard.gripperShoot()){
+        //     if(controlBoard.isCargoMode()){
+        //         gripper.rollerShoot();
+        //         gripper.hatchLock();
+        //     }else{
+        //         gripper.hatchRelease();
+        //         gripper.rollerOff();
+        //     }
+        // }else if(controlBoard.ballRollerGrab()){
+        //     gripper.rollerGrab();
+        //     gripper.hatchLock();
+        // }else{
+        //     gripper.hatchLock();
+        //     gripper.rollerOff();
+        // }
+
+        // teleopPaths.run();
         driveCode.run();
     }
 

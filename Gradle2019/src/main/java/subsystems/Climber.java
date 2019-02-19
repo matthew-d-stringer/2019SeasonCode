@@ -24,8 +24,8 @@ public class Climber{
     private Climber(){
         climbMotor = new TalonSRX(Constants.Climber.climbNum);
         climbMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
-        climbMotor.configPeakCurrentLimit(38);
-        climbMotor.enableCurrentLimit(true);
+        // climbMotor.configPeakCurrentLimit(38);
+        // climbMotor.enableCurrentLimit(true);
         conv1 = new Coordinate(Constants.Climber.topVal, Constants.Climber.topLen);
         conv2 = new Coordinate(Constants.Climber.bottomVal, Constants.Climber.bottomLen);
         SmartDashboard.putBoolean("Climber Reset", false);

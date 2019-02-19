@@ -3,9 +3,12 @@ package controlBoard;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.Joystick;
 import robot.Constants;
+import utilPackage.Toggle;
+import utilPackage.Util;
 
 public class ControlBoard extends IControlBoard{
     Joystick joy, wheel, buttonPad, coJoy, paths;
+    Toggle ballPistonGrab;
 
     public ControlBoard(){
         joy = new Joystick(0);
@@ -13,11 +16,17 @@ public class ControlBoard extends IControlBoard{
         buttonPad = new Joystick(2);
         coJoy = new Joystick(3);
         paths = new Joystick(4);
+
+        ballPistonGrab = new Toggle(false);
     }
 
     @Override
     public Heading getJoystickPos() {
-        return new Heading(wheel.getX(), -joy.getY());
+        double y = -joy.getY();
+        if(Util.inErrorRange(y, 0, 0.05)){
+            y = 0;
+        }
+        return new Heading(wheel.getX(), y);
         // return new Heading(joy.getX(), -joy.getY());
     }
 
@@ -54,7 +63,7 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
-    public boolean slowDrive() {
+    public boolean fastDrive() {
         return joy.getRawButton(1);
     }
 
@@ -63,6 +72,11 @@ public class ControlBoard extends IControlBoard{
         return wheel.getRawButton(7);
     }
 
+    @Override
+    public boolean ballRollerGrab() {
+        return joy.getRawButton(7);
+    }
+    
     @Override
     public boolean isCargoMode() {
         return buttonPad.getRawButton(10);
@@ -76,6 +90,11 @@ public class ControlBoard extends IControlBoard{
     @Override
     public boolean armToInside() {
         return buttonPad.getRawButton(23);
+    }
+
+    @Override
+    public boolean armToBallPickup() {
+        return buttonPad.getRawButton(14);
     }
 
     @Override
@@ -104,7 +123,12 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
-    public boolean hatchShoot() {
+    public boolean gripperShoot() {
         return coJoy.getRawButton(1);
+    }
+
+    @Override
+    public boolean ballPistonGrab() {
+        return ballPistonGrab.toggleVar(joy.getRawButton(2));
     }
 }

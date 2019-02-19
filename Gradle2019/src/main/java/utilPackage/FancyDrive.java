@@ -26,10 +26,10 @@ public class FancyDrive {
 	
 	@SuppressWarnings("unused")
 	public void run(){
-		if(Robot.getControlBoard().slowDrive()){
-			kWheelNonLinearity = 0.1;
+		if(Robot.getControlBoard().fastDrive()){
+			kWheelNonLinearity = 0.005;
 		}else{
-			kWheelNonLinearity = 0.25;
+			kWheelNonLinearity = 0.05;
 		}
 		double wheel = Robot.getControlBoard().getJoystickPos().getX()*1;
 		boolean isQuickTurn = Robot.getControlBoard().quickTurn();
@@ -37,12 +37,15 @@ public class FancyDrive {
 		double outwheel = outputWheel(kWheelNonLinearity, wheel);
 
 		double y = Robot.getControlBoard().getJoystickPos().getY();
+		if(!Robot.getControlBoard().fastDrive()){
+			y *= 0.25;
+		}
 		double rightVal = 12*(y+outwheel);
 		double leftVal = 12*(y-outwheel);
-		if(Robot.getControlBoard().slowDrive()){
-			rightVal = Util.forceInRange(rightVal, -3, 3);
-			leftVal = Util.forceInRange(leftVal, -3, 3);
-		}
+		// if(Robot.getControlBoard().slowDrive()){
+		// 	rightVal = Util.forceInRange(rightVal, -3, 3);
+		// 	leftVal = Util.forceInRange(leftVal, -3, 3);
+		// }
 		if(enabled)
 			drive.set(Modes.Voltage, rightVal, leftVal);
 	}

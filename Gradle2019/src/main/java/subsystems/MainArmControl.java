@@ -64,15 +64,17 @@ public class MainArmControl{
     public void setHeading(Heading set){
         double tSet = set.getAngle();
         if(tSet < -90*Units.Angle.degrees){
-            tSet = 2*Math.PI - tSet;
+            tSet = 2*Math.PI - Math.abs(tSet);
         }
         tSet = Math.max(tSet, -90*Units.Angle.degrees);
         tSet = Math.min(tSet, 235*Units.Angle.degrees);
+        // System.out.println("tSet before: "+tSet/Units.Angle.degrees);
         if(!Util.inErrorRange(tSet, setpoint, 5*Units.Angle.degrees)){
             mpStartTime = time.get();
             mpStartAngle = arm.getAngle();
             mpAcc = calculateAcc(tSet, mpStartAngle, mpMaxAcc);
         }
+        // System.out.println("tSet after: "+tSet/Units.Angle.degrees);
         setpoint = tSet;
         mp.updateConstraints(mpStartAngle, new TrapezoidalMp.constraints(tSet-mpStartAngle, mpMaxVel, mpMaxAcc));
     }
@@ -116,12 +118,13 @@ public class MainArmControl{
                 wasEnabled = RobotState.isEnabled();
 
                 double mpSetpoint = mp.Calculate(time.get() - mpStartTime)[0];
+                // System.out.println("Mp Setpoint: "+mpSetpoint);
                 double feedForward = arm.getAntigrav();
                 // double error = setpoint - arm.getAngle();
                 double error = mpSetpoint - arm.getAngle();
                 double dError = -arm.getAngleVel();
-                double p = 13.4358;
-                double d = 1.5713;
+                double p = 13.2319;
+                double d = 1.2863;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot
@@ -130,8 +133,9 @@ public class MainArmControl{
                     feedBack = Math.max(feedBack, -2); //max down
                 //If going down in back of bot
                 }else if(setpoint > arm.getAngle() && arm.getAngle() > Math.PI/2){
-                    feedBack = Math.max(feedBack, 1+arm.getAntigrav()); //max up
-                    feedBack = Math.min(feedBack, 4+arm.getAngle()); //max down
+                    // feedBack = Math.max(feedBack, 1+arm.getAntigrav()); //max up
+                    // feedBack = Math.min(feedBack, -4+arm.getAntigrav()); //max down
+                    feedBack = Util.forceInRange(feedBack, 3, -2+arm.getAntigrav());
                 }
                 // SmartDashboard.putNumber("Arm Setpoint", mp.getConstraints().setpoint/Units.Angle.degrees);
                 // SmartDashboard.putNumber("Arm Temp Setpoint", tempSetpoint/Units.Angle.degrees);

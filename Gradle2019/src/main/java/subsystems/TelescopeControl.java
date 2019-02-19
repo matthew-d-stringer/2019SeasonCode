@@ -79,7 +79,7 @@ public class TelescopeControl{
                     error = setpoint - telescope.getDistance();
                 else 
                     error = Constants.Telescope.lenRetract - telescope.getDistance();
-                if(MainArm.getInstance().getAngle() < -60*Units.Angle.degrees){
+                if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
                     error = Constants.Telescope.lenRetract - telescope.getDistance();
                 }
                 SmartDashboard.putNumber("Telescope error", error);

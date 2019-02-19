@@ -78,17 +78,17 @@ public class Drive {
 	}
 
 	public double getLeftPosition(){
-		if(Constants.isCompBot)
+		// if(Constants.isCompBot)
 			return -leftEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
-		else 
-			return leftEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
+		// else 
+		// 	return leftEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
 	}
 
 	public double getRightPosition(){
-		if(Constants.isCompBot)
+		// if(Constants.isCompBot)
 			return rightEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
-		else 
-			return -rightEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
+		// else 
+		// 	return -rightEncoder.getSelectedSensorPosition()*Units.Angle.encoderTicks*Units.Length.radians;
 	}
 
 	/**

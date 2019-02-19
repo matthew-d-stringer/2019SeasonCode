@@ -50,13 +50,13 @@ public class ClimberControl{
                 break;
             case climbUp:
                 if(!Util.inErrorRange(climb.getClimbLen(), 1, 0.03))
-                    climb.setVoltage(-2+climb.getAntigrav());
+                    climb.setVoltage(-8+climb.getAntigrav());
                 else
                     climb.setVoltage(climb.getAntigrav());
                 break;
             case climbDown:
                 if(climb.getClimbLen() >= 0.01)
-                    climb.setVoltage(4+climb.getAntigrav());
+                    climb.setVoltage(6);
                 else
                     climb.setVoltage(climb.getAntigrav());
                 break;

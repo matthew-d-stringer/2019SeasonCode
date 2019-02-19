@@ -80,7 +80,7 @@ public class ArmToLevel extends Action{
 
     @Override
     public boolean isFinished() {
-        return MainArmControl.getInstance().mpFinished();
+        return armControl.isDone();
     }
 
     @Override

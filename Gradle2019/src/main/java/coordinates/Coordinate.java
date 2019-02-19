@@ -50,6 +50,11 @@ public class Coordinate {
 	}
 	public void setYMaintainMag(double y, boolean invert){
 		double length = getMagnitude();
+		if(y*y > length*length){
+			this.x = 0;
+			this.y = Util.checkSign(y)*length;
+			return;
+		}
 		double x = Math.sqrt(length*length - y*y);
 		if(invert)
 			this.x = -x;

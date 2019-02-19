@@ -2,6 +2,7 @@ package subsystems;
 
 import edu.wpi.first.wpilibj.RobotState;
 import robot.Constants;
+import utilPackage.Units;
 import utilPackage.Util;
 
 public class GripperControl{
@@ -50,7 +51,12 @@ public class GripperControl{
                 double feedforward = gripper.getAntigrav();
                 double p = 15.2339;
                 double d = 0.6684;
-                double error = setpoint - gripper.getRelAngle();
+                double error;
+                if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
+                    error = Math.max(45*Units.Angle.degrees, setpoint) - gripper.getRelAngle();
+                }else{
+                    error = setpoint - gripper.getRelAngle();
+                }
                 double dError = -gripper.getRelAngleVel();
                 double feedback = p*error + d*dError;
                 // gripper.setVoltage(feedforward);

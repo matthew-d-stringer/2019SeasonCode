@@ -23,7 +23,8 @@ public class ArmSystemControl extends Thread{
 
     public static enum GripperMode{
         hatch,
-        cargo;
+        cargo,
+        cargoPickup;
     }
     GripperMode gMode;
 
@@ -45,8 +46,8 @@ public class ArmSystemControl extends Thread{
     public void setArmPosition(Heading position){
         arm.setHeading(position);
         telescope.setSetpoint(position.getMagnitude());
-        position.setAngle(arm.getSetpoint());
-        position.setMagnitude(telescope.getSetpoint());
+        // position.setAngle(arm.getSetpoint());
+        // position.setMagnitude(telescope.getSetpoint());
     }
 
     public void setSetpoints(double armSetpoint, double telescopeSetpoint){
@@ -79,13 +80,17 @@ public class ArmSystemControl extends Thread{
                 case running:
                     double armAngle = MainArm.getInstance().getAngle();
                     if(armAngle < Math.PI/2){
-                        if(gMode == GripperMode.hatch){
+                        if(gMode == GripperMode.cargoPickup){
+                            gripper.setSetpoint(-3*Math.PI/4 - armAngle);
+                        }else if(gMode == GripperMode.hatch){
                             gripper.setSetpoint(-armAngle);
                         }else{
                             gripper.setSetpoint(-Math.PI/2 - armAngle);
                         }
                     }else{
-                        if(gMode == GripperMode.hatch){
+                        if(gMode == GripperMode.cargoPickup){
+                            gripper.setSetpoint(Math.PI - 3*Math.PI/4 - armAngle);
+                        }else if(gMode == GripperMode.hatch){
                             gripper.setSetpoint(Math.PI - armAngle);
                         }else{
                             gripper.setSetpoint(Math.PI - Math.PI/2 - armAngle);

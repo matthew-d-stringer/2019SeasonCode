@@ -23,7 +23,7 @@ public class Gripper{
         return instance;
     }
 
-    TalonSRX pivot;
+    TalonSRX pivot, rollers;
     Coordinate senZero, senNinety;
     DoubleSolenoid hatch;
     Solenoid grip;
@@ -34,6 +34,9 @@ public class Gripper{
         pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         senZero = new Coordinate(Constants.Gripper.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.Gripper.ninetyDegVal, Math.PI/2);
+
+        rollers = Constants.Drive.rightEncoder;
+
         reset = new DigitalInput(Constants.Gripper.resetNum);
 
         hatch = new DoubleSolenoid(Constants.Gripper.hatchNums[0], Constants.Gripper.hatchNums[1]);
@@ -69,6 +72,23 @@ public class Gripper{
 
     public void hatchRelease(){
         hatch.set(Value.kForward);
+    }
+
+    public void rollerGrab(){
+        rollers.set(ControlMode.PercentOutput, 1);
+    }
+    public void rollerShoot(){
+        rollers.set(ControlMode.PercentOutput, -1);
+    }
+    public void rollerOff(){
+        rollers.set(ControlMode.PercentOutput, 0);
+    }
+
+    public void grab(){
+        grip.set(true);
+    }
+    public void unGrab(){
+        grip.set(false);
     }
 
     /**

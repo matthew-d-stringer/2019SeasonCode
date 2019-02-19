@@ -3,34 +3,65 @@ package robot;
 import utilPackage.Units;
 
 public class ArmSetpoints{
-    double low = -25.5*Units.Length.inches;
-    double mid = 5*Units.Length.inches;
-    double high = 30*Units.Length.inches;
+    double hatchLow;
+    double hatchMid;
+    double hatchHigh;
+
+    double ballLow, ballMid, ballHigh;
 
     public ArmSetpoints(){
+        hatchLow = -22.5*Units.Length.inches;
+        hatchMid = 7*Units.Length.inches;
+        hatchHigh = 33*Units.Length.inches;
+
+        ballLow = -10.5*Units.Length.inches;
+        ballMid = 19*Units.Length.inches;
+        ballHigh = 34*Units.Length.inches;
     }
 
-    public double getLow(){
-        return low;
+    public double getHatchLow(){
+        return hatchLow;
     }
 
-    public void incrementLow(double joystick){
-        low += joystick*Units.Length.inches * 0.005;
+    public double getBallLow(){
+        return ballLow;
     }
 
-    public double getMid(){
-        return mid;
+    public void incrementHatchLow(double joystick){
+        hatchLow += joystick*3*Units.Length.inches * 0.1;
     }
 
-    public void incrementMid(double joystick){
-        mid += joystick*Units.Length.inches * 0.005;
+    public void incrementBallLow(double joystick){
+        ballLow += joystick*3*Units.Length.inches * 0.1;
     }
 
-    public double getHigh(){
-        return high;
+    public double getHatchMid(){
+        return hatchMid;
     }
 
-    public void incrementHigh(double joystick){
-        high += joystick*Units.Length.inches * 0.005;
+    public double getBallMid(){
+        return ballMid;
+    }
+
+    public void incrementHatchMid(double joystick){
+        hatchMid += joystick*3*Units.Length.inches * 0.1;
+    }
+
+    public void incrementBallMid(double joystick){
+        ballMid += joystick*3*Units.Length.inches * 0.1;
+    }
+
+    public double getHatchHigh(){
+        return hatchHigh;
+    }
+    public double getBallHigh(){
+        return ballHigh;
+    }
+
+    public void incrementHatchHigh(double joystick){
+        hatchHigh += joystick*3*Units.Length.inches * 0.1;
+    }
+    public void incrementBallHigh(double joystick){
+        ballHigh += joystick*3*Units.Length.inches * 0.1;
     }
 }

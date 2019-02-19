@@ -32,6 +32,7 @@ public class Constants {
 
 	public static class MainArm{
 		public static int pivotNum = 20;
+		public static int slaveNum = 22;
 
 		public static double mass = 8.69052712-5.104*Units.Mass.kilograms;
 

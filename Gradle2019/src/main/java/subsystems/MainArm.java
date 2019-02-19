@@ -19,7 +19,7 @@ public class MainArm{
             instance = new MainArm();
         return instance;
     }
-    TalonSRX pivot;
+    TalonSRX pivot, pivotSlave;
     Coordinate senZero, senNinety;
     Coordinate comRetract, comExtend;
 
@@ -28,6 +28,8 @@ public class MainArm{
     private MainArm(){
         pivot = new TalonSRX(Constants.MainArm.pivotNum);
         pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        pivotSlave = new TalonSRX(Constants.MainArm.slaveNum);
+        pivot.set(ControlMode.Follower, pivot.getDeviceID());
 
         senZero = new Coordinate(Constants.MainArm.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.MainArm.ninetyDegVal, Math.PI/2);
@@ -72,7 +74,7 @@ public class MainArm{
 
     public double getAntigrav(){
         // return 1.2*getComWithoutGripper().normalizeC().getX();
-        return 1.8332*getCom().getX()+0.047614*getAngleVel();
+        return 0.91658*getCom().getX()+0.047614*getAngleVel();
     }
 
     public double getComDist(){

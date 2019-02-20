@@ -75,7 +75,7 @@ public class TelescopeControl{
                 double p = 39.7135;
                 double d = 3.5453;
                 double error;
-                if(MainArmControl.getInstance().mpFinished())
+                if(MainArmControl.getInstance().finishedMovement())
                     error = setpoint - telescope.getDistance();
                 else 
                     error = Constants.Telescope.lenRetract - telescope.getDistance();

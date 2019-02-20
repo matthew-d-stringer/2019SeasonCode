@@ -22,12 +22,14 @@ public class LEDController{
     public void setLED(boolean on){
         if(on){
             //Back is A
-            led.setLEDOutput(1, LEDChannel.LEDChannelA);
+            led.setLEDOutput(0, LEDChannel.LEDChannelA);
             //Front is B
             led.setLEDOutput(0, LEDChannel.LEDChannelB);
+            led.setLEDOutput(1, LEDChannel.LEDChannelC);
         }else{
-            led.setLEDOutput(0.1, LEDChannel.LEDChannelA);
-            led.setLEDOutput(0.1, LEDChannel.LEDChannelB);
+            led.setLEDOutput(0, LEDChannel.LEDChannelA);
+            led.setLEDOutput(0, LEDChannel.LEDChannelB);
+            led.setLEDOutput(0, LEDChannel.LEDChannelC);
         }
     }
 }

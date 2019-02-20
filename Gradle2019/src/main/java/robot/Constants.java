@@ -36,12 +36,10 @@ public class Constants {
 
 		public static double mass = 8.69052712-5.104*Units.Mass.kilograms;
 
-		public static double gearRatio = 1/557.51;
+		public static double zeroDegVal = 1023;
+		public static double ninetyDegVal = 2050;
 
-		public static double zeroDegVal = 1007;
-		public static double ninetyDegVal = 2007;
-
-		public static double insideAngle = -65*Units.Angle.degrees;
+		public static double insideAngle = -60*Units.Angle.degrees;
 	}
 
 	public static class Telescope{
@@ -75,9 +73,8 @@ public class Constants {
 		public static double momentOfInertia = 0.352305668;
 		public static double comLength = 0.10397782*Units.Length.meters;
 		public static double angleOffsetFromHatch = 0.51953129*Units.Angle.radians;
-		public static double gearRatio; //TODO: update this
 		
-		public static double zeroDegVal = 3660;
+		public static double zeroDegVal = 3344;
 		public static double ninetyDegVal = 0;
 		public static double maxAngle = 90*Units.Angle.degrees; 
 		public static double minAngle = -112*Units.Angle.degrees; 

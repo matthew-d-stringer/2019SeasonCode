@@ -89,9 +89,10 @@ public class Robot extends IterativeRobot {
         // armControl.start();
         // arm.disable(true);
 
-        //TODO: reenable this
-        // led = LEDController.getInstance();
-        // led.setLED(true);
+        if(Constants.isCompBot){
+            led = LEDController.getInstance();
+            led.setLED(false);
+        }
     }
 
     @Override
@@ -140,60 +141,60 @@ public class Robot extends IterativeRobot {
         double dt = Timer.getFPGATimestamp() - last;
         last = dt + last;
         
-        // if(controlBoard.armToBallPickup()){
-        //     armPos.setXY(30*Units.Length.inches, -32*Units.Length.inches);
-        // }
+        if(controlBoard.armToBallPickup()){
+            armPos.setXY(38*Units.Length.inches, -30*Units.Length.inches);
+        }
 
-        // if(controlBoard.ballPistonGrab()){
-        //     gripper.grab();
-        // }else{
-        //     gripper.unGrab();
-        // }
+        if(controlBoard.ballPistonGrab()){
+            gripper.grab();
+        }else{
+            gripper.unGrab();
+        }
 
-        // if(controlBoard.armToInside()){
-        //     armPos.setAngle(-90*Units.Angle.degrees);
-        //     armPos.setMagnitude(Constants.Telescope.lenRetract);
-        // }
-        // if(controlBoard.armToHatchPickup()){
-        //     double len = controlBoard.armLength();
-        //     if(Double.isNaN(len)){
-        //         len = Constants.Telescope.lenRetract;
-        //     }
-        //     armPos.setMagnitude(controlBoard.armLength());
-        //     if(controlBoard.isCargoMode()){
-        //         setpoints.incrementBallLow(controlBoard.getCoJoyPos().getY());
-        //         armPos.setYMaintainMag(setpoints.getBallLow(), controlBoard.flipArm());
-        //     }else{
-        //         setpoints.incrementHatchLow(controlBoard.getCoJoyPos().getY());
-        //         armPos.setYMaintainMag(setpoints.getHatchLow(), controlBoard.flipArm());
-        //     }
-        //     // armPos.setYMaintainMag(-25.5*Units.Length.inches, controlBoard.flipArm());
-        // }
-        // if(controlBoard.armToHatchSecondLevel()){
-        //     armPos.setMagnitude(controlBoard.armLength());
-        //     if(controlBoard.isCargoMode()){
-        //         setpoints.incrementBallMid(controlBoard.getCoJoyPos().getY());
-        //         armPos.setYMaintainMag(setpoints.getBallMid(), controlBoard.flipArm());
-        //     }else{
-        //         setpoints.incrementHatchMid(controlBoard.getCoJoyPos().getY());
-        //         armPos.setYMaintainMag(setpoints.getHatchMid(), controlBoard.flipArm());
-        //     }
-        // }
-        // if(controlBoard.armToHatchThirdLevel()){
-        //     // high = incrementPreset(high);
-        //     double y;
-        //     if(controlBoard.isCargoMode()){
-        //         setpoints.incrementBallHigh(controlBoard.getCoJoyPos().getY());
-        //         y = setpoints.getBallHigh();
-        //     }else{
-        //         setpoints.incrementHatchHigh(controlBoard.getCoJoyPos().getY());
-        //         y = setpoints.getHatchHigh();
-        //     }
-        //     armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
-        //     armPos.setYMaintainMag(y,controlBoard.flipArm());
-        // }
-        // armControl.setArmPosition(armPos);
-        // SmartDashboard.putString("Arm pos set", armPos.display());
+        if(controlBoard.armToInside()){
+            armPos.setAngle(-90*Units.Angle.degrees);
+            armPos.setMagnitude(Constants.Telescope.lenRetract);
+        }
+        if(controlBoard.armToHatchPickup()){
+            double len = controlBoard.armLength();
+            if(Double.isNaN(len)){
+                len = Constants.Telescope.lenRetract;
+            }
+            armPos.setMagnitude(controlBoard.armLength());
+            if(controlBoard.isCargoMode()){
+                setpoints.incrementBallLow(controlBoard.getCoJoyPos().getY());
+                armPos.setYMaintainMag(setpoints.getBallLow(), controlBoard.flipArm());
+            }else{
+                setpoints.incrementHatchLow(controlBoard.getCoJoyPos().getY());
+                armPos.setYMaintainMag(setpoints.getHatchLow(), controlBoard.flipArm());
+            }
+            // armPos.setYMaintainMag(-25.5*Units.Length.inches, controlBoard.flipArm());
+        }
+        if(controlBoard.armToHatchSecondLevel()){
+            armPos.setMagnitude(controlBoard.armLength());
+            if(controlBoard.isCargoMode()){
+                setpoints.incrementBallMid(controlBoard.getCoJoyPos().getY());
+                armPos.setYMaintainMag(setpoints.getBallMid(), controlBoard.flipArm());
+            }else{
+                setpoints.incrementHatchMid(controlBoard.getCoJoyPos().getY());
+                armPos.setYMaintainMag(setpoints.getHatchMid(), controlBoard.flipArm());
+            }
+        }
+        if(controlBoard.armToHatchThirdLevel()){
+            // high = incrementPreset(high);
+            double y;
+            if(controlBoard.isCargoMode()){
+                setpoints.incrementBallHigh(controlBoard.getCoJoyPos().getY());
+                y = setpoints.getBallHigh();
+            }else{
+                setpoints.incrementHatchHigh(controlBoard.getCoJoyPos().getY());
+                y = setpoints.getHatchHigh();
+            }
+            armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
+            armPos.setYMaintainMag(y,controlBoard.flipArm());
+        }
+        armControl.setArmPosition(armPos);
+        SmartDashboard.putString("Arm pos set", armPos.display());
 
         climberControl.run();
         if(controlBoard.climbUp()){
@@ -207,34 +208,34 @@ public class Robot extends IterativeRobot {
             climber.setVoltage(0);
         }
 
-        // if(controlBoard.isCargoMode()){
-        //     if(armPos.getY() < -28*Units.Length.inches){
-        //         armControl.setGriperMode(GripperMode.cargoPickup);
-        //     }else{
-        //         armControl.setGriperMode(GripperMode.cargo);
-        //     }
-        // }else{
-        //     armControl.setGriperMode(GripperMode.hatch);
-        // }
+        if(controlBoard.isCargoMode()){
+            if(armPos.getY() < -28*Units.Length.inches){
+                armControl.setGriperMode(GripperMode.cargoPickup);
+            }else{
+                armControl.setGriperMode(GripperMode.cargo);
+            }
+        }else{
+            armControl.setGriperMode(GripperMode.hatch);
+        }
 
-        // if(controlBoard.gripperShoot()){
-        //     if(controlBoard.isCargoMode()){
-        //         gripper.rollerShoot();
-        //         gripper.hatchLock();
-        //     }else{
-        //         gripper.hatchRelease();
-        //         gripper.rollerOff();
-        //     }
-        // }else if(controlBoard.ballRollerGrab()){
-        //     gripper.rollerGrab();
-        //     gripper.hatchLock();
-        // }else{
-        //     gripper.hatchLock();
-        //     gripper.rollerOff();
-        // }
+        if(controlBoard.gripperShoot()){
+            if(controlBoard.isCargoMode()){
+                gripper.rollerShoot();
+                gripper.hatchLock();
+            }else{
+                gripper.hatchRelease();
+                gripper.rollerOff();
+            }
+        }else if(controlBoard.ballRollerGrab()){
+            gripper.rollerGrab();
+            gripper.hatchLock();
+        }else{
+            gripper.hatchLock();
+            gripper.rollerOff();
+        }
 
         // teleopPaths.run();
-        driveCode.run();
+        // driveCode.run();
     }
 
     private double incrementPreset(double cVal){
@@ -286,6 +287,13 @@ public class Robot extends IterativeRobot {
         // }
         // climberControl.run();
 
-        climber.setVoltage(2);
+        // climber.setVoltage(2);
+        if(controlBoard.ballRollerGrab()){
+            gripper.rollerGrab();
+            gripper.hatchLock();
+        }else{
+            gripper.hatchLock();
+            gripper.rollerOff();
+        }
     }
 }

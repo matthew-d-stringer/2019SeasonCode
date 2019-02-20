@@ -45,7 +45,7 @@ public class MainArmControl{
     }
 
     public void setSetpoint(double set){
-        set = Math.max(set, -90*Units.Angle.degrees);
+        set = Math.max(set, -88*Units.Angle.degrees);
         set = Math.min(set, 235*Units.Angle.degrees);
         if(!Util.inErrorRange(set, setpoint, 5*Units.Angle.degrees)){
             mpStartTime = time.get();
@@ -67,7 +67,7 @@ public class MainArmControl{
             tSet = 2*Math.PI - Math.abs(tSet);
         }
         tSet = Math.max(tSet, -90*Units.Angle.degrees);
-        tSet = Math.min(tSet, 235*Units.Angle.degrees);
+        tSet = Math.min(tSet, 215*Units.Angle.degrees);
         // System.out.println("tSet before: "+tSet/Units.Angle.degrees);
         if(!Util.inErrorRange(tSet, setpoint, 5*Units.Angle.degrees)){
             mpStartTime = time.get();
@@ -123,14 +123,14 @@ public class MainArmControl{
                 // double error = setpoint - arm.getAngle();
                 double error = mpSetpoint - arm.getAngle();
                 double dError = -arm.getAngleVel();
-                double p = 12.7159;
-                double d = 0.8790;
+                double p = 13.4609;
+                double d = 3.3843;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot
                 if(setpoint < arm.getAngle() && arm.getAngle() < Math.PI/2){
                     feedBack = Math.min(feedBack, 1+arm.getAntigrav()); //max up
-                    feedBack = Math.max(feedBack, -2); //max down
+                    feedBack = Math.max(feedBack, -12); //max down
                 //If going down in back of bot
                 }else if(setpoint > arm.getAngle() && arm.getAngle() > Math.PI/2){
                     // feedBack = Math.max(feedBack, 1+arm.getAntigrav()); //max up
@@ -155,5 +155,9 @@ public class MainArmControl{
             return Util.inErrorRange(setpoint, arm.getAngle(), range);
         else
             return false;
+    }
+
+    public boolean finishedMovement(){
+        return mpFinished() && inErrorRange(5*Units.Angle.degrees);
     }
 }

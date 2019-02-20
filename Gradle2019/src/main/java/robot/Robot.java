@@ -86,7 +86,7 @@ public class Robot extends IterativeRobot {
 
         climberControl = ClimberControl.getInstance();
         armControl = ArmSystemControl.getInstance();
-        // armControl.start();
+        armControl.start();
         // arm.disable(true);
 
         if(Constants.isCompBot){

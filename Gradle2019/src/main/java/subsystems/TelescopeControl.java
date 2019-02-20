@@ -35,10 +35,11 @@ public class TelescopeControl{
         derror = new Derivative();
     }
 
-    public void setSetpoint(double setpoint){
+    public double setSetpoint(double setpoint){
         setpoint = Math.min(setpoint, Constants.Telescope.lenExtend);
         setpoint = Math.max(setpoint, Constants.Telescope.lenRetract);
         this.setpoint = setpoint;
+        return setpoint;
     }
 
     public double getSetpoint(){

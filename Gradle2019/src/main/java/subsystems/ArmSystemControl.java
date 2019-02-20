@@ -4,7 +4,9 @@ import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
+import robot.Constants;
 import utilPackage.Units;
+import utilPackage.Util;
 
 public class ArmSystemControl extends Thread{
     private static ArmSystemControl instance = null;
@@ -44,6 +46,7 @@ public class ArmSystemControl extends Thread{
     }
 
     public void setArmPosition(Heading position){
+        position.setX(Util.forceInRange(position.getX(), Constants.MainArm.minXVal, Constants.MainArm.maxXVal));
         arm.setHeading(position);
         telescope.setSetpoint(position.getMagnitude());
         // position.setAngle(arm.getSetpoint());

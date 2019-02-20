@@ -40,6 +40,9 @@ public class Constants {
 		public static double ninetyDegVal = 2050;
 
 		public static double insideAngle = -60*Units.Angle.degrees;
+		
+		public static double maxXVal = (44-15)*Units.Length.inches;
+		public static double minXVal = (-45.5+15)*Units.Length.inches;
 	}
 
 	public static class Telescope{

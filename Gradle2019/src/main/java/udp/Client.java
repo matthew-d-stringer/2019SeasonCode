@@ -16,7 +16,7 @@ public class Client {
     private static Client instance;
     public static Client getInstance(){
         if(instance == null){
-            instance = new Client("10.32.50.22", 3250);
+            instance = new Client("10.32.50.22", 5800);
         }
         return instance;
     }

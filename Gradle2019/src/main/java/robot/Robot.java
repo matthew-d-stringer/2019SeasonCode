@@ -86,7 +86,7 @@ public class Robot extends IterativeRobot {
 
         climberControl = ClimberControl.getInstance();
         armControl = ArmSystemControl.getInstance();
-        armControl.start();
+        // armControl.start();
         // arm.disable(true);
 
         if(Constants.isCompBot){
@@ -108,8 +108,8 @@ public class Robot extends IterativeRobot {
         gripper.periodic();
         climber.periodic();
 
-        // Pos2D visionData = Client.getInstance().updateVision(PositionTracker.getInstance().getPosition());
-        // SmartDashboard.putString("Vision Position", visionData.getPos().display());
+        Pos2D visionData = Client.getInstance().updateVision(PositionTracker.getInstance().getPosition());
+        SmartDashboard.putString("Vision Position", visionData.getPos().display());
     }
 
     TrapezoidalMp mp, mpTelescope;

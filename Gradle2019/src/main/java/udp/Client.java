@@ -3,6 +3,7 @@ package udp;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -30,6 +31,7 @@ public class Client {
     private Client(String ipAddress, int port) {
         try{
             socket = new DatagramSocket();
+            socket.setSoTimeout(3);
             address = InetAddress.getByName(ipAddress);
         }catch(Exception e){
             e.printStackTrace();
@@ -45,6 +47,9 @@ public class Client {
         send.put("Hx", robotPos.getHeading().getX());
         send.put("Hy", robotPos.getHeading().getY());
         String recvString = send(send.toJSONString());
+        if(recvString == null){
+            return null;
+        }
         JSONObject recv;
         try{
             recv = (JSONObject)Util.getParser().parse(recvString);
@@ -73,8 +78,12 @@ public class Client {
         packet = new DatagramPacket(buf, buf.length);
         try{
             socket.receive(packet);
+        }catch(SocketTimeoutException e){
+            System.out.println("Client timed out while waiting for a message");
+            return null;
         }catch(Exception e){
             e.printStackTrace();
+            return null;
         }
         String received = new String(packet.getData(), 0, packet.getLength());
         return received;

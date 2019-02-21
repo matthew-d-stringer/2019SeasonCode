@@ -9,10 +9,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
 import coordinates.Pos2D;
+import drive.PositionTracker;
 import edu.wpi.first.wpilibj.DriverStation;
 import utilPackage.Util;
 
-public class Client {
+public class Client extends Thread{
     private static Client instance;
     public static Client getInstance(){
         if(instance == null){
@@ -28,19 +29,32 @@ public class Client {
 
     private int port;
 
+    private Pos2D readPosition;
+
     private Client(String ipAddress, int port) {
         try{
             socket = new DatagramSocket();
-            socket.setSoTimeout(3);
+            socket.setSoTimeout(250);
             address = InetAddress.getByName(ipAddress);
         }catch(Exception e){
             e.printStackTrace();
         }
-
+        readPosition = new Pos2D();
         this.port = port;
     }
 
-    public Pos2D updateVision(Pos2D robotPos){
+    @Override
+    public void run() {
+        while(true){
+            readPosition = updateVision(PositionTracker.getInstance().getPosition());
+        }
+    }
+
+    public synchronized Pos2D getPosition(){
+        return readPosition;
+    }
+
+    private Pos2D updateVision(Pos2D robotPos){
         JSONObject send = new JSONObject();
         send.put("Px", robotPos.getPos().getX());
         send.put("Py", robotPos.getPos().getY());
@@ -66,7 +80,7 @@ public class Client {
         return recvPos;
     }
 
-    public String send(String msg){
+    private String send(String msg){
         System.out.println("Sending: \""+msg+"\"");
         buf = msg.getBytes();
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
@@ -89,7 +103,7 @@ public class Client {
         return received;
     }
 
-    public void close(){
+    private void close(){
         send("end");
         socket.close();
     }

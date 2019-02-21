@@ -123,8 +123,8 @@ public class MainArmControl{
                 // double error = setpoint - arm.getAngle();
                 double error = mpSetpoint - arm.getAngle();
                 double dError = -arm.getAngleVel();
-                double p = 13.4609;
-                double d = 3.3843;
+                double p = 20.6423;
+                double d = 3.4226;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot
@@ -158,6 +158,6 @@ public class MainArmControl{
     }
 
     public boolean finishedMovement(){
-        return mpFinished() && inErrorRange(5*Units.Angle.degrees);
+        return mpFinished() && inErrorRange(10*Units.Angle.degrees);
     }
 }

@@ -2,6 +2,7 @@ package subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import coordinates.Coordinate;
@@ -28,6 +29,7 @@ public class MainArm{
     private MainArm(){
         pivot = new TalonSRX(Constants.MainArm.pivotNum);
         pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
         pivotSlave = new TalonSRX(Constants.MainArm.slaveNum);
         pivot.set(ControlMode.Follower, pivot.getDeviceID());
 

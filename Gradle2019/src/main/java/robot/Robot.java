@@ -86,13 +86,15 @@ public class Robot extends IterativeRobot {
 
         climberControl = ClimberControl.getInstance();
         armControl = ArmSystemControl.getInstance();
-        // armControl.start();
+        armControl.start();
         // arm.disable(true);
 
         if(Constants.isCompBot){
             led = LEDController.getInstance();
             led.setLED(false);
         }
+
+        Client.getInstance().start();
     }
 
     @Override
@@ -107,9 +109,6 @@ public class Robot extends IterativeRobot {
         telescope.periodic();
         gripper.periodic();
         climber.periodic();
-
-        Pos2D visionData = Client.getInstance().updateVision(PositionTracker.getInstance().getPosition());
-        SmartDashboard.putString("Vision Position", visionData.getPos().display());
     }
 
     TrapezoidalMp mp, mpTelescope;
@@ -235,7 +234,7 @@ public class Robot extends IterativeRobot {
         }
 
         // teleopPaths.run();
-        // driveCode.run();
+        driveCode.run();
     }
 
     private double incrementPreset(double cVal){
@@ -288,12 +287,15 @@ public class Robot extends IterativeRobot {
         // climberControl.run();
 
         // climber.setVoltage(2);
-        if(controlBoard.ballRollerGrab()){
-            gripper.rollerGrab();
-            gripper.hatchLock();
-        }else{
-            gripper.hatchLock();
-            gripper.rollerOff();
-        }
+        // if(controlBoard.ballRollerGrab()){
+        //     gripper.rollerGrab();
+        //     gripper.hatchLock();
+        // }else{
+        //     gripper.hatchLock();
+        //     gripper.rollerOff();
+        // }
+
+        driveOut.set(Modes.Velocity, 5*Units.Length.feet, 5*Units.Length.feet);
+        // driveOut.display();
     }
 }

@@ -95,10 +95,8 @@ public class Drive {
 	 * Returns Left Velocity
 	 */
 	public double getLeftVel(){
-		double out = leftEncoder.getSelectedSensorVelocity()*
+		double out = -leftEncoder.getSelectedSensorVelocity()*
 				Units.Angle.encoderTicks*Units.Length.radians/(0.1*Units.Time.seconds);
-		if(Constants.isCompBot)
-			out *= -1;
 		return out;
 	}
 
@@ -106,10 +104,8 @@ public class Drive {
 	 * Returns Right Velocity
 	 */
 	public double getRightVel(){
-		double out = -rightEncoder.getSelectedSensorVelocity()*
+		double out = rightEncoder.getSelectedSensorVelocity()*
 				Units.Angle.encoderTicks*Units.Length.radians/(0.1*Units.Time.seconds);
-		if(Constants.isCompBot)
-			out *= -1;
 		return out;
 	}
 

@@ -4,9 +4,7 @@ import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
-import utilPackage.Derivative;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
 import utilPackage.Util;
@@ -29,7 +27,7 @@ public class MainArmControl{
     double setpoint = 0;
     MainArm arm;
     double mpMaxVel = 1*Units.Angle.revolutions;
-    double mpMaxAcc = 1*Units.Angle.revolutions;
+    double mpMaxAcc = 0.75*Units.Angle.revolutions;
     double mpAcc = mpMaxAcc;
     Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
     Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 0.25*Units.Angle.revolutions);
@@ -123,8 +121,8 @@ public class MainArmControl{
                 // double error = setpoint - arm.getAngle();
                 double error = mpSetpoint - arm.getAngle();
                 double dError = -arm.getAngleVel();
-                double p = 20.6423;
-                double d = 3.4226;
+                double p = 8.5924;
+                double d = 3.3661;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot
@@ -158,6 +156,6 @@ public class MainArmControl{
     }
 
     public boolean finishedMovement(){
-        return mpFinished() && inErrorRange(10*Units.Angle.degrees);
+        return mpFinished();
     }
 }

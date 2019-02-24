@@ -5,6 +5,8 @@ import java.util.Arrays;
 import autos.AutoEndedException;
 import autos.actions.ArmToLevel;
 import autos.actions.DrivePath;
+import autos.actions.HatchLock;
+import autos.actions.HatchRelease;
 import autos.actions.ParallelAction;
 import autos.actions.SeriesAction;
 import autos.actions.WaitAction;
@@ -26,15 +28,16 @@ public class DoubleHatchAuto extends AutoMode{
     ArmToLevel high, mid, load;
 
     ParallelAction placeFirstHatch, placeSecondHatch;
+    SeriesAction spamHatch;
     public DoubleHatchAuto(){
         setInitPos(9.56, 5.64);
         PositionTracker.getInstance().robotBackward();
         TrapezoidalMp.constraints constraints = 
             new TrapezoidalMp.constraints(0, 14*Units.Length.feet, 8*Units.Length.feet);
         TrapezoidalMp.constraints reverseSpeed = 
-            new TrapezoidalMp.constraints(0, 8*Units.Length.feet, 5*Units.Length.feet);
+            new TrapezoidalMp.constraints(0, 8*Units.Length.feet, 6*Units.Length.feet);
         TrapezoidalMp.constraints slow = 
-            new TrapezoidalMp.constraints(0, 5*Units.Length.feet, 3*Units.Length.feet);
+            new TrapezoidalMp.constraints(0, 8*Units.Length.feet, 4*Units.Length.feet);
 
         toRocket = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "toRocket", slow);
         toRocket.setVerticalThresh(0.5*Units.Length.inches);
@@ -72,6 +75,11 @@ public class DoubleHatchAuto extends AutoMode{
             new SeriesAction(Arrays.asList(waitFirstGoal, high, new WaitAction(0.375)))));
         placeSecondHatch = new ParallelAction(Arrays.asList(loadToRocket,
             new SeriesAction(Arrays.asList(waitFirstGoal, mid, new WaitAction(0.375)))));
+
+        HatchRelease hr = new HatchRelease();
+        HatchLock hL = new HatchLock();
+        WaitAction simpWait = new WaitAction(0.5);
+        spamHatch = new SeriesAction(Arrays.asList(hr, simpWait, hL));
     }
 
     @Override
@@ -80,10 +88,11 @@ public class DoubleHatchAuto extends AutoMode{
         ArmSystemControl.getInstance().setSetpoints(-Math.PI/2, Constants.Telescope.lenRetract);;
         // runAction(toRocket);
         runAction(placeFirstHatch);
-        Gripper.getInstance().hatchRelease();
+        // Gripper.getInstance().hatchRelease();
+        runAction(new HatchRelease());
         runAction(new WaitAction(0.25));
         Gripper.getInstance().hatchLock();
-        runAction(new ParallelAction(Arrays.asList(toRefill, load)));
+        runAction(new ParallelAction(Arrays.asList(toRefill, load, spamHatch)));
         Gripper.getInstance().hatchLock();
         runAction(placeSecondHatch);
         Gripper.getInstance().hatchRelease();

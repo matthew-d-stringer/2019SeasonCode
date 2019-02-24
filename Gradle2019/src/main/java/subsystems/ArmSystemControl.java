@@ -106,7 +106,7 @@ public class ArmSystemControl extends Thread{
     }
 
     public boolean isDone(){
-        boolean out = arm.inErrorRange(5*Units.Angle.degrees); 
+        boolean out = arm.inErrorRange(10*Units.Angle.degrees); 
         out &= arm.mpFinished();
         out &= telescope.inErrorRange(1*Units.Length.inches);
         return out;

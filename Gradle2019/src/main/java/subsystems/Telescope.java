@@ -2,6 +2,7 @@ package subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import coordinates.Coordinate;
@@ -9,6 +10,7 @@ import coordinates.Heading;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
+import utilPackage.Units;
 import utilPackage.Util;
 
 public class Telescope{
@@ -25,6 +27,7 @@ public class Telescope{
     private Telescope(){
         telescope = new TalonSRX(Constants.Telescope.telescopeNum);
         telescope.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        telescope.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_5Ms);
 
         senRetract = new Coordinate(Constants.Telescope.retractVal, Constants.Telescope.lenRetract);
         senExtend = new Coordinate(Constants.Telescope.extendVal, Constants.Telescope.lenExtend);
@@ -54,13 +57,16 @@ public class Telescope{
     }
 
     public double getAntigrav(){
-        return 1*Math.sin(MainArm.getInstance().getAngle());
+        return 1.5*Math.sin(MainArm.getInstance().getAngle());
     }
 
     public double getDistance(){
         //TODO: undo this
         return Util.mapRange(telescope.getSelectedSensorPosition(0), senRetract, senExtend);
         // return senRetract.getY();
+    }
+    public double getVel(){
+        return Util.slope(senRetract, senExtend)*telescope.getSelectedSensorVelocity()/(0.1);
     }
 
     public Coordinate getEndPos(){

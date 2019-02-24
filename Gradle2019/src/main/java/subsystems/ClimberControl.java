@@ -41,7 +41,7 @@ public class ClimberControl{
                 break;
             case hold:
                 if(Util.inErrorRange(climb.getClimbLen(), 0, 0.02)){
-                    climb.setVoltage(0);
+                    climb.setVoltage(0.5);
                 }else if(Util.inErrorRange(climb.getClimbLen(), 0, 0.05)){
                     climb.setVoltage(2);
                 }else{

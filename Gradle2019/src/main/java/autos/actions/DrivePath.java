@@ -100,11 +100,14 @@ public class DrivePath extends Action{
         SmartDashboard.putNumber("Total Distance", segment.getTotalDistance());
         isDone = segment.isDone(PositionTracker.getInstance().getPosition().getPos(), parallelTrackThresh, crossTrackThresh);
         SmartDashboard.putBoolean("DrivePath done?", isDone);
+        if(isDone){
+            done();
+        }
     }
 
     @Override
     public void done() {
-        DriveOutput.getInstance().set(DriveOutput.Modes.Velocity, 0, 0);
+        DriveOutput.getInstance().set(DriveOutput.Modes.Voltage, 0, 0);
     }
 
     @Override

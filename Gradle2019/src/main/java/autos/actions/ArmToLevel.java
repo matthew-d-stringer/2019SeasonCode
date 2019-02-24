@@ -18,7 +18,7 @@ public class ArmToLevel extends Action{
         ball;
     }
 
-    boolean reverse;
+    boolean reverse, checkWithTelescope = true;
     Levels level;
     GripperMode gripMode;
     Heading setpoint;
@@ -43,6 +43,10 @@ public class ArmToLevel extends Action{
         armControl = ArmSystemControl.getInstance();
     }
 
+    public void useTelescope(boolean useTelescope){
+        this.checkWithTelescope = useTelescope;
+    }
+
     public void setArmLen(double len){
         armLength = len;
     }
@@ -56,16 +60,16 @@ public class ArmToLevel extends Action{
         setpoint.setMagnitude(armLength);
         switch(level){
             case loading:
-                setpoint.setYMaintainMag(-20.5*Units.Length.inches, reverse);
+                setpoint.setYMaintainMag(-24.5*Units.Length.inches, reverse);
                 break;
             case low:
-                setpoint.setYMaintainMag(-20.5*Units.Length.inches, reverse);
+                setpoint.setYMaintainMag(-24.5*Units.Length.inches, reverse);
                 break;
             case middle:
                 setpoint.setYMaintainMag(5*Units.Length.inches, reverse);
                 break;
             case high:
-                double y = 30*Units.Length.inches;
+                double y = 33*Units.Length.inches;
                 setpoint.setMagnitude(Math.max(armLength, y));
                 setpoint.setYMaintainMag(y, reverse);
                 break;
@@ -80,7 +84,10 @@ public class ArmToLevel extends Action{
 
     @Override
     public boolean isFinished() {
-        return armControl.isDone();
+        if(checkWithTelescope)
+            return armControl.isDone();
+        else
+            return MainArmControl.getInstance().finishedMovement();
     }
 
     @Override

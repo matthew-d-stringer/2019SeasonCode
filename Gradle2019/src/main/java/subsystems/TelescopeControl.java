@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
-import utilPackage.Derivative;
 import utilPackage.Units;
 import utilPackage.Util;
+import utilPackage.TrapezoidalMp;
 
 public class TelescopeControl{
     private static TelescopeControl instance = null;
@@ -24,20 +24,30 @@ public class TelescopeControl{
         running;
     }
     States state = States.disabled;
+    TrapezoidalMp.constraints constraints = new TrapezoidalMp.constraints(0, 5*Units.Length.feet, 1*Units.Length.feet);
+    TrapezoidalMp mp;
+    double mpStartTime, mpStartDist;
     double setpoint = 0;
-    Derivative derror;
     Timer time;
 
     private TelescopeControl(){
         telescope = Telescope.getInstance();
+        mpStartDist = telescope.getDistance();
+        constraints.setpoint = mpStartDist;
+        mp = new TrapezoidalMp(mpStartDist, constraints);
         time = new Timer();
         SmartDashboard.putNumber("Telescope setpoint", Constants.Telescope.lenRetract/Units.Length.inches);
-        derror = new Derivative();
     }
 
     public double setSetpoint(double setpoint){
         setpoint = Math.min(setpoint, Constants.Telescope.lenExtend);
         setpoint = Math.max(setpoint, Constants.Telescope.lenRetract);
+        if(setpoint != this.setpoint){
+            mpStartTime = time.get();
+            mpStartDist = telescope.getDistance();
+        }
+        constraints.setpoint = setpoint;
+        mp.updateConstraints(mpStartDist, constraints);
         this.setpoint = setpoint;
         return setpoint;
     }
@@ -53,7 +63,7 @@ public class TelescopeControl{
     public void run(){
         SmartDashboard.putString("Telescope state", state.toString());
         // setSetpoint(SmartDashboard.getNumber("Telescope setpoint", 0)*Units.Length.inches);
-        switch(state){
+        switch(state){ 
             case disabled:
                 if(RobotState.isEnabled()){
                     state = States.reset;
@@ -68,24 +78,28 @@ public class TelescopeControl{
                     telescope.setVoltage(telescope.getAntigrav());
                     state = States.running;
                     time.start();
-                    derror.Calculate(setpoint - telescope.getDistance(), time.get());
                 }
                 break;
             case running:
                 double feedforward = telescope.getAntigrav();
-                double p = 39.7135;
-                double d = 3.5453;
+                double p = 34.2507;
+                double d = 9.7191;
                 double error;
+                // double tmpSetpoint = mp.Calculate(time.get())[0];
+                // ble tmpSetpoint = setpoint;
+                double tmpSetpoint = setpoint;
+                    error = tmpSetpoint - telescope.getDistance();
+
                 if(MainArmControl.getInstance().finishedMovement())
-                    error = setpoint - telescope.getDistance();
+                    error = tmpSetpoint - telescope.getDistance();
                 else 
                     error = Constants.Telescope.lenRetract - telescope.getDistance();
                 if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
                     error = Constants.Telescope.lenRetract - telescope.getDistance();
                 }
+                double derror = -telescope.getVel();
                 SmartDashboard.putNumber("Telescope error", error);
-                derror.Calculate(error, time.get());
-                double feedback = p*error - d*derror.getOut();
+                double feedback = p*error + d*derror;
                 // telescope.setVoltage(feedforward);
                 telescope.setVoltage(feedforward+feedback);
                 break;

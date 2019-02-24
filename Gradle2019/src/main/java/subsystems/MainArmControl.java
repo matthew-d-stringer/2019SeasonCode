@@ -121,8 +121,8 @@ public class MainArmControl{
                 // double error = setpoint - arm.getAngle();
                 double error = mpSetpoint - arm.getAngle();
                 double dError = -arm.getAngleVel();
-                double p = 8.5924;
-                double d = 3.3661;
+                double p = 22.9609;
+                double d = 3.8069;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot
@@ -133,7 +133,7 @@ public class MainArmControl{
                 }else if(setpoint > arm.getAngle() && arm.getAngle() > Math.PI/2){
                     // feedBack = Math.max(feedBack, 1+arm.getAntigrav()); //max up
                     // feedBack = Math.min(feedBack, -4+arm.getAntigrav()); //max down
-                    feedBack = Util.forceInRange(feedBack, 3, -2+arm.getAntigrav());
+                    feedBack = Util.forceInRange(feedBack, 12, -2+arm.getAntigrav());
                 }
                 // SmartDashboard.putNumber("Arm Setpoint", mp.getConstraints().setpoint/Units.Angle.degrees);
                 // SmartDashboard.putNumber("Arm Temp Setpoint", tempSetpoint/Units.Angle.degrees);
@@ -156,6 +156,6 @@ public class MainArmControl{
     }
 
     public boolean finishedMovement(){
-        return mpFinished();
+        return mpFinished() && inErrorRange(10*Units.Angle.degrees);
     }
 }

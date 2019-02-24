@@ -14,7 +14,7 @@ public class WaitAction extends Action{
     @Override
     public void start() {
         startTime = Timer.getFPGATimestamp();
-        endTime = startTime+endTime;
+        endTime = startTime+time;
     }
 
     @Override

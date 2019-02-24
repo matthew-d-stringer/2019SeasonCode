@@ -38,14 +38,15 @@ public class DoubleHatchAuto extends AutoMode{
 
         toRocket = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "toRocket", slow);
         toRocket.setVerticalThresh(0.5*Units.Length.inches);
-        toRocket.setTurnCorrection(0.15);
+        toRocket.setTurnCorrection(0.10);
         toRocket.setReverse(true);
-        // toRocket.setlookAhead(2*Units.Length.feet);
+        toRocket.setlookAhead(1.75*Units.Length.feet);
 
         toRefill = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "toRefill", reverseSpeed);
         // toRefill.setReverse(true);
         toRefill.setVerticalThresh(1*Units.Length.inches);
         toRefill.setTurnCorrection(0.15);
+        toRefill.setlookAhead(2*Units.Length.feet);
 
         loadToRocket = DrivePath.createFromFileOnRoboRio("Left/DoubleHatchAuto", "loadToRocket", constraints);
         loadToRocket.setReverse(true);
@@ -72,11 +73,12 @@ public class DoubleHatchAuto extends AutoMode{
     public void auto() throws AutoEndedException{
         PositionTracker.getInstance().robotBackward();
         ArmSystemControl.getInstance().setSetpoints(-Math.PI/2, Constants.Telescope.lenRetract);;
-        // runAction(placeFirstHatch);
-        // Gripper.getInstance().hatchRelease();
-        // runAction(new WaitAction(5));
-        runAction(toRocket);
-        // runAction(new ParallelAction(Arrays.asList(toRefill, load)));
+        runAction(placeFirstHatch);
+        Gripper.getInstance().hatchRelease();
+        runAction(new WaitAction(0.5));
+        Gripper.getInstance().hatchLock();
+        // runAction(toRocket);
+        runAction(new ParallelAction(Arrays.asList(toRefill, load)));
         // Gripper.getInstance().hatchLock();
         // runAction(load);
         // runAction(mid);

@@ -96,4 +96,7 @@ public class Pos2D {
 	public String outputData(){
 		return (this.getPos().outputData()+"\t Heading: "+this.getHeading().outputData());
 	}
+	public String outputData(String name){
+		return name+": "+(this.getPos().outputData()+"\t Heading: "+this.getHeading().outputData());
+	}
 }

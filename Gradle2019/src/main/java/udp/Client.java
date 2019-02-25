@@ -29,6 +29,7 @@ public class Client extends Thread{
 
     private int port;
 
+    private String recvData;
     private Pos2D readPosition;
 
     private Client(String ipAddress, int port) {
@@ -46,7 +47,17 @@ public class Client extends Thread{
     @Override
     public void run() {
         while(true){
-            readPosition = updateVision(PositionTracker.getInstance().getPosition());
+            Pos2D readPosition = updateVision(PositionTracker.getInstance().getPosition());
+            if(readPosition != null){
+                this.readPosition = readPosition;
+                System.out.println(readPosition.outputData("Read From Vision"));
+            }
+            System.out.println();
+            try{
+                Thread.sleep(100);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -56,11 +67,16 @@ public class Client extends Thread{
 
     private Pos2D updateVision(Pos2D robotPos){
         JSONObject send = new JSONObject();
-        send.put("Px", robotPos.getPos().getX());
-        send.put("Py", robotPos.getPos().getY());
-        send.put("Hx", robotPos.getHeading().getX());
-        send.put("Hy", robotPos.getHeading().getY());
+        float Px = (float)Util.round(robotPos.getPos().getX(), 3);
+        float Py = (float)Util.round(robotPos.getPos().getY(), 3);
+        float Hx = (float)Util.round(robotPos.getHeading().getX(), 3);
+        float Hy = (float)Util.round(robotPos.getHeading().getY(), 3);
+        send.put("Px", Px);
+        send.put("Py", Py);
+        send.put("Hx", Hx);
+        send.put("Hy", Hy);
         String recvString = send(send.toJSONString());
+        // return recvString;
         if(recvString == null){
             return null;
         }
@@ -68,15 +84,16 @@ public class Client extends Thread{
         try{
             recv = (JSONObject)Util.getParser().parse(recvString);
         }catch(ParseException e){
-            DriverStation.reportError("Random parse error for vision", true);
+            // DriverStation.reportError("Random parse error for vision", true);
+            System.out.println("Parse error");
             return null;
         }
-        if((boolean)recv.get("send")){
-            return null;
-        }
+        // if((boolean)recv.get("send")){
+            // return null;
+        // }
         Pos2D recvPos = new Pos2D();
-        recvPos.setPos((double)recv.get("Px"), (double)recv.get("Py"));
-        recvPos.setHeading((double)recv.get("Px"), (double)recv.get("Py"));
+        recvPos.setPos(Double.parseDouble(recv.get("Px").toString()), Double.parseDouble(recv.get("Py").toString()));
+        recvPos.setHeading(Double.parseDouble(recv.get("Hx").toString()), Double.parseDouble(recv.get("Hy").toString()));
         return recvPos;
     }
 
@@ -100,6 +117,7 @@ public class Client extends Thread{
             return null;
         }
         String received = new String(packet.getData(), 0, packet.getLength());
+        System.out.println("Recv: \""+received+"\"");
         return received;
     }
 

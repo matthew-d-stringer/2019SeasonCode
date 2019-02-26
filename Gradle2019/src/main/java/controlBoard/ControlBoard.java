@@ -23,9 +23,9 @@ public class ControlBoard extends IControlBoard{
     @Override
     public Heading getJoystickPos() {
         double y = -joy.getY();
-        if(Util.inErrorRange(y, 0, 0.05)){
-            y = 0;
-        }
+        // if(Util.inErrorRange(y, 0, 0.05)){
+        //     y = 0;
+        // }
         return new Heading(wheel.getX(), y);
         // return new Heading(joy.getX(), -joy.getY());
     }

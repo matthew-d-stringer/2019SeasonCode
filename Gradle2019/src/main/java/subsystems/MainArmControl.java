@@ -121,8 +121,8 @@ public class MainArmControl{
                 // double error = setpoint - arm.getAngle();
                 double error = mpSetpoint - arm.getAngle();
                 double dError = -arm.getAngleVel();
-                double p = 22.9609;
-                double d = 3.8069;
+                double p = 24.4690;
+                double d = 6.9411;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot

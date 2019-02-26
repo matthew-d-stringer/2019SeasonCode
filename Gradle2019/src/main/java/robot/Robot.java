@@ -9,6 +9,7 @@ import utilPackage.FancyDrive;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
 import utilPackage.Util;
+import vision.Jevois;
 import drive.Drive;
 import drive.DriveOutput;
 import drive.PositionTracker;
@@ -102,7 +103,7 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Double Hatch Right", DoubleHatchAuto.getRightName());
         SmartDashboard.putData(autoChooser);
 
-        Client.getInstance().start();
+        // Jevois.getInstance().start();
     }
 
     @Override
@@ -117,6 +118,9 @@ public class Robot extends IterativeRobot {
         telescope.periodic();
         gripper.periodic();
         climber.periodic();
+
+        // SmartDashboard.putString("Delta Position", Jevois.getInstance().getPosition().display());
+        // SmartDashboard.putString("Relative Vector", Jevois.getInstance().getPT().display());
     }
 
     TrapezoidalMp mp, mpTelescope;
@@ -287,6 +291,11 @@ public class Robot extends IterativeRobot {
     }
 
     @Override
+    public void testInit() {
+        // armControl.setArmPosition(Heading.createPolarHeading(0, Constants.Telescope.lenRetract));
+    }
+
+    @Override
     public void testPeriodic() {
         // arm.disable(true);
         // arm.setVoltage(3);
@@ -308,7 +317,9 @@ public class Robot extends IterativeRobot {
         //     gripper.rollerOff();
         // }
 
-        driveOut.set(Modes.Velocity, 5*Units.Length.feet, 5*Units.Length.feet);
+        arm.setVoltage(12*controlBoard.getJoystickPos().getY());
+
+        // driveOut.set(Modes.Velocity, 5*Units.Length.feet, 5*Units.Length.feet);
         // driveOut.display();
     }
 }

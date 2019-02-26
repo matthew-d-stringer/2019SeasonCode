@@ -33,13 +33,14 @@ public class Constants {
 	public static class MainArm{
 		public static int pivotNum = 20;
 		public static int slaveNum = 22;
+		public static int resetNum = 5;
 
 		public static double mass = 8.69052712-5.104*Units.Mass.kilograms;
 
-		public static double zeroDegVal = 79320;
-		public static double ninetyDegVal = 150174;
+		public static double zeroDegVal = 84142;
+		public static double ninetyDegVal = 155150;
 
-		public static double insideAngle = -70*Units.Angle.degrees;
+		public static double insideAngle = -95*Units.Angle.degrees;
 		
 		public static double maxXVal = (44-15)*Units.Length.inches;
 		public static double minXVal = (-45.5+15)*Units.Length.inches;
@@ -93,6 +94,16 @@ public class Constants {
 
 		public static double topLen = 0;
 		public static double bottomLen = 1;
+	}
+
+    public static class Image{
+        public static int imageWidth = 320;
+        public static int imageHeight = 240;
+    }
+
+    public static class Camera{
+        public static double horizontalFov = 60*Units.Angle.degrees;
+        public static double verticalFov = 45*Units.Angle.degrees;
 	}
 
 	public static void readRobotData() throws Exception{

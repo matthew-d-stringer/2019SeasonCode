@@ -73,7 +73,8 @@ public class TelescopeControl{
                 }
                 break;
             case reset:
-                telescope.setVoltage(-4+telescope.getAntigrav());
+                // telescope.setVoltage(-6+telescope.getAntigrav());
+                telescope.setVoltage(-12);
                 if(telescope.getReset()){
                     telescope.setVoltage(telescope.getAntigrav());
                     state = States.running;
@@ -82,8 +83,8 @@ public class TelescopeControl{
                 break;
             case running:
                 double feedforward = telescope.getAntigrav();
-                double p = 34.2507;
-                double d = 9.7191;
+                double p = 58.4177;
+                double d = 7.1108;
                 double error;
                 // double tmpSetpoint = mp.Calculate(time.get())[0];
                 // ble tmpSetpoint = setpoint;

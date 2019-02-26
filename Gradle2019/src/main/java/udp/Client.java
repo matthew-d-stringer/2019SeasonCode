@@ -8,9 +8,11 @@ import java.net.SocketTimeoutException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 
+import coordinates.Heading;
 import coordinates.Pos2D;
 import drive.PositionTracker;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import utilPackage.Util;
 
 public class Client extends Thread{
@@ -31,16 +33,19 @@ public class Client extends Thread{
 
     private String recvData;
     private Pos2D readPosition;
+    private Heading relTargetFront, relTargetReverse;
 
     private Client(String ipAddress, int port) {
         try{
             socket = new DatagramSocket();
-            socket.setSoTimeout(250);
+            socket.setSoTimeout(1000);
             address = InetAddress.getByName(ipAddress);
         }catch(Exception e){
             e.printStackTrace();
         }
         readPosition = new Pos2D();
+        relTargetFront = new Heading();
+        relTargetReverse = new Heading();
         this.port = port;
     }
 
@@ -53,6 +58,8 @@ public class Client extends Thread{
                 System.out.println(readPosition.outputData("Read From Vision"));
             }
             System.out.println();
+            SmartDashboard.putNumber("Target Angle Front", relTargetFront.getAngle());
+            SmartDashboard.putNumber("Target Angle Reverse", relTargetReverse.getAngle());
             try{
                 Thread.sleep(100);
             }catch(Exception e){
@@ -94,6 +101,12 @@ public class Client extends Thread{
         Pos2D recvPos = new Pos2D();
         recvPos.setPos(Double.parseDouble(recv.get("Px").toString()), Double.parseDouble(recv.get("Py").toString()));
         recvPos.setHeading(Double.parseDouble(recv.get("Hx").toString()), Double.parseDouble(recv.get("Hy").toString()));
+
+        relTargetFront.setAngle(Double.parseDouble(recv.get("FAng").toString()));
+        relTargetFront.setMagnitude(Double.parseDouble(recv.get("FDist").toString()));
+        relTargetReverse.setAngle(Double.parseDouble(recv.get("RAng").toString()));
+        relTargetReverse.setMagnitude(Double.parseDouble(recv.get("RDist").toString()));
+
         return recvPos;
     }
 
@@ -106,6 +119,7 @@ public class Client extends Thread{
         }catch(Exception e){
             e.printStackTrace();
         }
+        buf = new byte[1000];
         packet = new DatagramPacket(buf, buf.length);
         try{
             socket.receive(packet);

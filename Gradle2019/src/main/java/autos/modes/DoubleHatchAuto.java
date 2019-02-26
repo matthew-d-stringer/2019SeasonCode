@@ -41,7 +41,7 @@ public class DoubleHatchAuto extends AutoMode{
         if(!right)
             setInitPos(9.56, 5.64);
         else
-            setInitPos(24.75, 5.64); 
+            setInitPos(17.40, 5.64); 
         PositionTracker.getInstance().robotBackward();
         TrapezoidalMp.constraints constraints = 
             new TrapezoidalMp.constraints(0, 14*Units.Length.feet, 8*Units.Length.feet);
@@ -57,7 +57,7 @@ public class DoubleHatchAuto extends AutoMode{
             path = "Left/DoubleHatchAuto";
         }
 
-        toRocket = DrivePath.createFromFileOnRoboRio(path, "toRocket", slow);
+        toRocket = DrivePath.createFromFileOnRoboRio(path, "toRocket", slow, 40);
         toRocket.setVerticalThresh(0.5*Units.Length.inches);
         toRocket.setTurnCorrection(0.10);
         toRocket.setReverse(true);

@@ -57,7 +57,7 @@ public class Telescope{
     }
 
     public double getAntigrav(){
-        return 1.5*Math.sin(MainArm.getInstance().getAngle());
+        return 0.93586*Math.sin(MainArm.getInstance().getAngle());
     }
 
     public double getDistance(){

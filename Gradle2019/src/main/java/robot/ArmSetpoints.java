@@ -10,7 +10,8 @@ public class ArmSetpoints{
     double ballLow, ballMid, ballHigh;
 
     public ArmSetpoints(){
-        hatchLow = -22.5*Units.Length.inches;
+        // hatchLow = -34*Units.Length.inches;
+        hatchLow = -0.786268;
         hatchMid = 7*Units.Length.inches;
         hatchHigh = 33*Units.Length.inches;
 

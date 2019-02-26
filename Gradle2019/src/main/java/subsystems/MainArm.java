@@ -23,6 +23,7 @@ public class MainArm{
     TalonSRX pivot, pivotSlave;
     Coordinate senZero, senNinety;
     Coordinate comRetract, comExtend;
+    DigitalInput reset;
 
     private boolean disable = false;
 
@@ -32,6 +33,7 @@ public class MainArm{
         pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
         pivotSlave = new TalonSRX(Constants.MainArm.slaveNum);
         pivot.set(ControlMode.Follower, pivot.getDeviceID());
+        reset = new DigitalInput(Constants.MainArm.resetNum);
 
         senZero = new Coordinate(Constants.MainArm.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.MainArm.ninetyDegVal, Math.PI/2);
@@ -49,14 +51,18 @@ public class MainArm{
         SmartDashboard.putNumber("Arm Antigrav", getAntigrav());
         SmartDashboard.putString("Arm end pos(inches)", Telescope.getInstance().getEndPos().multC(1/Units.Length.inches).display());
 
-        if(SmartDashboard.getBoolean("Arm Reset", false)){
+        SmartDashboard.putBoolean("Arm Reset", getReset());
+        if(getReset()){
             pivot.setSelectedSensorPosition(0);
-            SmartDashboard.putBoolean("Arm Reset", false);
         }
     }
 
     public void disable(boolean disable){
         this.disable = disable;
+    }
+
+    public boolean getReset(){
+        return !reset.get();
     }
 
     public void setVoltage(double voltage){

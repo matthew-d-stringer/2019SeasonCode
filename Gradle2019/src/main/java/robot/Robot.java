@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import subsystems.ArmSystemControl;
 import subsystems.Climber;
@@ -57,6 +58,8 @@ public class Robot extends IterativeRobot {
 
     LEDController led;
 
+    SendableChooser autoChooser;
+
     @Override
     public void robotInit() {
         try{
@@ -75,7 +78,7 @@ public class Robot extends IterativeRobot {
         climber = Climber.getInstance();
 
         driveOut.start();
-        mode = new DoubleHatchAuto();
+        mode = new DoubleHatchAuto(false);
         // mode = new FarNearLeftHatchAuto();
         // mode = new SkidDrive();
 
@@ -93,6 +96,11 @@ public class Robot extends IterativeRobot {
             led = LEDController.getInstance();
             led.setLED(false);
         }
+
+        autoChooser = new SendableChooser<>();
+        autoChooser.addDefault("Double Hatch Left", DoubleHatchAuto.getLeftName());
+        autoChooser.addObject("Double Hatch Right", DoubleHatchAuto.getRightName());
+        SmartDashboard.putData(autoChooser);
 
         Client.getInstance().start();
     }
@@ -256,6 +264,11 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+        if((String)autoChooser.getSelected() == DoubleHatchAuto.getLeftName()){
+            mode = new DoubleHatchAuto(false);
+        }else if((String)autoChooser.getSelected() == DoubleHatchAuto.getRightName()){
+            mode = new DoubleHatchAuto(true);
+        }
         PositionTracker.getInstance().robotForward();
         driveOut.setNoVoltage();
         mode.start();

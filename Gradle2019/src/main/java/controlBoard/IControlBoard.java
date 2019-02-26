@@ -29,7 +29,7 @@ public abstract class IControlBoard{
     public abstract boolean ballPistonGrab();
 
     public abstract boolean climbUp();
-    public abstract boolean climbDown();
+    public abstract boolean climbRetract();
 
     public void display(){
         SmartDashboard.putString("Co-joystick pos", getCoJoyPos().display());

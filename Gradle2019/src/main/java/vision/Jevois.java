@@ -7,6 +7,7 @@ import coordinates.Coordinate;
 import coordinates.Heading;
 import coordinates.Pos2D;
 import drive.PositionTracker;
+import edu.wpi.first.wpilibj.SerialPort;
 import utilPackage.Units;
 
 public class Jevois extends Thread{
@@ -29,11 +30,14 @@ public class Jevois extends Thread{
     Coordinate position;
     Heading PT;
     SerialReader reader;
+    SerialPort serial;
     Target target;
     double horizontalAngleOffset = 0;
 
     private Jevois(){
         reader = new SerialReader(0);
+        serial = new SerialPort(1152000, SerialPort.Port.kUSB);
+        serial.enableTermination();
         placementOffset = new Coordinate(-10, 1.5);
         placementOffset.mult(Units.Length.inches);
         position = new Coordinate();
@@ -44,7 +48,8 @@ public class Jevois extends Thread{
     public void run() {
         startJevois();
         while(true){
-            String rawInput = reader.readLine();
+            // String rawInput = reader.readLine();
+            String rawInput = serial.readString();
             double[] input = getNumberData(rawInput);
             if(input == null){
                 continue;
@@ -66,11 +71,16 @@ public class Jevois extends Thread{
     }
 
     private void startJevois(){
-        reader.sendMessage("setmapping2 YUYV 320 240 60.0 JeVois PythonTest");
-        reader.sendMessage("setpar serlog None");
-        reader.sendMessage("setpar serout All");
-        reader.sendMessage("setcam absexp 100");
-        reader.sendMessage("streamon");
+        // reader.sendMessage("setmapping2 YUYV 320 240 60.0 JeVois PythonTest");
+        // reader.sendMessage("setpar serlog None");
+        // reader.sendMessage("setpar serout All");
+        // reader.sendMessage("setcam absexp 100");
+        // reader.sendMessage("streamon");
+        serial.writeString("setmapping2 YUYV 320 240 60.0 JeVois PythonTest");
+        serial.writeString("setpar serlog None");
+        serial.writeString("setpar serout All");
+        serial.writeString("setcam absexp 100");
+        serial.writeString("streamon");
     }
     private boolean shouldIgnore(String input){
         if(input.isBlank())

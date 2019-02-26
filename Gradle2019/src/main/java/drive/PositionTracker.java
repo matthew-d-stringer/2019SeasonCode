@@ -28,7 +28,7 @@ public class PositionTracker extends Thread implements IPositionTracker{
     private double offset;
 
     private PositionTracker(){
-        vmxPi = new AHRS(Port.kUSB);
+        vmxPi = new AHRS(Port.kMXP);
         this.start();
     }
 

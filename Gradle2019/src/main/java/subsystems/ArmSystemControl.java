@@ -68,7 +68,7 @@ public class ArmSystemControl extends Thread{
             arm.run();
             telescope.run();
             gripper.run();
-            climber.run();
+            // climber.run();
             switch(state){
                 case disabled:
                     if(RobotState.isEnabled()){

@@ -142,6 +142,7 @@ public class Robot extends IterativeRobot {
         armControl.setArmPosition(armPos);
         // armControl.setSetpoints(0*Units.Angle.degrees, 0);
         last = Timer.getFPGATimestamp();
+        climber.reset();
         mRunner.setInitPosFeet(2.20, 1.74);
         mRunner.robotForward();
     }
@@ -207,16 +208,19 @@ public class Robot extends IterativeRobot {
         armControl.setArmPosition(armPos);
         SmartDashboard.putString("Arm pos set", armPos.display());
 
-        climberControl.run();
-        if(controlBoard.climbUp()){
+        // climberControl.run();
+        if(controlBoard.climbUp() && climber.getClimbLen() < 0.95){
             // climberControl.setMode(ClimberControl.Modes.climbUp);
-            climber.setVoltage(-2);
-        }else if(controlBoard.climbDown()){
+            climber.setVoltage(-12);
+        }else if(controlBoard.climbRetract() && climber.getClimbLen() > 0.1){
             // climberControl.setMode(ClimberControl.Modes.climbDown);
-            climber.setVoltage(4);
+            climber.setVoltage(12);
         }else{
             // climberControl.setMode(ClimberControl.Modes.hold);
-            climber.setVoltage(0);
+            if(climber.getClimbLen() < 0.1)
+                climber.setVoltage(0.25);
+            else
+                climber.setVoltage(climber.getAntigrav());
         }
 
         if(controlBoard.isCargoMode()){

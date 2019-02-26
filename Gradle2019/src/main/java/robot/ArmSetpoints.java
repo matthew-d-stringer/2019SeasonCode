@@ -11,7 +11,7 @@ public class ArmSetpoints{
 
     public ArmSetpoints(){
         // hatchLow = -34*Units.Length.inches;
-        hatchLow = -0.786268;
+        hatchLow = -30*Units.Length.inches;
         hatchMid = 7*Units.Length.inches;
         hatchHigh = 33*Units.Length.inches;
 

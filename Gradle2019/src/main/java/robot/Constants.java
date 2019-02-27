@@ -37,8 +37,8 @@ public class Constants {
 
 		public static double mass = 8.69052712-5.104*Units.Mass.kilograms;
 
-		public static double zeroDegVal = 84142;
-		public static double ninetyDegVal = 155150;
+		public static double zeroDegVal = 80501;
+		public static double ninetyDegVal = 149758;
 
 		public static double insideAngle = -95*Units.Angle.degrees;
 		

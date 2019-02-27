@@ -68,6 +68,11 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
+    public boolean visionDrive() {
+        return joy.getRawButton(5);
+    }
+
+    @Override
     public boolean quickTurn() {
         return wheel.getRawButton(7);
     }
@@ -98,6 +103,11 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
+    public boolean armToBallGoal() {
+        return buttonPad.getRawButton(19);
+    }
+
+    @Override
     public boolean armToHatchPickup() {
         return buttonPad.getRawButton(20);//23
     }
@@ -110,6 +120,16 @@ public class ControlBoard extends IControlBoard{
     @Override
     public boolean armToHatchThirdLevel() {
         return buttonPad.getRawButton(13);
+    }
+
+    @Override
+    public boolean incrementOffset() {
+        return coJoy.getPOV(0) == 0;
+    }
+
+    @Override
+    public boolean decrementOffset() {
+        return coJoy.getPOV(0) == 180;
     }
 
     @Override

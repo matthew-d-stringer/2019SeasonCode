@@ -35,6 +35,8 @@ public class ArmSystemControl extends Thread{
     GripperControl gripper;
     ClimberControl climber;
     States state;
+    double offset = -10*Units.Angle.degrees;
+    double backOffset = 0*Units.Angle.degrees;
 
     private ArmSystemControl(){
         gMode = GripperMode.hatch;
@@ -62,6 +64,10 @@ public class ArmSystemControl extends Thread{
         gMode = mode;
     }
 
+    public void incrementOffset(double joystick){
+        offset += joystick*4*6*Units.Length.inches * 0.1;
+    }
+
     @Override
     public void run() {
         while(true){
@@ -84,19 +90,19 @@ public class ArmSystemControl extends Thread{
                     double armAngle = MainArm.getInstance().getAngle();
                     if(armAngle < Math.PI/2){
                         if(gMode == GripperMode.cargoPickup){
-                            gripper.setSetpoint(-3*Math.PI/4 - armAngle);
+                            gripper.setSetpoint(offset-3*Math.PI/4 - armAngle);
                         }else if(gMode == GripperMode.hatch){
-                            gripper.setSetpoint(-armAngle);
+                            gripper.setSetpoint(offset-armAngle);
                         }else{
-                            gripper.setSetpoint(-Math.PI/2 - armAngle);
+                            gripper.setSetpoint(offset-Math.PI/2 - armAngle);
                         }
                     }else{
                         if(gMode == GripperMode.cargoPickup){
-                            gripper.setSetpoint(Math.PI - 3*Math.PI/4 - armAngle);
+                            gripper.setSetpoint(backOffset+offset+Math.PI - 3*Math.PI/4 - armAngle);
                         }else if(gMode == GripperMode.hatch){
-                            gripper.setSetpoint(Math.PI - armAngle);
+                            gripper.setSetpoint(backOffset+offset+Math.PI - armAngle);
                         }else{
-                            gripper.setSetpoint(Math.PI - Math.PI/2 - armAngle);
+                            gripper.setSetpoint(backOffset+offset+Math.PI - Math.PI/2 - armAngle);
                         }
                     }
                     break;

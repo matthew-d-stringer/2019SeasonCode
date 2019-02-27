@@ -22,14 +22,19 @@ public class Target{
     }
 
     // Sets The Input Stream
-    public void input(double[] input) {
-        int contourIndex = (int)input[1];
-        contourNumber = input[0];
-        double[] cRow = {input[2],input[3],input[4],input[5],input[6]};
-        if(contourIndex == 0){
-            ct1.input(cRow);;
-        }else if(contourIndex == 1){
-            ct2.input(cRow);;
+    public boolean input(double[] input) {
+        try{
+            int contourIndex = (int)input[1];
+            contourNumber = input[0];
+            double[] cRow = {input[2],input[3],input[4],input[5],input[6]};
+            if(contourIndex == 0){
+                ct1.input(cRow);;
+            }else if(contourIndex == 1){
+                ct2.input(cRow);;
+            }
+            return true;
+        }catch(ArrayIndexOutOfBoundsException e){
+            return false;
         }
     }
 

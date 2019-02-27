@@ -12,6 +12,7 @@ public abstract class IControlBoard{
     public abstract Joystick getPathsJoystick();
     public abstract double armLength();
     public abstract boolean fastDrive();
+    public abstract boolean visionDrive();
 
     public abstract boolean quickTurn();
 
@@ -21,9 +22,12 @@ public abstract class IControlBoard{
     public abstract boolean flipArm();
     public abstract boolean armToInside();
     public abstract boolean armToBallPickup();
+    public abstract boolean armToBallGoal();
     public abstract boolean armToHatchPickup();
     public abstract boolean armToHatchSecondLevel();
     public abstract boolean armToHatchThirdLevel();
+    public abstract boolean incrementOffset();
+    public abstract boolean decrementOffset();
 
     public abstract boolean gripperShoot();
     public abstract boolean ballPistonGrab();

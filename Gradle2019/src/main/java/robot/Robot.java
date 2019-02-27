@@ -103,7 +103,7 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Double Hatch Right", DoubleHatchAuto.getRightName());
         SmartDashboard.putData(autoChooser);
 
-        // Jevois.getInstance().start();
+        Jevois.getInstance().start();
     }
 
     @Override
@@ -154,7 +154,7 @@ public class Robot extends IterativeRobot {
         last = dt + last;
         
         if(controlBoard.armToBallPickup()){
-            armPos.setXY(38*Units.Length.inches, -30*Units.Length.inches);
+            armPos.setXY(35*Units.Length.inches, -39*Units.Length.inches);
         }
 
         if(controlBoard.ballPistonGrab()){
@@ -163,9 +163,21 @@ public class Robot extends IterativeRobot {
             gripper.unGrab();
         }
 
+        if(controlBoard.incrementOffset()){
+            armControl.incrementOffset(1);
+        }else if(controlBoard.decrementOffset()){
+            armControl.incrementOffset(-1);
+        }
+
         if(controlBoard.armToInside()){
             armPos.setAngle(-90*Units.Angle.degrees);
             armPos.setMagnitude(Constants.Telescope.lenRetract);
+        }
+        if(controlBoard.armToBallGoal()){
+            double len = controlBoard.armLength();
+            setpoints.incrementBallGoal(controlBoard.getCoJoyPos().getY());
+            armPos.setMagnitude(len);
+            armPos.setYMaintainMag(setpoints.getBallGoal(),controlBoard.flipArm());
         }
         if(controlBoard.armToHatchPickup()){
             double len = controlBoard.armLength();
@@ -209,10 +221,10 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putString("Arm pos set", armPos.display());
 
         // climberControl.run();
-        if(controlBoard.climbUp() && climber.getClimbLen() < 0.95){
+        if(controlBoard.climbUp() /*&& climber.getClimbLen() < 0.95*/){
             // climberControl.setMode(ClimberControl.Modes.climbUp);
             climber.setVoltage(-12);
-        }else if(controlBoard.climbRetract() && climber.getClimbLen() > 0.1){
+        }else if(controlBoard.climbRetract() /*&& climber.getClimbLen() > 0.1*/){
             // climberControl.setMode(ClimberControl.Modes.climbDown);
             climber.setVoltage(12);
         }else{
@@ -249,7 +261,7 @@ public class Robot extends IterativeRobot {
             gripper.rollerOff();
         }
 
-        // teleopPaths.run();
+        teleopPaths.run();
         driveCode.run();
     }
 
@@ -322,6 +334,21 @@ public class Robot extends IterativeRobot {
         // }
 
         arm.setVoltage(12*controlBoard.getJoystickPos().getY());
+
+        // double turn, forward;
+        // Heading target = Jevois.getInstance().getPT();
+        // double angle = Math.PI/2 - target.getAngle();
+        // double dist = target.getMagnitude();
+
+        // turn = 1.5*angle;
+        // Coordinate pt1 = new Coordinate(2.5*Units.Length.feet, 0*Units.Length.feet);
+        // Coordinate pt2 = new Coordinate(8*Units.Length.feet, 3*Units.Length.feet);
+        // forward = Util.mapRange(dist, pt1, pt2);
+
+        // double outLeft = -turn + forward;
+        // double outRight = turn + forward;
+
+        // driveOut.set(Modes.Velocity, outRight, outLeft);
 
         // driveOut.set(Modes.Velocity, 5*Units.Length.feet, 5*Units.Length.feet);
         // driveOut.display();

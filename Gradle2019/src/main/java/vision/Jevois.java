@@ -8,6 +8,7 @@ import coordinates.Heading;
 import coordinates.Pos2D;
 import drive.PositionTracker;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Timer;
 import utilPackage.Units;
 
 public class Jevois extends Thread{
@@ -29,14 +30,14 @@ public class Jevois extends Thread{
     Coordinate placementOffset;
     Coordinate position;
     Heading PT;
-    SerialReader reader;
+    // SerialReader reader;
     SerialPort serial;
     Target target;
     double horizontalAngleOffset = 0;
 
     private Jevois(){
-        reader = new SerialReader(0);
-        serial = new SerialPort(1152000, SerialPort.Port.kUSB);
+        // reader = new SerialReader(0);
+        serial = new SerialPort(115200, SerialPort.Port.kUSB1);
         serial.enableTermination();
         placementOffset = new Coordinate(-10, 1.5);
         placementOffset.mult(Units.Length.inches);
@@ -47,18 +48,29 @@ public class Jevois extends Thread{
     @Override
     public void run() {
         startJevois();
-        while(true){
-            // String rawInput = reader.readLine();
+        while(!this.interrupted()){
+            // serial.writeString("ping\n");
             String rawInput = serial.readString();
+            if(!rawInput.isBlank())
+                System.out.println("Jevois output: "+rawInput.trim());
+            // else
+                // System.out.println("Jevois output is blank");
             double[] input = getNumberData(rawInput);
             if(input == null){
+                // Timer.delay(0.25);
                 continue;
             }
-            target.input(input);
+            if(!target.input(input)){
+                continue;
+            }
             if(target.getContourNumber() < 2){
                 continue;
             }
             position = getDeltaDistance(PositionTracker.getInstance().getPosition(), target.angleX(), target.calcDistance());
+            System.out.println(getPT().multC(1/Units.Length.inches).display("PT vector")+"\n");
+            Heading pt = getPT();
+            // System.out.print("PT angle: "+(pt.getAngle()-Math.PI/2));
+            // System.out.println("\tdist: "+pt.getMagnitude()+"\n");
         }
     }
 
@@ -76,11 +88,12 @@ public class Jevois extends Thread{
         // reader.sendMessage("setpar serout All");
         // reader.sendMessage("setcam absexp 100");
         // reader.sendMessage("streamon");
-        serial.writeString("setmapping2 YUYV 320 240 60.0 JeVois PythonTest");
-        serial.writeString("setpar serlog None");
-        serial.writeString("setpar serout All");
-        serial.writeString("setcam absexp 100");
-        serial.writeString("streamon");
+        serial.writeString("streamoff\n");
+        serial.writeString("setmapping2 YUYV 320 240 60.0 JeVois PythonTest\n");
+        serial.writeString("setpar serlog None\n");
+        serial.writeString("setpar serout All\n");
+        serial.writeString("setcam absexp 100\n");
+        serial.writeString("streamon\n");
     }
     private boolean shouldIgnore(String input){
         if(input.isBlank())

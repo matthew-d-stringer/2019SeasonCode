@@ -9,6 +9,7 @@ import autos.actions.HatchLock;
 import autos.actions.HatchRelease;
 import autos.actions.ParallelAction;
 import autos.actions.SeriesAction;
+import autos.actions.VisionPursuit;
 import autos.actions.WaitAction;
 import autos.actions.WaitUntilY;
 import autos.actions.ArmToLevel.GripperMode;
@@ -31,12 +32,13 @@ public class DoubleHatchAuto extends AutoMode{
 
     DrivePath toRocket, toRefill, loadToRocket;
     DrivePath backToStation;
+    VisionPursuit finishToRefill;
 
     WaitUntilY waitFirstGoal;
-    ArmToLevel high, mid, load;
+    ArmToLevel high, mid, load, reset;
 
     ParallelAction placeFirstHatch, placeSecondHatch;
-    SeriesAction spamHatch;
+    SeriesAction spamHatch, goToRefill;
     public DoubleHatchAuto(boolean right){
         if(!right)
             setInitPos(9.56, 5.64);
@@ -69,6 +71,9 @@ public class DoubleHatchAuto extends AutoMode{
         toRefill.setTurnCorrection(0.10);
         toRefill.setlookAhead(3*Units.Length.feet);
 
+        finishToRefill = new VisionPursuit(2.5*Units.Length.feet);
+        goToRefill = new SeriesAction(Arrays.asList(toRefill));
+
         loadToRocket = DrivePath.createFromFileOnRoboRio(path, "loadToRocket", slow);
         loadToRocket.setReverse(true);
         loadToRocket.setVerticalThresh(0.5*Units.Length.inches);
@@ -88,6 +93,7 @@ public class DoubleHatchAuto extends AutoMode{
         mid.useTelescope(false);
         load = new ArmToLevel(Levels.loading, false, GripperMode.hatch);
         load.setArmPercent(0.3);
+        reset = new ArmToLevel(Levels.reset, false, GripperMode.hatch);
 
         placeFirstHatch = new ParallelAction(Arrays.asList(toRocket,
             new SeriesAction(Arrays.asList(waitFirstGoal, high, new WaitAction(0.375)))));
@@ -110,8 +116,10 @@ public class DoubleHatchAuto extends AutoMode{
         runAction(new HatchRelease());
         runAction(new WaitAction(0.25));
         Gripper.getInstance().hatchLock();
-        runAction(new ParallelAction(Arrays.asList(toRefill, load, spamHatch)));
+        runAction(new ParallelAction(Arrays.asList(goToRefill, reset, spamHatch)));
         Gripper.getInstance().hatchLock();
+        runAction(load);
+        runAction(new WaitAction(0.25));
         runAction(placeSecondHatch);
         Gripper.getInstance().hatchRelease();
         runAction(new WaitAction(0.5));

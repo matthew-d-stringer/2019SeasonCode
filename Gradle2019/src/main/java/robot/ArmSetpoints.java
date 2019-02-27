@@ -9,6 +9,8 @@ public class ArmSetpoints{
 
     double ballLow, ballMid, ballHigh, ballGoal;
 
+    double sensitivity = 4;
+
     public ArmSetpoints(){
         hatchLow = -30*Units.Length.inches;
         hatchMid = 7*Units.Length.inches;
@@ -32,15 +34,15 @@ public class ArmSetpoints{
     }
 
     public void incrementHatchLow(double joystick){
-        hatchLow += joystick*2*Units.Length.inches * 0.1;
+        hatchLow += joystick*sensitivity*Units.Length.inches * 0.1;
     }
 
     public void incrementBallLow(double joystick){
-        ballLow += joystick*2*Units.Length.inches * 0.1;
+        ballLow += joystick*sensitivity*Units.Length.inches * 0.1;
     }
 
     public void incrementBallGoal(double joystick){
-        ballGoal += joystick*2*Units.Length.inches * 0.1;
+        ballGoal += joystick*sensitivity*Units.Length.inches * 0.1;
     }
 
     public double getHatchMid(){
@@ -52,11 +54,11 @@ public class ArmSetpoints{
     }
 
     public void incrementHatchMid(double joystick){
-        hatchMid += joystick*2*Units.Length.inches * 0.1;
+        hatchMid += joystick*sensitivity*Units.Length.inches * 0.1;
     }
 
     public void incrementBallMid(double joystick){
-        ballMid += joystick*2*Units.Length.inches * 0.1;
+        ballMid += joystick*sensitivity*Units.Length.inches * 0.1;
     }
 
     public double getHatchHigh(){
@@ -67,9 +69,9 @@ public class ArmSetpoints{
     }
 
     public void incrementHatchHigh(double joystick){
-        hatchHigh += joystick*2*Units.Length.inches * 0.1;
+        hatchHigh += joystick*sensitivity*Units.Length.inches * 0.1;
     }
     public void incrementBallHigh(double joystick){
-        ballHigh += joystick*2*Units.Length.inches * 0.1;
+        ballHigh += joystick*sensitivity*Units.Length.inches * 0.1;
     }
 }

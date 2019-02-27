@@ -153,6 +153,29 @@ public class Robot extends IterativeRobot {
         double dt = Timer.getFPGATimestamp() - last;
         last = dt + last;
         
+        if(controlBoard.retardClimb()){
+            armControl.disable(true);
+            telescope.setVoltage(3);
+            arm.setVoltage(12*controlBoard.getCoJoyPos().getY());
+            // climberControl.run();
+            if(controlBoard.climbUp() /*&& climber.getClimbLen() < 0.95*/){
+                // climberControl.setMode(ClimberControl.Modes.climbUp);
+                climber.setVoltage(-12);
+            }else if(controlBoard.climbRetract() /*&& climber.getClimbLen() > 0.1*/){
+                // climberControl.setMode(ClimberControl.Modes.climbDown);
+                climber.setVoltage(12);
+            }else{
+                // climberControl.setMode(ClimberControl.Modes.hold);
+                if(climber.getClimbLen() < 0.1)
+                    climber.setVoltage(0.25);
+                else
+                    climber.setVoltage(climber.getAntigrav());
+            }
+            return;
+        }else{
+            armControl.disable(false);
+        }
+
         if(controlBoard.armToBallPickup()){
             armPos.setXY(35*Units.Length.inches, -39*Units.Length.inches);
         }
@@ -220,20 +243,6 @@ public class Robot extends IterativeRobot {
         armControl.setArmPosition(armPos);
         SmartDashboard.putString("Arm pos set", armPos.display());
 
-        // climberControl.run();
-        if(controlBoard.climbUp() /*&& climber.getClimbLen() < 0.95*/){
-            // climberControl.setMode(ClimberControl.Modes.climbUp);
-            climber.setVoltage(-12);
-        }else if(controlBoard.climbRetract() /*&& climber.getClimbLen() > 0.1*/){
-            // climberControl.setMode(ClimberControl.Modes.climbDown);
-            climber.setVoltage(12);
-        }else{
-            // climberControl.setMode(ClimberControl.Modes.hold);
-            if(climber.getClimbLen() < 0.1)
-                climber.setVoltage(0.25);
-            else
-                climber.setVoltage(climber.getAntigrav());
-        }
 
         if(controlBoard.isCargoMode()){
             if(armPos.getY() < -28*Units.Length.inches){

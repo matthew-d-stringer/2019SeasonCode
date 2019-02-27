@@ -8,6 +8,7 @@ import utilPackage.Units;
 
 public class ArmToLevel extends Action{
     public static enum Levels{
+        reset,
         loading,
         low,
         middle,
@@ -59,6 +60,9 @@ public class ArmToLevel extends Action{
     public void start() {
         setpoint.setMagnitude(armLength);
         switch(level){
+            case reset:
+                setpoint.setAngle(-90*Units.Angle.degrees);
+                setpoint.setMagnitude(Constants.Telescope.lenRetract);
             case loading:
                 setpoint.setYMaintainMag(-24.5*Units.Length.inches, reverse);
                 break;

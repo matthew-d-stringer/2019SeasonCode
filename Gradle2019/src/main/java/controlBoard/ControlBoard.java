@@ -73,6 +73,11 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
+    public boolean retardClimb() {
+        return buttonPad.getRawButton(6);
+    }
+
+    @Override
     public boolean quickTurn() {
         return wheel.getRawButton(7);
     }

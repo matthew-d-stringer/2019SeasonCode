@@ -14,6 +14,8 @@ public abstract class IControlBoard{
     public abstract boolean fastDrive();
     public abstract boolean visionDrive();
 
+    public abstract boolean retardClimb();
+
     public abstract boolean quickTurn();
 
     public abstract boolean ballRollerGrab();

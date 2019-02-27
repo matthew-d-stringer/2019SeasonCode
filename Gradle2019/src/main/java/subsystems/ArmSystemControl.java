@@ -38,6 +38,8 @@ public class ArmSystemControl extends Thread{
     double offset = -10*Units.Angle.degrees;
     double backOffset = 0*Units.Angle.degrees;
 
+    boolean disable = false;
+
     private ArmSystemControl(){
         gMode = GripperMode.hatch;
         arm = MainArmControl.getInstance();
@@ -45,6 +47,10 @@ public class ArmSystemControl extends Thread{
         gripper = GripperControl.getInstance();
         climber = ClimberControl.getInstance();
         state = States.disabled;
+    }
+
+    public void disable(boolean disable){
+        this.disable = disable;
     }
 
     public void setArmPosition(Heading position){
@@ -71,43 +77,45 @@ public class ArmSystemControl extends Thread{
     @Override
     public void run() {
         while(true){
-            arm.run();
-            telescope.run();
-            gripper.run();
-            // climber.run();
-            switch(state){
-                case disabled:
-                    if(RobotState.isEnabled()){
-                        state = States.reset;
-                    }
-                    break;
-                case reset:
-                    if(arm.isRunning() && telescope.isRunning() && gripper.isRunning()){
-                        state = States.running;
-                    }
-                    break;
-                case running:
-                    double armAngle = MainArm.getInstance().getAngle();
-                    if(armAngle < Math.PI/2){
-                        if(gMode == GripperMode.cargoPickup){
-                            gripper.setSetpoint(offset-3*Math.PI/4 - armAngle);
-                        }else if(gMode == GripperMode.hatch){
-                            gripper.setSetpoint(offset-armAngle);
-                        }else{
-                            gripper.setSetpoint(offset-Math.PI/2 - armAngle);
+            if(!disable){
+                arm.run();
+                telescope.run();
+                gripper.run();
+                // climber.run();
+                switch(state){
+                    case disabled:
+                        if(RobotState.isEnabled()){
+                            state = States.reset;
                         }
-                    }else{
-                        if(gMode == GripperMode.cargoPickup){
-                            gripper.setSetpoint(backOffset+offset+Math.PI - 3*Math.PI/4 - armAngle);
-                        }else if(gMode == GripperMode.hatch){
-                            gripper.setSetpoint(backOffset+offset+Math.PI - armAngle);
-                        }else{
-                            gripper.setSetpoint(backOffset+offset+Math.PI - Math.PI/2 - armAngle);
+                        break;
+                    case reset:
+                        if(arm.isRunning() && telescope.isRunning() && gripper.isRunning()){
+                            state = States.running;
                         }
-                    }
-                    break;
+                        break;
+                    case running:
+                        double armAngle = MainArm.getInstance().getAngle();
+                        if(armAngle < Math.PI/2){
+                            if(gMode == GripperMode.cargoPickup){
+                                gripper.setSetpoint(offset-3*Math.PI/4 - armAngle);
+                            }else if(gMode == GripperMode.hatch){
+                                gripper.setSetpoint(offset-armAngle);
+                            }else{
+                                gripper.setSetpoint(offset-Math.PI/2 - armAngle);
+                            }
+                        }else{
+                            if(gMode == GripperMode.cargoPickup){
+                                gripper.setSetpoint(backOffset+offset+Math.PI - 3*Math.PI/4 - armAngle);
+                            }else if(gMode == GripperMode.hatch){
+                                gripper.setSetpoint(backOffset+offset+Math.PI - armAngle);
+                            }else{
+                                gripper.setSetpoint(backOffset+offset+Math.PI - Math.PI/2 - armAngle);
+                            }
+                        }
+                        break;
+                }
+                Timer.delay(0.007);
             }
-            Timer.delay(0.007);
         }
     }
 

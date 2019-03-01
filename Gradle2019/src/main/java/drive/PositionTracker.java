@@ -6,7 +6,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import coordinates.*;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.SerialPort.Port;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
 import utilPackage.Units;
@@ -28,7 +28,7 @@ public class PositionTracker extends Thread implements IPositionTracker{
     private double offset;
 
     private PositionTracker(){
-        vmxPi = new AHRS(Port.kUSB2);
+        vmxPi = new AHRS(Port.kMXP);
         this.start();
     }
 
@@ -166,7 +166,8 @@ public class PositionTracker extends Thread implements IPositionTracker{
 
     public void display(){
         if(SmartDashboard.getBoolean("Reset Location", false)){
-            setInitPos(new Coordinate());
+            // setInitPos(new Coordinate());
+            setInitPosFeet(9.56, 5.64);
             SmartDashboard.putBoolean("Reset Location", false);
         }
 

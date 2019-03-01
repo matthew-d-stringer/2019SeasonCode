@@ -1,6 +1,7 @@
 package subsystems;
 
 import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
 import utilPackage.Units;
 import utilPackage.Util;
@@ -30,6 +31,7 @@ public class GripperControl{
     }
 
     public void setSetpoint(double setpoint){
+        SmartDashboard.putNumber("Gripper setpoint", setpoint);
         setpoint = Util.forceInRange(setpoint, Constants.Gripper.minAngle, Constants.Gripper.maxAngle);
         this.setpoint = setpoint;
     }
@@ -42,7 +44,7 @@ public class GripperControl{
                 }
                 break;
             case reset:
-                gripper.setVoltage(3);
+                gripper.setVoltage(8);
                 if(gripper.getReset()){
                     state = States.running;
                 }

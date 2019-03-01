@@ -10,6 +10,7 @@ import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
 import utilPackage.Util;
 import vision.Jevois;
+import vision.LEDController;
 import drive.Drive;
 import drive.DriveOutput;
 import drive.PositionTracker;
@@ -24,7 +25,6 @@ import subsystems.ArmSystemControl;
 import subsystems.Climber;
 import subsystems.ClimberControl;
 import subsystems.Gripper;
-import subsystems.LEDController;
 import subsystems.MainArm;
 import subsystems.MainArmControl;
 import subsystems.Telescope;
@@ -95,7 +95,7 @@ public class Robot extends IterativeRobot {
 
         if(Constants.isCompBot){
             led = LEDController.getInstance();
-            led.setLED(false);
+            led.setLED(true);
         }
 
         autoChooser = new SendableChooser<>();
@@ -103,7 +103,7 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Double Hatch Right", DoubleHatchAuto.getRightName());
         SmartDashboard.putData(autoChooser);
 
-        Jevois.getInstance().start();
+        // Jevois.getInstance().start();
     }
 
     @Override
@@ -139,6 +139,7 @@ public class Robot extends IterativeRobot {
         // armPos = new Heading(20*Units.Length.inches, -20.5*Units.Length.inches);
         // armPos = new Heading(9*Units.Length.inches, 39*Units.Length.inches);
 
+        armControl.disable(false);
         armControl.setArmPosition(armPos);
         // armControl.setSetpoints(0*Units.Angle.degrees, 0);
         last = Timer.getFPGATimestamp();
@@ -155,7 +156,8 @@ public class Robot extends IterativeRobot {
         
         if(controlBoard.retardClimb()){
             armControl.disable(true);
-            telescope.setVoltage(3);
+            telescope.setVoltage(-3);
+            driveCode.run();
             arm.setVoltage(12*controlBoard.getCoJoyPos().getY());
             // climberControl.run();
             if(controlBoard.climbUp() /*&& climber.getClimbLen() < 0.95*/){
@@ -177,7 +179,8 @@ public class Robot extends IterativeRobot {
         }
 
         if(controlBoard.armToBallPickup()){
-            armPos.setXY(35*Units.Length.inches, -39*Units.Length.inches);
+            // armPos.setXY(20*Units.Length.inches, -42*Units.Length.inches);
+            armPos = Heading.createPolarHeading(-70*Units.Angle.degrees, Constants.Telescope.lenExtend);
         }
 
         if(controlBoard.ballPistonGrab()){
@@ -342,7 +345,8 @@ public class Robot extends IterativeRobot {
         //     gripper.rollerOff();
         // }
 
-        arm.setVoltage(12*controlBoard.getJoystickPos().getY());
+        // armControl.disable(true);
+        // arm.setVoltage(12*controlBoard.getJoystickPos().getY());
 
         // double turn, forward;
         // Heading target = Jevois.getInstance().getPT();

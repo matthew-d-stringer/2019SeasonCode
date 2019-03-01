@@ -63,7 +63,10 @@ public class Gripper{
      * @param voltage positive is up, negative is down
      */
     public void setVoltage(double voltage){
-        pivot.set(ControlMode.PercentOutput, -voltage/12);
+        // if(Constants.isCompBot)
+            pivot.set(ControlMode.PercentOutput, -voltage/12);
+        // else
+        //     pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
 
     public void hatchLock(){

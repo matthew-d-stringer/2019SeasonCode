@@ -1,4 +1,4 @@
-package subsystems;
+package vision;
 
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifier.LEDChannel;
@@ -21,10 +21,9 @@ public class LEDController{
 
     public void setLED(boolean on){
         if(on){
-            //Back is A
             led.setLEDOutput(0, LEDChannel.LEDChannelA);
-            //Front is B
             led.setLEDOutput(0, LEDChannel.LEDChannelB);
+            // C is both
             led.setLEDOutput(1, LEDChannel.LEDChannelC);
         }else{
             led.setLEDOutput(0, LEDChannel.LEDChannelA);

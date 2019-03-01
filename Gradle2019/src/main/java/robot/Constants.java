@@ -37,10 +37,10 @@ public class Constants {
 
 		public static double mass = 8.69052712-5.104*Units.Mass.kilograms;
 
-		public static double zeroDegVal = 80501;
-		public static double ninetyDegVal = 149758;
+		public static double zeroDegVal = 82008;
+		public static double ninetyDegVal = 153721;
 
-		public static double insideAngle = -95*Units.Angle.degrees;
+		public static double insideAngle = -88*Units.Angle.degrees;
 		
 		public static double maxXVal = (44-15)*Units.Length.inches;
 		public static double minXVal = (-45.5+15)*Units.Length.inches;
@@ -56,7 +56,7 @@ public class Constants {
 		public static double radius = 37.5*Units.Length.milimeters;
 
 		public static double retractVal = 0;
-		public static double extendVal = 4890;
+		public static double extendVal = 5124;
 
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
 		public static double comRetract = 0.3291279*Units.Length.meters, comExtend = 0.3996022*Units.Length.meters;

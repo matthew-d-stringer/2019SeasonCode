@@ -97,7 +97,7 @@ public class ArmSystemControl extends Thread{
                         double armAngle = MainArm.getInstance().getAngle();
                         if(armAngle < Math.PI/2){
                             if(gMode == GripperMode.cargoPickup){
-                                gripper.setSetpoint(offset-3*Math.PI/4 - armAngle);
+                                gripper.setSetpoint(offset-10*Units.Angle.degrees-3*Math.PI/4 - armAngle);
                             }else if(gMode == GripperMode.hatch){
                                 gripper.setSetpoint(offset-armAngle);
                             }else{

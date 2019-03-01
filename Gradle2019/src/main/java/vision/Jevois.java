@@ -37,7 +37,7 @@ public class Jevois extends Thread{
 
     private Jevois(){
         // reader = new SerialReader(0);
-        serial = new SerialPort(115200, SerialPort.Port.kUSB1);
+        serial = new SerialPort(115200, SerialPort.Port.kUSB2);
         serial.enableTermination();
         placementOffset = new Coordinate(-10, 1.5);
         placementOffset.mult(Units.Length.inches);

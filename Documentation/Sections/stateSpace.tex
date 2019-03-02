@@ -1,0 +1,56 @@
+\documentclass[../main.tex]{subfiles}
+% !TEX root = ../main.tex
+
+\begin{document}
+    \section{State Space Modeling and Control}
+
+    \subsection{Motor Modeling}
+    When doing analysis DC motors, we represent them mathematically as a resistor
+    and generator in series.
+    \begin{equation*}
+        V = IR + \dot \theta_m k_v
+    \end{equation*}
+    For motors, it is assumed that the torque is proportional to the current.
+    \begin{equation*}
+        \tau_m = I k_t
+    \end{equation*}
+    With this knowledge we can find the torque comming from a motor
+    \begin{equation*}
+        \tau_m = -\frac{k_v k_t}{R} \dot \theta_m + \frac{k_t}{R} V
+    \end{equation*}
+    If we have a gearbox attached to our motor, we know that 
+    \begin{align*}
+        \dot \theta = G \dot \theta_m \\
+        \tau = \frac{\tau_m}{G}
+    \end{align*}
+    where $G$ is the gear ratio. 
+    Replacing this into the original formula gives us 
+    \begin{equation*}
+        \tau = -\frac{k_v k_t}{RG^2} \dot \theta + \frac{k_t}{RG} V
+    \end{equation*}
+
+    \subsection{Mechanism Modeling}
+    The model above allows you to model the many possible mechanisms on your robot as long as you 
+    have a basic understanding of high school physics. In order to make sure you have a useful 
+    model, check that you have a differential equation. Here we are going to go into detail on modeling 
+    specific models. These models will then be put into State Space Representation in order to conduct 
+    further analysis.
+
+    \subsubsection{Motor with Mass Model}
+    In this example, we are going to model a motor that has a mass attached to the output shaft. This 
+    motor will be attached to a gearbox that has the gear ratio $G$. In order to model this system,
+    we will attempt to find the acceration of the mass. We can do this by finding the net torque of the system
+    as follows.
+    \begin{equation*}
+        \sum \tau = L \ddot \theta = -\frac{k_v k_t}{RG^2} \dot \theta + \frac{k_t}{RG} V
+    \end{equation*}
+    Where $L$ is your moment of inertia. Finally, your model will be
+    \begin{equation*}
+        \ddot \theta = -\frac{k_v k_t}{LRG^2} \dot \theta + \frac{k_t}{LRG} V
+    \end{equation*}
+
+    \subsubsection{Motor attached to Arm Model}
+
+    \subsection{State Space Representation}
+
+\end{document}

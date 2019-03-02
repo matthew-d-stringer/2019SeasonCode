@@ -39,11 +39,11 @@ public class ControlBoard extends IControlBoard{
     public Heading getCoJoyPos(){
         Heading out = new Heading();
         out.setX(coJoy.getX());
-        if(-coJoy.getY() == 1.0){
-            out.setY(0);
-        }else{
+        // if(-coJoy.getY() == 1.0){
+        //     out.setY(0);
+        // }else{
             out.setY(-coJoy.getY());
-        }
+        // }
         return out;
     }
 
@@ -73,8 +73,13 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
-    public boolean retardClimb() {
+    public boolean climbMode() {
         return buttonPad.getRawButton(6);
+    }
+
+    @Override
+    public boolean resetTelescope() {
+        return buttonPad.getRawButton(22);
     }
 
     @Override

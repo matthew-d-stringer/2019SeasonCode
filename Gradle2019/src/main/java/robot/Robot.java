@@ -103,7 +103,7 @@ public class Robot extends IterativeRobot {
         autoChooser.addObject("Double Hatch Right", DoubleHatchAuto.getRightName());
         SmartDashboard.putData(autoChooser);
 
-        // Jevois.getInstance().start();
+        Jevois.getInstance().start();
     }
 
     @Override
@@ -139,6 +139,8 @@ public class Robot extends IterativeRobot {
         // armPos = new Heading(20*Units.Length.inches, -20.5*Units.Length.inches);
         // armPos = new Heading(9*Units.Length.inches, 39*Units.Length.inches);
 
+        mode.end();
+
         armControl.disable(false);
         armControl.setArmPosition(armPos);
         // armControl.setSetpoints(0*Units.Angle.degrees, 0);
@@ -153,8 +155,12 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         double dt = Timer.getFPGATimestamp() - last;
         last = dt + last;
+
+        if(controlBoard.resetTelescope()){
+            TelescopeControl.getInstance().reset();
+        }
         
-        if(controlBoard.retardClimb()){
+        if(controlBoard.climbMode()){
             armControl.disable(true);
             telescope.setVoltage(-3);
             driveCode.run();
@@ -210,7 +216,7 @@ public class Robot extends IterativeRobot {
             if(Double.isNaN(len)){
                 len = Constants.Telescope.lenRetract;
             }
-            armPos.setMagnitude(controlBoard.armLength());
+            armPos.setMagnitude(Math.min(controlBoard.armLength(), Constants.Telescope.lenRetract+ 8*Units.Length.inches));
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallLow(controlBoard.getCoJoyPos().getY());
                 armPos.setYMaintainMag(setpoints.getBallLow(), controlBoard.flipArm());
@@ -236,6 +242,9 @@ public class Robot extends IterativeRobot {
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallHigh(controlBoard.getCoJoyPos().getY());
                 y = setpoints.getBallHigh();
+                if(controlBoard.flipArm()){
+                    y += 6*Units.Angle.degrees;
+                }
             }else{
                 setpoints.incrementHatchHigh(controlBoard.getCoJoyPos().getY());
                 y = setpoints.getHatchHigh();
@@ -304,10 +313,12 @@ public class Robot extends IterativeRobot {
         PositionTracker.getInstance().robotForward();
         driveOut.setNoVoltage();
         mode.start();
+        // teleopInit();
     }
 
     @Override
     public void autonomousPeriodic() {
+        // teleopPeriodic();
         // double vel = 2*Units.Length.feet;
         // driveOut.set(Modes.Velocity, vel, vel);
         // driveOut.setKin(-1, 0.3);

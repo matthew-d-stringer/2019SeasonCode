@@ -110,4 +110,8 @@ public class TelescopeControl{
     public boolean inErrorRange(double range){
         return Util.inErrorRange(setpoint, telescope.getDistance(), range);
     }
+
+    public void reset(){
+        state = States.reset;
+    }
 }

@@ -29,7 +29,7 @@ public class FancyDrive {
 		if(Robot.getControlBoard().fastDrive()){
 			kWheelNonLinearity = 0.005;
 		}else{
-			kWheelNonLinearity = 0.005;
+			kWheelNonLinearity = 0.00001;
 		}
 		double wheel = Robot.getControlBoard().getJoystickPos().getX()*1;
 		boolean isQuickTurn = Robot.getControlBoard().quickTurn();
@@ -40,6 +40,7 @@ public class FancyDrive {
 		if(!Robot.getControlBoard().fastDrive()){
 			y *= 0.25;
 		}
+		outwheel *= 0.3333;
 		double rightVal = 12*(y+outwheel);
 		double leftVal = 12*(y-outwheel);
 		// if(Robot.getControlBoard().slowDrive()){

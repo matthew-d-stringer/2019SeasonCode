@@ -48,7 +48,7 @@ public class DoubleHatchAuto extends AutoMode{
         TrapezoidalMp.constraints constraints = 
             new TrapezoidalMp.constraints(0, 14*Units.Length.feet, 8*Units.Length.feet);
         TrapezoidalMp.constraints reverseSpeed = 
-            new TrapezoidalMp.constraints(0, 8*Units.Length.feet, 6*Units.Length.feet);
+            new TrapezoidalMp.constraints(0, 9*Units.Length.feet, 6*Units.Length.feet);
         TrapezoidalMp.constraints slow = 
             new TrapezoidalMp.constraints(0, 8*Units.Length.feet, 4*Units.Length.feet);
         
@@ -67,7 +67,7 @@ public class DoubleHatchAuto extends AutoMode{
 
         toRefill = DrivePath.createFromFileOnRoboRio(path, "toRefill", reverseSpeed);
         // toRefill.setReverse(true);
-        toRefill.setVerticalThresh(0.5*Units.Length.inches);
+        toRefill.setVerticalThresh(3*Units.Length.inches);
         toRefill.setTurnCorrection(0.10);
         toRefill.setlookAhead(3*Units.Length.feet);
 

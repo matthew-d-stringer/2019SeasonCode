@@ -37,16 +37,17 @@ public class Jevois extends Thread{
 
     private Jevois(){
         // reader = new SerialReader(0);
-        serial = new SerialPort(115200, SerialPort.Port.kUSB2);
-        serial.enableTermination();
-        placementOffset = new Coordinate(-10, 1.5);
+        placementOffset = new Coordinate(-8, 1);
         placementOffset.mult(Units.Length.inches);
         position = new Coordinate();
         target = new Target();
+        PT = new Heading();
     }
 
     @Override
     public void run() {
+        serial = new SerialPort(115200, SerialPort.Port.kUSB);
+        serial.enableTermination();
         startJevois();
         while(!this.interrupted()){
             // serial.writeString("ping\n");

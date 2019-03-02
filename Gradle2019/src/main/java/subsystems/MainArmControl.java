@@ -26,11 +26,11 @@ public class MainArmControl{
     States state = States.disabled;
     double setpoint = 0;
     MainArm arm;
-    double mpMaxVel = 1*Units.Angle.revolutions;
-    double mpMaxAcc = 0.75*Units.Angle.revolutions;
+    double mpMaxVel = 1.75*Units.Angle.revolutions;
+    double mpMaxAcc = 2*Units.Angle.revolutions;
     double mpAcc = mpMaxAcc;
     Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
-    Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 0.25*Units.Angle.revolutions);
+    Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 1.75*Units.Angle.revolutions);
     volatile TrapezoidalMp mp;
     Timer time = new Timer();
     double mpStartTime, mpStartAngle;
@@ -123,6 +123,8 @@ public class MainArmControl{
                 double dError = -arm.getAngleVel();
                 double p = 24.4690;
                 double d = 6.9411;
+                p = 36;
+                d = 4.4;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot

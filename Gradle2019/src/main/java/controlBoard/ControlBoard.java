@@ -63,7 +63,7 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
-    public boolean fastDrive() {
+    public boolean slowDrive() {
         return joy.getRawButton(1);
     }
 
@@ -94,7 +94,7 @@ public class ControlBoard extends IControlBoard{
     
     @Override
     public boolean isCargoMode() {
-        return buttonPad.getRawButton(10);
+        return buttonPad.getRawButton(7);
     }
 
     @Override
@@ -109,12 +109,12 @@ public class ControlBoard extends IControlBoard{
 
     @Override
     public boolean armToBallPickup() {
-        return buttonPad.getRawButton(14);
+        return buttonPad.getRawButton(16);
     }
 
     @Override
     public boolean armToBallGoal() {
-        return buttonPad.getRawButton(19);
+        return buttonPad.getRawButton(12);
     }
 
     @Override

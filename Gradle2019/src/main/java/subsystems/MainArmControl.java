@@ -43,7 +43,7 @@ public class MainArmControl{
     }
 
     public void setSetpoint(double set){
-        set = Math.max(set, -88*Units.Angle.degrees);
+        set = Math.max(set, -95*Units.Angle.degrees);
         set = Math.min(set, 235*Units.Angle.degrees);
         if(!Util.inErrorRange(set, setpoint, 5*Units.Angle.degrees)){
             mpStartTime = time.get();
@@ -61,10 +61,10 @@ public class MainArmControl{
 
     public void setHeading(Heading set){
         double tSet = set.getAngle();
-        if(tSet < -90*Units.Angle.degrees){
+        if(tSet < -130*Units.Angle.degrees){
             tSet = 2*Math.PI - Math.abs(tSet);
         }
-        tSet = Math.max(tSet, -90*Units.Angle.degrees);
+        tSet = Math.max(tSet, -110*Units.Angle.degrees);
         tSet = Math.min(tSet, 215*Units.Angle.degrees);
         // System.out.println("tSet before: "+tSet/Units.Angle.degrees);
         if(!Util.inErrorRange(tSet, setpoint, 5*Units.Angle.degrees)){

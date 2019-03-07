@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import autos.AutoEndedException;
 import autos.actions.ArmToLevel;
+import autos.actions.DirectPursuit;
 import autos.actions.DrivePath;
 import autos.actions.HatchLock;
 import autos.actions.HatchRelease;
@@ -14,6 +15,7 @@ import autos.actions.WaitAction;
 import autos.actions.WaitUntilY;
 import autos.actions.ArmToLevel.GripperMode;
 import autos.actions.ArmToLevel.Levels;
+import coordinates.Coordinate;
 import drive.PositionTracker;
 import robot.Constants;
 import subsystems.ArmSystemControl;
@@ -33,6 +35,7 @@ public class DoubleHatchAuto extends AutoMode{
     DrivePath toRocket, toRefill, loadToRocket;
     DrivePath backToStation;
     VisionPursuit finishToRefill;
+    DirectPursuit finishToRefill2;
 
     WaitUntilY waitFirstGoal;
     ArmToLevel high, mid, load, reset;
@@ -72,6 +75,7 @@ public class DoubleHatchAuto extends AutoMode{
         toRefill.setlookAhead(3*Units.Length.feet);
 
         finishToRefill = new VisionPursuit(2.5*Units.Length.feet);
+        finishToRefill2 = new DirectPursuit(new Coordinate(2.4487, 1.589).mult(Units.Length.feet));
         goToRefill = new SeriesAction(Arrays.asList(toRefill));
 
         loadToRocket = DrivePath.createFromFileOnRoboRio(path, "loadToRocket", slow);

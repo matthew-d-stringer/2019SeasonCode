@@ -13,8 +13,8 @@ public class ArmSetpoints{
 
     public ArmSetpoints(){
         hatchLow = -30*Units.Length.inches;
-        hatchMid = 7*Units.Length.inches;
-        hatchHigh = 33*Units.Length.inches;
+        hatchMid = 0*Units.Length.inches;
+        hatchHigh = 29*Units.Length.inches;
 
         ballLow = -15.5*Units.Length.inches;
         ballGoal = -5*Units.Length.inches;

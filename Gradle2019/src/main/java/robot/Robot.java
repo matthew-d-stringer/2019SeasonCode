@@ -133,7 +133,7 @@ public class Robot extends IterativeRobot {
         driveOut.set(Modes.Voltage, 0,0);
         armPos = Heading.createPolarHeading(-45*Units.Angle.degrees, Constants.Telescope.lenRetract);
 
-        // armPos = Heading.createPolarHeading(0*Units.Angle.degrees, Constants.Telescope.lenExtend);
+        // armPos = Heading.createPolarHeading(-45*Units.Angle.degrees, Constants.Telescope.lenExtend);
 
         // armPos = telescope.getEndPos().heading();
         // armPos = new Heading(20*Units.Length.inches, -20.5*Units.Length.inches);
@@ -202,7 +202,7 @@ public class Robot extends IterativeRobot {
         }
 
         if(controlBoard.armToInside()){
-            armPos.setAngle(-90*Units.Angle.degrees);
+            armPos.setAngle(-104*Units.Angle.degrees);
             armPos.setMagnitude(Constants.Telescope.lenRetract);
         }
         if(controlBoard.armToBallGoal()){
@@ -312,13 +312,13 @@ public class Robot extends IterativeRobot {
         }
         PositionTracker.getInstance().robotForward();
         driveOut.setNoVoltage();
-        mode.start();
-        // teleopInit();
+        // mode.start();
+        teleopInit();
     }
 
     @Override
     public void autonomousPeriodic() {
-        // teleopPeriodic();
+        teleopPeriodic();
         // double vel = 2*Units.Length.feet;
         // driveOut.set(Modes.Velocity, vel, vel);
         // driveOut.setKin(-1, 0.3);

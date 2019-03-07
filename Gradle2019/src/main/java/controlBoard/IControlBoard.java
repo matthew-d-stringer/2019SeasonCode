@@ -11,7 +11,7 @@ public abstract class IControlBoard{
     public abstract double getCoJoySlider();
     public abstract Joystick getPathsJoystick();
     public abstract double armLength();
-    public abstract boolean fastDrive();
+    public abstract boolean slowDrive();
     public abstract boolean visionDrive();
 
     public abstract boolean climbMode();

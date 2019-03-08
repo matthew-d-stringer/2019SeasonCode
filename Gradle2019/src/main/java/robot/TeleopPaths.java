@@ -60,20 +60,25 @@ public class TeleopPaths{
             double angle = Math.PI/2 - target.getAngle();
             double dist = target.getMagnitude();
 
-            turn = 1.15*angle;
+            turn = 1.1*angle;
+            // turn = 2*angle;
             Coordinate pt1;
-            if(Robot.getControlBoard().isCargoMode())
-                pt1 = new Coordinate(4.5*Units.Length.feet, 0*Units.Length.feet);
-            else
-                pt1 = new Coordinate(2.5*Units.Length.feet, 0*Units.Length.feet);
-            Coordinate pt2 = new Coordinate(8*Units.Length.feet, 3*Units.Length.feet);
+            // if(Robot.getControlBoard().isCargoMode())
+            //     pt1 = new Coordinate(4.5*Units.Length.feet, 0*Units.Length.feet);
+            // else
+            pt1 = new Coordinate(3*Units.Length.feet, 0*Units.Length.feet);
+            Coordinate pt2 = new Coordinate(4*Units.Length.feet, 3*Units.Length.feet);
             forward = Util.mapRange(dist, pt1, pt2);
-            forward = Math.min(forward, 5*Units.Length.feet);
+            forward = Math.min(forward, 6*Units.Length.feet);
+            // forward = 2*Units.Length.feet;
 
             double outLeft = -turn + forward;
             double outRight = turn + forward;
 
-            DriveOutput.getInstance().set(Modes.Velocity, outRight, outLeft);
+            // if(Jevois.getInstance().useVision())
+                DriveOutput.getInstance().set(Modes.Velocity, outRight, outLeft);
+            // else
+            //     DriveOutput.getInstance().setNoVelocity();
         }
 
         //Left, closest Cargo

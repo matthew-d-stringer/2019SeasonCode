@@ -79,7 +79,8 @@ public class Robot extends IterativeRobot {
         climber = Climber.getInstance();
 
         driveOut.start();
-        mode = new DoubleHatchAuto(false);
+        // mode = new DoubleHatchAuto(false);
+        mode = new DoubleCargoAuto();
         // mode = new FarNearLeftHatchAuto();
         // mode = new SkidDrive();
 
@@ -305,20 +306,20 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-        if((String)autoChooser.getSelected() == DoubleHatchAuto.getLeftName()){
-            mode = new DoubleHatchAuto(false);
-        }else if((String)autoChooser.getSelected() == DoubleHatchAuto.getRightName()){
-            mode = new DoubleHatchAuto(true);
-        }
+        // if((String)autoChooser.getSelected() == DoubleHatchAuto.getLeftName()){
+        //     mode = new DoubleHatchAuto(false);
+        // }else if((String)autoChooser.getSelected() == DoubleHatchAuto.getRightName()){
+        //     mode = new DoubleHatchAuto(true);
+        // }
         PositionTracker.getInstance().robotForward();
         driveOut.setNoVoltage();
-        // mode.start();
-        teleopInit();
+        mode.start();
+        // teleopInit();
     }
 
     @Override
     public void autonomousPeriodic() {
-        teleopPeriodic();
+        // teleopPeriodic();
         // double vel = 2*Units.Length.feet;
         // driveOut.set(Modes.Velocity, vel, vel);
         // driveOut.setKin(-1, 0.3);

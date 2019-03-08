@@ -26,14 +26,15 @@ public class Target{
         try{
             int contourIndex = (int)input[1];
             contourNumber = input[0];
-            double[] cRow = {input[2],input[3],input[4],input[5],input[6]};
+            double[] cRow = {input[2],input[3],input[4],input[5]};
             if(contourIndex == 0){
-                ct1.input(cRow);;
+                ct1.input(cRow);
             }else if(contourIndex == 1){
-                ct2.input(cRow);;
+                ct2.input(cRow);
             }
             return true;
         }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("Array out of bounds");
             return false;
         }
     }
@@ -42,9 +43,16 @@ public class Target{
     public double[] target = {3.31, 5.82557203}; //TODO
 
     public double calcDistance(){
-        double averageHeight = getAvgDims().getY();
-        double distance = 5605.44 * (Math.pow(averageHeight, -0.9758289));
-        return distance*Units.Length.inches;
+        // double averageHeight = getAvgDims().getY();
+        // double distance = 5605.44 * (Math.pow(averageHeight, -0.9758289));
+        double heightLeft = ct1.getContourDimensions().getY();
+        double heightRight = ct2.getContourDimensions().getY();
+        double dist = (calcDistanceHelper(heightLeft)+calcDistanceHelper(heightRight))/2;
+        return dist*Units.Length.inches;
+    }
+
+    private double calcDistanceHelper(double height){
+        return 15702.43*Math.pow(height, -1.22916);
     }
 
     //TODO: probably remove this

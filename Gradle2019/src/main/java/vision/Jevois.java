@@ -35,9 +35,11 @@ public class Jevois extends Thread{
     Target target;
     double horizontalAngleOffset = 0;
 
+    boolean useVision = false;
+
     private Jevois(){
         // reader = new SerialReader(0);
-        placementOffset = new Coordinate(-8, 1);
+        placementOffset = new Coordinate(-5.5, 2.5);
         placementOffset.mult(Units.Length.inches);
         position = new Coordinate();
         target = new Target();
@@ -48,10 +50,11 @@ public class Jevois extends Thread{
     public void run() {
         serial = new SerialPort(115200, SerialPort.Port.kUSB);
         serial.enableTermination();
-        startJevois();
+        // startJevois();
         while(!this.interrupted()){
             // serial.writeString("ping\n");
             String rawInput = serial.readString();
+            // System.out.println(rawInput);
             if(!rawInput.isBlank())
                 System.out.println("Jevois output: "+rawInput.trim());
             // else
@@ -59,14 +62,18 @@ public class Jevois extends Thread{
             double[] input = getNumberData(rawInput);
             if(input == null){
                 // Timer.delay(0.25);
+                useVision = false;
                 continue;
             }
             if(!target.input(input)){
+                useVision = false;
                 continue;
             }
             if(target.getContourNumber() < 2){
+                useVision = false;
                 continue;
             }
+            useVision = true;
             position = getDeltaDistance(PositionTracker.getInstance().getPosition(), target.angleX(), target.calcDistance());
             System.out.println(getPT().multC(1/Units.Length.inches).display("PT vector")+"\n");
             Heading pt = getPT();
@@ -81,6 +88,10 @@ public class Jevois extends Thread{
 
     public Coordinate getPosition(){
         return position;
+    }
+
+    public boolean useVision(){
+        return useVision;
     }
 
     private void startJevois(){

@@ -134,6 +134,8 @@ public class Robot extends IterativeRobot {
         driveOut.set(Modes.Voltage, 0,0);
         armPos = Heading.createPolarHeading(-45*Units.Angle.degrees, Constants.Telescope.lenRetract);
 
+        ClimbCode.getInstance().reset();
+
         // armPos = Heading.createPolarHeading(-45*Units.Angle.degrees, Constants.Telescope.lenExtend);
 
         // armPos = telescope.getEndPos().heading();
@@ -147,6 +149,7 @@ public class Robot extends IterativeRobot {
         // armControl.setSetpoints(0*Units.Angle.degrees, 0);
         last = Timer.getFPGATimestamp();
         climber.reset();
+        climber.guidesUp();
         mRunner.setInitPosFeet(2.20, 1.74);
         mRunner.robotForward();
     }
@@ -161,28 +164,31 @@ public class Robot extends IterativeRobot {
             TelescopeControl.getInstance().reset();
         }
         
-        if(controlBoard.climbMode()){
+        if(controlBoard.climbMode() /* && !ClimbCode.getInstance().isDone()*/){
             armControl.disable(true);
-            telescope.setVoltage(-3);
-            driveCode.run();
-            arm.setVoltage(12*controlBoard.getCoJoyPos().getY());
-            // climberControl.run();
-            if(controlBoard.climbUp() /*&& climber.getClimbLen() < 0.95*/){
-                // climberControl.setMode(ClimberControl.Modes.climbUp);
-                climber.setVoltage(-12);
-            }else if(controlBoard.climbRetract() /*&& climber.getClimbLen() > 0.1*/){
-                // climberControl.setMode(ClimberControl.Modes.climbDown);
-                climber.setVoltage(12);
-            }else{
-                // climberControl.setMode(ClimberControl.Modes.hold);
-                if(climber.getClimbLen() < 0.1)
-                    climber.setVoltage(0.25);
-                else
-                    climber.setVoltage(climber.getAntigrav());
-            }
+            arm.setVoltage(0);
+            telescope.setVoltage(0);
+            ClimbCode.getInstance().run();
+            // driveCode.run();
+            // // arm.setVoltage(12*controlBoard.getCoJoyPos().getY());
+            // // climberControl.run();
+            // if(controlBoard.climbUp() /*&& climber.getClimbLen() < 0.95*/){
+            //     // climberControl.setMode(ClimberControl.Modes.climbUp);
+            //     climber.setVoltage(-12);
+            // }else if(controlBoard.climbRetract() /*&& climber.getClimbLen() > 0.1*/){
+            //     // climberControl.setMode(ClimberControl.Modes.climbDown);
+            //     climber.setVoltage(12);
+            // }else{
+            //     // climberControl.setMode(ClimberControl.Modes.hold);
+            //     if(climber.getClimbLen() < 0.1)
+            //         climber.setVoltage(0.25);
+            //     else
+            //         climber.setVoltage(climber.getAntigrav());
+            // }
             return;
         }else{
-            armControl.disable(false);
+            armControl.disable(true);
+            climber.setVoltage(0);
         }
 
         if(controlBoard.armToBallPickup()){
@@ -337,7 +343,9 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void testPeriodic() {
+        // climber.outputToRollers(2);
         // arm.disable(true);
+        // telescope.setVoltage(0);
         // arm.setVoltage(3);
         // if(controlBoard.climbUp()){
         //     climberControl.setMode(ClimberControl.Modes.climbUp);

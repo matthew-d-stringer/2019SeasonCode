@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import utilPackage.Units;
 import utilPackage.Util;
 
@@ -88,12 +89,17 @@ public class Constants {
 
 	public static class Climber{
 		public static int climbNum = 30;
+		public static int footNum = 31;
 
 		public static double topVal = 0;
-		public static double bottomVal = -1987149;
+		public static double bottomVal = -255000;
 
 		public static double topLen = 0;
 		public static double bottomLen = 1;
+
+		public static int[] guideNums = {7, 3}; //7 is down
+		public static Value down = Value.kForward;
+		public static Value up = Value.kReverse;
 	}
 
     public static class Image{

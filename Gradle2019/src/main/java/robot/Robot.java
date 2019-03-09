@@ -187,7 +187,7 @@ public class Robot extends IterativeRobot {
             // }
             return;
         }else{
-            armControl.disable(true);
+            armControl.disable(false);
             climber.setVoltage(0);
         }
 

@@ -90,15 +90,19 @@ public class DrivePath extends Action{
 
     @Override
     public void update() {
-        double vel = pHolder.calculateVel(segment.getDistOnPath());
+        double dist = segment.getDistOnPath();
+        double vel = pHolder.calculateVel(dist);
         vel = Math.max(2*Units.Length.feet, vel);
         if(reverse)
             vel *= -1;
         follower.update(segment, vel);
         SmartDashboard.putNumber("Current Trajectory ID", segment.getCurrentID());
-        SmartDashboard.putNumber("Distance on Path", segment.getDistOnPath());
+        SmartDashboard.putNumber("Distance on Path", dist);
         SmartDashboard.putNumber("Total Distance", segment.getTotalDistance());
         isDone = segment.isDone(PositionTracker.getInstance().getPosition().getPos(), parallelTrackThresh, crossTrackThresh);
+        if(dist/segment.getTotalDistance() < 0.1){
+            isDone = false;
+        }
         SmartDashboard.putBoolean("DrivePath done?", isDone);
         if(isDone){
             done();
@@ -107,7 +111,7 @@ public class DrivePath extends Action{
 
     @Override
     public void done() {
-        DriveOutput.getInstance().set(DriveOutput.Modes.Voltage, 0, 0);
+        DriveOutput.getInstance().setNoVoltage();
     }
 
     @Override

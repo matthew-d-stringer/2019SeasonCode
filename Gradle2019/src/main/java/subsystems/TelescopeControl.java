@@ -83,8 +83,8 @@ public class TelescopeControl{
                 break;
             case running:
                 double feedforward = telescope.getAntigrav();
-                double p = 58.4177;
-                double d = 7.1108;
+                double p = 69.9800;
+                double d = 5.6434;
                 double error;
                 // double tmpSetpoint = mp.Calculate(time.get())[0];
                 // ble tmpSetpoint = setpoint;

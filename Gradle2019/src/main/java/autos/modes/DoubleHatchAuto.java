@@ -6,8 +6,6 @@ import autos.AutoEndedException;
 import autos.actions.ArmToLevel;
 import autos.actions.DirectPursuit;
 import autos.actions.DrivePath;
-import autos.actions.HatchLock;
-import autos.actions.HatchRelease;
 import autos.actions.ParallelAction;
 import autos.actions.SeriesAction;
 import autos.actions.VisionPursuit;
@@ -104,10 +102,8 @@ public class DoubleHatchAuto extends AutoMode{
         placeSecondHatch = new ParallelAction(Arrays.asList(loadToRocket,
             new SeriesAction(Arrays.asList(waitFirstGoal, mid, new WaitAction(0.375)))));
 
-        HatchRelease hr = new HatchRelease();
-        HatchLock hL = new HatchLock();
         WaitAction simpWait = new WaitAction(0.5);
-        spamHatch = new SeriesAction(Arrays.asList(hr, simpWait, hL));
+        spamHatch = new SeriesAction(Arrays.asList(simpWait));
     }
 
     @Override
@@ -117,17 +113,17 @@ public class DoubleHatchAuto extends AutoMode{
         // runAction(toRocket);
         runAction(placeFirstHatch);
         // Gripper.getInstance().hatchRelease();
-        runAction(new HatchRelease());
+        // runAction(new HatchRelease());
         runAction(new WaitAction(0.25));
-        Gripper.getInstance().hatchLock();
+        // Gripper.getInstance().hatchLock();
         runAction(new ParallelAction(Arrays.asList(goToRefill, reset, spamHatch)));
-        Gripper.getInstance().hatchLock();
+        // Gripper.getInstance().hatchLock();
         runAction(load);
         runAction(new WaitAction(0.25));
         runAction(placeSecondHatch);
-        Gripper.getInstance().hatchRelease();
+        // Gripper.getInstance().hatchRelease();
         runAction(new WaitAction(0.5));
-        Gripper.getInstance().hatchLock();
+        // Gripper.getInstance().hatchLock();
 
         // runAction(load);
         // runAction(mid);

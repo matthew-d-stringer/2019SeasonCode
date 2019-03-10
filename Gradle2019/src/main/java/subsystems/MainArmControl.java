@@ -26,11 +26,11 @@ public class MainArmControl{
     States state = States.disabled;
     double setpoint = 0;
     MainArm arm;
-    double mpMaxVel = 1.75*Units.Angle.revolutions;
-    double mpMaxAcc = 2*Units.Angle.revolutions;
+    double mpMaxVel = 6*Units.Angle.revolutions;
+    double mpMaxAcc = 2.25*Units.Angle.revolutions;
     double mpAcc = mpMaxAcc;
     Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
-    Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 1.75*Units.Angle.revolutions);
+    Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 1.4*Units.Angle.revolutions);
     volatile TrapezoidalMp mp;
     Timer time = new Timer();
     double mpStartTime, mpStartAngle;
@@ -40,6 +40,10 @@ public class MainArmControl{
         arm = MainArm.getInstance();
         mpStartAngle = arm.getAngle();
         mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
+    }
+
+    public void resetForTeleop(){
+        mpStartAngle = arm.getAngle();
     }
 
     public void setSetpoint(double set){
@@ -72,6 +76,7 @@ public class MainArmControl{
             mpStartAngle = arm.getAngle();
             mpAcc = calculateAcc(tSet, mpStartAngle, mpMaxAcc);
         }
+        System.out.println("mpStartAngle: "+mpStartAngle);
         // System.out.println("tSet after: "+tSet/Units.Angle.degrees);
         setpoint = tSet;
         mp.updateConstraints(mpStartAngle, new TrapezoidalMp.constraints(tSet-mpStartAngle, mpMaxVel, mpMaxAcc));
@@ -111,20 +116,20 @@ public class MainArmControl{
                 break;
             case running:
                 if(RobotState.isEnabled() && !wasEnabled){
-                    time.start();
+                    mpStartTime = time.get();
                 }
                 wasEnabled = RobotState.isEnabled();
 
-                double mpSetpoint = mp.Calculate(time.get() - mpStartTime)[0];
-                // System.out.println("Mp Setpoint: "+mpSetpoint);
-                double feedForward = arm.getAntigrav();
+                double[] mpSetpoints = mp.Calculate(time.get() - mpStartTime);
+                double mpSetpoint = mpSetpoints[0];
+                // System.out.println("pos: "+mpSetpoints[0]+", vel: "+mpSetpoints[1]+", acc: "+mpSetpoints[2]);
+                // double feedForward = arm.getAntigrav(); 
+                double feedForward = arm.getAntigrav() + arm.getFeedForward(mpSetpoints[1], mpSetpoints[2]);
                 // double error = setpoint - arm.getAngle();
                 double error = mpSetpoint - arm.getAngle();
                 double dError = -arm.getAngleVel();
-                double p = 24.4690;
-                double d = 6.9411;
-                p = 36;
-                d = 4.4;
+                double p = 14.8871;
+                double d = 3.8448;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot
@@ -158,6 +163,6 @@ public class MainArmControl{
     }
 
     public boolean finishedMovement(){
-        return mpFinished() && inErrorRange(10*Units.Angle.degrees);
+        return mpFinished() && inErrorRange(20*Units.Angle.degrees);
     }
 }

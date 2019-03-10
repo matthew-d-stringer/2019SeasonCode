@@ -36,12 +36,12 @@ public class Constants {
 		public static int slaveNum = 22;
 		public static int resetNum = 5;
 
-		public static double mass = 8.69052712-5.104*Units.Mass.kilograms;
+		public static double mass = 7.14505445-3.39681515*Units.Mass.kilograms; //everything but the gripper
 
-		public static double zeroDegVal = 82008;
-		public static double ninetyDegVal = 153721;
+		public static double zeroDegVal = 940;
+		public static double ninetyDegVal = 1895;
 
-		public static double insideAngle = -88*Units.Angle.degrees;
+		public static double insideAngle = -60*Units.Angle.degrees;
 		
 		public static double maxXVal = (44-15)*Units.Length.inches;
 		public static double minXVal = (-45.5+15)*Units.Length.inches;
@@ -57,7 +57,7 @@ public class Constants {
 		public static double radius = 37.5*Units.Length.milimeters;
 
 		public static double retractVal = 0;
-		public static double extendVal = 5124;
+		public static double extendVal = 4880;
 
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
 		public static double comRetract = 0.3291279*Units.Length.meters, comExtend = 0.3996022*Units.Length.meters;
@@ -71,20 +71,17 @@ public class Constants {
 		public static int rollerNum = 41;
 		public static int resetNum = 8;
 
-		public static int[] hatchNums = {6,2};
-		public static int gripNum = 5;
+		public static int[] gripNum = {6,2};
 
-		public static double mass = 5.104*Units.Mass.kilograms;
-		public static double momentOfInertia = 0.352305668;
-		public static double comLength = 0.10397782*Units.Length.meters;
-		public static double angleOffsetFromHatch = 0.51953129*Units.Angle.radians;
+		public static double mass = 3.39681515*Units.Mass.kilograms;
+		public static double momentOfInertia = 0.10353689;
+		public static double comLength = 0.14759186*Units.Length.meters;
+		public static double angleOffsetFromHatch = 0*Units.Angle.radians;
 		
 		public static double zeroDegVal = 3344;
 		public static double ninetyDegVal = 0;
 		public static double maxAngle = 90*Units.Angle.degrees; 
 		public static double minAngle = -112*Units.Angle.degrees; 
-
-		public static double com = 0, comWithBall = 0;
 	}
 
 	public static class Climber{

@@ -88,7 +88,7 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
-    public boolean ballRollerGrab() {
+    public boolean gripperGrab() {
         return joy.getRawButton(7);
     }
     
@@ -157,8 +157,8 @@ public class ControlBoard extends IControlBoard{
         return coJoy.getRawButton(1);
     }
 
-    @Override
-    public boolean ballPistonGrab() {
-        return ballPistonGrab.toggleVar(joy.getRawButton(2));
-    }
+    // @Override
+    // public boolean ballPistonGrab() {
+    //     return ballPistonGrab.toggleVar(joy.getRawButton(2));
+    // }
 }

@@ -24,9 +24,8 @@ public class ArmSystemControl extends Thread{
     }
 
     public static enum GripperMode{
-        hatch,
-        cargo,
-        cargoPickup;
+        level,
+        pickup;
     }
     GripperMode gMode;
 
@@ -35,13 +34,13 @@ public class ArmSystemControl extends Thread{
     GripperControl gripper;
     ClimberControl climber;
     States state;
-    double offset = -10*Units.Angle.degrees;
+    double offset = 0*Units.Angle.degrees;
     double backOffset = 0*Units.Angle.degrees;
 
     boolean disable = false;
 
     private ArmSystemControl(){
-        gMode = GripperMode.hatch;
+        gMode = GripperMode.level;
         arm = MainArmControl.getInstance();
         telescope = TelescopeControl.getInstance();
         gripper = GripperControl.getInstance();
@@ -95,26 +94,24 @@ public class ArmSystemControl extends Thread{
                         break;
                     case running:
                         double armAngle = MainArm.getInstance().getAngle();
-                        if(armAngle < Math.PI/2 && arm.getSetpoint() > Math.PI/2 && gMode == GripperMode.hatch){
+                        if(armAngle < Math.PI/2 && arm.getSetpoint() > Math.PI/2 && gMode == GripperMode.level){
                             gripper.setSetpoint(Constants.Gripper.maxAngle);
                         }else if(armAngle < Math.PI/2){
-                            if(gMode == GripperMode.cargoPickup){
+                            if(gMode == GripperMode.pickup){
                                 gripper.setSetpoint(offset-10*Units.Angle.degrees-3*Math.PI/4 - armAngle);
-                            }else if(gMode == GripperMode.hatch){
-                                gripper.setSetpoint(offset-armAngle);
                             }else{
-                                gripper.setSetpoint(offset-Math.PI/2 - armAngle);
-                            }
+                                gripper.setSetpoint(offset-armAngle);
+                            }                        
                         }else{
-                            if(gMode == GripperMode.cargoPickup){
+                            if(gMode == GripperMode.pickup){
                                 gripper.setSetpoint(backOffset+offset+Math.PI - 3*Math.PI/4 - armAngle);
-                            }else if(gMode == GripperMode.hatch){
+                            }else if(gMode == GripperMode.level){
                                 gripper.setSetpoint(backOffset+offset+Math.PI - armAngle);
                             }else{
-                                if(Heading.createPolarHeading(armAngle, telescope.getSetpoint()).getY() > 36*Units.Length.inches)
-                                    gripper.setSetpoint(backOffset-30*Units.Angle.degrees+offset+Math.PI - Math.PI/2 - armAngle);
-                                else
-                                    gripper.setSetpoint(backOffset+offset+Math.PI - Math.PI/2 - armAngle);
+                                // if(Heading.createPolarHeading(armAngle, telescope.getSetpoint()).getY() > 36*Units.Length.inches)
+                                //     gripper.setSetpoint(backOffset-30*Units.Angle.degrees+offset+Math.PI - Math.PI/2 - armAngle);
+                                // else
+                                //     gripper.setSetpoint(backOffset+offset+Math.PI - Math.PI/2 - armAngle);
                             }
                         }
                         break;

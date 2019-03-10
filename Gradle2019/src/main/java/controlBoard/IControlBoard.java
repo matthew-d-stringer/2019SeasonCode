@@ -20,7 +20,7 @@ public abstract class IControlBoard{
 
     public abstract boolean quickTurn();
 
-    public abstract boolean ballRollerGrab();
+    public abstract boolean gripperGrab();
 
     public abstract boolean isCargoMode();
     public abstract boolean flipArm();
@@ -34,7 +34,6 @@ public abstract class IControlBoard{
     public abstract boolean decrementOffset();
 
     public abstract boolean gripperShoot();
-    public abstract boolean ballPistonGrab();
 
     public abstract boolean climbUp();
     public abstract boolean climbRetract();

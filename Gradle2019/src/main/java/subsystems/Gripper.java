@@ -25,8 +25,7 @@ public class Gripper{
 
     TalonSRX pivot, rollers;
     Coordinate senZero, senNinety;
-    DoubleSolenoid hatch;
-    Solenoid grip;
+    DoubleSolenoid grip;
     DigitalInput reset;
 
     private Gripper(){
@@ -39,8 +38,7 @@ public class Gripper{
 
         reset = new DigitalInput(Constants.Gripper.resetNum);
 
-        hatch = new DoubleSolenoid(Constants.Gripper.hatchNums[0], Constants.Gripper.hatchNums[1]);
-        grip = new Solenoid(Constants.Gripper.gripNum);
+        grip = new DoubleSolenoid(Constants.Gripper.gripNum[0], Constants.Gripper.gripNum[1]);
     }
 
     public void periodic(){
@@ -69,29 +67,31 @@ public class Gripper{
         //     pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
 
-    public void hatchLock(){
-        hatch.set(Value.kReverse);
+    public void hatchGrab(){
+        rollers.set(ControlMode.PercentOutput, -1);
     }
 
     public void hatchRelease(){
-        hatch.set(Value.kForward);
-    }
-
-    public void rollerGrab(){
         rollers.set(ControlMode.PercentOutput, 1);
     }
-    public void rollerShoot(){
+
+    public void ballGrab(){
+        rollers.set(ControlMode.PercentOutput, 1);
+    }
+
+    public void ballRelease(){
         rollers.set(ControlMode.PercentOutput, -1);
     }
+
     public void rollerOff(){
         rollers.set(ControlMode.PercentOutput, 0);
     }
 
-    public void grab(){
-        grip.set(true);
+    public void hatchMode(){
+        // grip.set(Value.kReverse);
     }
-    public void unGrab(){
-        grip.set(false);
+    public void ballMode(){
+        // grip.set(Value.kForward);
     }
 
     /**
@@ -129,7 +129,7 @@ public class Gripper{
      * Calculates the distance the center of mass is from the gripper
      */
     public double getComDist(){
-        return Constants.Gripper.com;
+        return Constants.Gripper.comLength;
     }
     /**
      * Calculates center of mass where the gripper pivot is the origin

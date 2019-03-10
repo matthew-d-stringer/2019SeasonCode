@@ -152,6 +152,8 @@ public class Robot extends IterativeRobot {
         climber.guidesUp();
         mRunner.setInitPosFeet(2.20, 1.74);
         mRunner.robotForward();
+
+        MainArmControl.getInstance().resetForTeleop();
     }
 
     double last = Timer.getFPGATimestamp();
@@ -196,12 +198,6 @@ public class Robot extends IterativeRobot {
             armPos = Heading.createPolarHeading(-70*Units.Angle.degrees, Constants.Telescope.lenExtend);
         }
 
-        if(controlBoard.ballPistonGrab()){
-            gripper.grab();
-        }else{
-            gripper.unGrab();
-        }
-
         if(controlBoard.incrementOffset()){
             armControl.incrementOffset(1);
         }else if(controlBoard.decrementOffset()){
@@ -209,7 +205,7 @@ public class Robot extends IterativeRobot {
         }
 
         if(controlBoard.armToInside()){
-            armPos.setAngle(-104*Units.Angle.degrees);
+            armPos.setAngle(-86*Units.Angle.degrees);
             armPos.setMagnitude(Constants.Telescope.lenRetract);
         }
         if(controlBoard.armToBallGoal()){
@@ -264,28 +260,30 @@ public class Robot extends IterativeRobot {
 
 
         if(controlBoard.isCargoMode()){
-            if(armPos.getY() < -28*Units.Length.inches){
-                armControl.setGriperMode(GripperMode.cargoPickup);
+            gripper.ballMode();
+            if(armPos.getY() < -30*Units.Length.inches){
+                armControl.setGriperMode(GripperMode.pickup);
             }else{
-                armControl.setGriperMode(GripperMode.cargo);
+                armControl.setGriperMode(GripperMode.level);
             }
         }else{
-            armControl.setGriperMode(GripperMode.hatch);
+            gripper.hatchMode();
+            armControl.setGriperMode(GripperMode.level);
         }
 
         if(controlBoard.gripperShoot()){
             if(controlBoard.isCargoMode()){
-                gripper.rollerShoot();
-                gripper.hatchLock();
+                gripper.ballRelease();
             }else{
                 gripper.hatchRelease();
-                gripper.rollerOff();
             }
-        }else if(controlBoard.ballRollerGrab()){
-            gripper.rollerGrab();
-            gripper.hatchLock();
+        }else if(controlBoard.gripperGrab()){
+            if(controlBoard.isCargoMode()){
+                gripper.ballGrab();
+            }else{
+                gripper.hatchGrab();
+            }
         }else{
-            gripper.hatchLock();
             gripper.rollerOff();
         }
 

@@ -73,6 +73,10 @@ public class MainArm{
         pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
 
+    public double getFeedForward(double vel, double acc){
+        return 0.056613*acc + 0.026452*vel;
+    }
+
     public double getAngle(){
         return Util.mapRange(pivot.getSelectedSensorPosition(), senZero, senNinety);
     }
@@ -82,7 +86,7 @@ public class MainArm{
 
     public double getAntigrav(){
         // return 1.2*getComWithoutGripper().normalizeC().getX();
-        return 1.1316*getCom().getX()+0.052904*getAngleVel();
+        return 1.8607*getCom().getX()+0.026452*getAngleVel();
     }
 
     public double getComDist(){

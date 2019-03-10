@@ -83,6 +83,11 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
+    public boolean resetWrist() {
+        return buttonPad.getRawButton(21);
+    }
+
+    @Override
     public boolean quickTurn() {
         return wheel.getRawButton(7);
     }
@@ -156,9 +161,4 @@ public class ControlBoard extends IControlBoard{
     public boolean gripperShoot() {
         return coJoy.getRawButton(1);
     }
-
-    // @Override
-    // public boolean ballPistonGrab() {
-    //     return ballPistonGrab.toggleVar(joy.getRawButton(2));
-    // }
 }

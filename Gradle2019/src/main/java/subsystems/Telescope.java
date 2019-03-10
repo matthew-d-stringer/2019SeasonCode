@@ -36,12 +36,12 @@ public class Telescope{
     }
 
     public void periodic(){
-        SmartDashboard.putNumber("Raw Telescope Enc", telescope.getSelectedSensorPosition(0));
-        SmartDashboard.putNumber("Telescope Distance", getDistance());
-        SmartDashboard.putNumber("Telescope Antigrav", getAntigrav());
-        SmartDashboard.putString("Main Arm Endpoint", getEndPos().display());
+        // SmartDashboard.putNumber("Raw Telescope Enc", telescope.getSelectedSensorPosition(0));
+        // SmartDashboard.putNumber("Telescope Distance", getDistance());
+        // SmartDashboard.putNumber("Telescope Antigrav", getAntigrav());
+        // SmartDashboard.putString("Main Arm Endpoint", getEndPos().display());
         
-        SmartDashboard.putBoolean("Telescope reset", getReset());
+        // SmartDashboard.putBoolean("Telescope reset", getReset());
 
         if(getReset())
             telescope.setSelectedSensorPosition(0);

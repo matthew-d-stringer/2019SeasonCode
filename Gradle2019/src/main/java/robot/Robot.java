@@ -25,6 +25,7 @@ import subsystems.ArmSystemControl;
 import subsystems.Climber;
 import subsystems.ClimberControl;
 import subsystems.Gripper;
+import subsystems.GripperControl;
 import subsystems.MainArm;
 import subsystems.MainArmControl;
 import subsystems.Telescope;
@@ -111,14 +112,14 @@ public class Robot extends IterativeRobot {
     public void robotPeriodic(){
         // SmartDashboard.putNumber("Right Vel SI", 0);
         // SmartDashboard.putNumber("Left Vel SI", 0);
-        controlBoard.display();
-        driveOut.display();
-        drive.display();
-        mRunner.display();
+        // controlBoard.display();
+        // driveOut.display();
+        // drive.display();
+        // mRunner.display();
         arm.periodic();
         telescope.periodic();
         gripper.periodic();
-        climber.periodic();
+        // climber.display();
 
         // SmartDashboard.putString("Delta Position", Jevois.getInstance().getPosition().display());
         // SmartDashboard.putString("Relative Vector", Jevois.getInstance().getPT().display());
@@ -157,6 +158,7 @@ public class Robot extends IterativeRobot {
     }
 
     double last = Timer.getFPGATimestamp();
+    boolean lowFeed = false;
     @Override
     public void teleopPeriodic() {
         double dt = Timer.getFPGATimestamp() - last;
@@ -164,6 +166,10 @@ public class Robot extends IterativeRobot {
 
         if(controlBoard.resetTelescope()){
             TelescopeControl.getInstance().reset();
+        }
+
+        if(controlBoard.resetWrist()){
+            GripperControl.getInstance().reset();
         }
         
         if(controlBoard.climbMode() /* && !ClimbCode.getInstance().isDone()*/){
@@ -219,7 +225,7 @@ public class Robot extends IterativeRobot {
             if(Double.isNaN(len)){
                 len = Constants.Telescope.lenRetract;
             }
-            armPos.setMagnitude(Math.min(controlBoard.armLength(), Constants.Telescope.lenRetract+ 8*Units.Length.inches));
+            armPos.setMagnitude(Math.min(controlBoard.armLength(), Constants.Telescope.lenRetract+ 6*Units.Length.inches));
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallLow(controlBoard.getCoJoyPos().getY());
                 armPos.setYMaintainMag(setpoints.getBallLow(), controlBoard.flipArm());
@@ -272,6 +278,7 @@ public class Robot extends IterativeRobot {
         }
 
         if(controlBoard.gripperShoot()){
+            lowFeed = false;
             if(controlBoard.isCargoMode()){
                 gripper.ballRelease();
             }else{
@@ -281,10 +288,22 @@ public class Robot extends IterativeRobot {
             if(controlBoard.isCargoMode()){
                 gripper.ballGrab();
             }else{
-                gripper.hatchGrab();
+                if(lowFeed){
+                    gripper.hatchHold();
+                }else{
+                    gripper.hatchGrab();
+                    if(gripper.getCurrent() > 75){
+                        lowFeed = true;
+                    }
+                }
             }
         }else{
-            gripper.rollerOff();
+            if(controlBoard.isCargoMode()){
+                gripper.rollerOff();
+            }else{
+                gripper.hatchHold();
+            }
+            lowFeed = false;
         }
 
         teleopPaths.run();

@@ -36,15 +36,15 @@ public class Climber{
         guides = new DoubleSolenoid(Constants.Climber.guideNums[0], Constants.Climber.guideNums[1]);
     }
 
-    public void periodic(){
-        SmartDashboard.putNumber("Climber Raw sensor", climbMotor.getSelectedSensorPosition(0));
-        SmartDashboard.putNumber("Climber Adjusted sensor", getClimbLen());
-        SmartDashboard.putNumber("Climber Antigrav", getAntigrav());
-        SmartDashboard.putNumber("Climber Current", climbMotor.getOutputCurrent());
-        if(SmartDashboard.getBoolean("Climber Reset", false)){
-            reset();
-            SmartDashboard.putBoolean("Climber Reset", false);
-        }
+    public void display(){
+        // SmartDashboard.putNumber("Climber Raw sensor", climbMotor.getSelectedSensorPosition(0));
+        // SmartDashboard.putNumber("Climber Adjusted sensor", getClimbLen());
+        // SmartDashboard.putNumber("Climber Antigrav", getAntigrav());
+        // SmartDashboard.putNumber("Climber Current", climbMotor.getOutputCurrent());
+        // if(SmartDashboard.getBoolean("Climber Reset", false)){
+        //     reset();
+        //     SmartDashboard.putBoolean("Climber Reset", false);
+        // }
     }
 
     public void guidesDown(){

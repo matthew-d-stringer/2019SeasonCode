@@ -26,11 +26,11 @@ public class MainArmControl{
     States state = States.disabled;
     double setpoint = 0;
     MainArm arm;
-    double mpMaxVel = 6*Units.Angle.revolutions;
+    double mpMaxVel = 1*Units.Angle.revolutions; // was 6
     double mpMaxAcc = 2.25*Units.Angle.revolutions;
     double mpAcc = mpMaxAcc;
     Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
-    Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 1.4*Units.Angle.revolutions);
+    Coordinate mpAccCalc2 = new Coordinate(210*Units.Angle.degrees, 0.25*Units.Angle.revolutions);
     volatile TrapezoidalMp mp;
     Timer time = new Timer();
     double mpStartTime, mpStartAngle;
@@ -76,7 +76,7 @@ public class MainArmControl{
             mpStartAngle = arm.getAngle();
             mpAcc = calculateAcc(tSet, mpStartAngle, mpMaxAcc);
         }
-        System.out.println("mpStartAngle: "+mpStartAngle);
+        // System.out.println("mpStartAngle: "+mpStartAngle);
         // System.out.println("tSet after: "+tSet/Units.Angle.degrees);
         setpoint = tSet;
         mp.updateConstraints(mpStartAngle, new TrapezoidalMp.constraints(tSet-mpStartAngle, mpMaxVel, mpMaxAcc));
@@ -124,12 +124,12 @@ public class MainArmControl{
                 double mpSetpoint = mpSetpoints[0];
                 // System.out.println("pos: "+mpSetpoints[0]+", vel: "+mpSetpoints[1]+", acc: "+mpSetpoints[2]);
                 // double feedForward = arm.getAntigrav(); 
-                double feedForward = arm.getAntigrav() + arm.getFeedForward(mpSetpoints[1], mpSetpoints[2]);
+                double feedForward = arm.getAntigrav() + 1*arm.getFeedForward(mpSetpoints[1], mpSetpoints[2]);
                 // double error = setpoint - arm.getAngle();
                 double error = mpSetpoint - arm.getAngle();
                 double dError = -arm.getAngleVel();
-                double p = 14.8871;
-                double d = 3.8448;
+                double p = 8.474;
+                double d = 1.6341;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot
@@ -163,6 +163,6 @@ public class MainArmControl{
     }
 
     public boolean finishedMovement(){
-        return mpFinished() && inErrorRange(20*Units.Angle.degrees);
+        return mpFinished() && inErrorRange(5*Units.Angle.degrees);
     }
 }

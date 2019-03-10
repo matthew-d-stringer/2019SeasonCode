@@ -42,11 +42,15 @@ public class Gripper{
     }
 
     public void periodic(){
-        SmartDashboard.putNumber("Raw Gripper Enc", pivot.getSelectedSensorPosition());
-        SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle()/Units.Angle.degrees);
-        SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle()/Units.Angle.degrees);
+        // SmartDashboard.putNumber("Raw Gripper Enc", pivot.getSelectedSensorPosition());
+        // SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle()/Units.Angle.degrees);
+        // SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle()/Units.Angle.degrees);
 
-        SmartDashboard.putBoolean("Gripper Reset", getReset());
+        // SmartDashboard.putNumber("Gripper Current", rollers.getOutputCurrent());
+
+        // SmartDashboard.putBoolean("Gripper Reset", getReset());
+
+        // System.out.println("Gripper Reset: "+getReset());
 
         if(getReset())
             pivot.setSelectedSensorPosition(0);
@@ -67,8 +71,16 @@ public class Gripper{
         //     pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
 
+    public double getCurrent(){
+        return rollers.getOutputCurrent();
+    }
+
     public void hatchGrab(){
         rollers.set(ControlMode.PercentOutput, -1);
+    }
+
+    public void hatchHold(){
+        rollers.set(ControlMode.PercentOutput, -.167);
     }
 
     public void hatchRelease(){

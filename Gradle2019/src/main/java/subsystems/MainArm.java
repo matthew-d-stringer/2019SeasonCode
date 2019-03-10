@@ -32,7 +32,7 @@ public class MainArm{
         pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
         pivotSlave = new TalonSRX(Constants.MainArm.slaveNum);
-        pivot.set(ControlMode.Follower, pivot.getDeviceID());
+        pivotSlave.set(ControlMode.Follower, pivot.getDeviceID());
         reset = new DigitalInput(Constants.MainArm.resetNum);
 
         senZero = new Coordinate(Constants.MainArm.zeroDegVal, 0);
@@ -45,13 +45,13 @@ public class MainArm{
     }
 
     public void periodic(){
-        SmartDashboard.putNumber("Raw Arm Enc", pivot.getSelectedSensorPosition());
-        SmartDashboard.putNumber("Arm Enc", Units.convertUnits(getAngle(), Units.Angle.degrees));
-        SmartDashboard.putNumber("Arm Enc Vel", Units.convertUnits(getAngleVel(), Units.Angle.degrees));
-        SmartDashboard.putNumber("Arm Antigrav", getAntigrav());
-        SmartDashboard.putString("Arm end pos(inches)", Telescope.getInstance().getEndPos().multC(1/Units.Length.inches).display());
+        // SmartDashboard.putNumber("Raw Arm Enc", pivot.getSelectedSensorPosition());
+        // SmartDashboard.putNumber("Arm Enc", Units.convertUnits(getAngle(), Units.Angle.degrees));
+        // SmartDashboard.putNumber("Arm Enc Vel", Units.convertUnits(getAngleVel(), Units.Angle.degrees));
+        // SmartDashboard.putNumber("Arm Antigrav", getAntigrav());
+        // SmartDashboard.putString("Arm end pos(inches)", Telescope.getInstance().getEndPos().multC(1/Units.Length.inches).display());
 
-        SmartDashboard.putBoolean("Arm Reset", getReset());
+        // SmartDashboard.putBoolean("Arm Reset", getReset());
         if(getReset()){
             pivot.setSelectedSensorPosition(0);
         }

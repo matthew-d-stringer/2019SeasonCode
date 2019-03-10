@@ -55,8 +55,8 @@ public class Jevois extends Thread{
             // serial.writeString("ping\n");
             String rawInput = serial.readString();
             // System.out.println(rawInput);
-            if(!rawInput.isBlank())
-                System.out.println("Jevois output: "+rawInput.trim());
+            // if(!rawInput.isBlank())
+            //     System.out.println("Jevois output: "+rawInput.trim());
             // else
                 // System.out.println("Jevois output is blank");
             double[] input = getNumberData(rawInput);
@@ -75,8 +75,8 @@ public class Jevois extends Thread{
             }
             useVision = true;
             position = getDeltaDistance(PositionTracker.getInstance().getPosition(), target.angleX(), target.calcDistance());
-            System.out.println(getPT().multC(1/Units.Length.inches).display("PT vector")+"\n");
-            Heading pt = getPT();
+            // System.out.println(getPT().multC(1/Units.Length.inches).display("PT vector")+"\n");
+            // Heading pt = getPT();
             // System.out.print("PT angle: "+(pt.getAngle()-Math.PI/2));
             // System.out.println("\tdist: "+pt.getMagnitude()+"\n");
         }

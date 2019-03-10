@@ -17,6 +17,7 @@ public abstract class IControlBoard{
     public abstract boolean climbMode();
 
     public abstract boolean resetTelescope();
+    public abstract boolean resetWrist();
 
     public abstract boolean quickTurn();
 

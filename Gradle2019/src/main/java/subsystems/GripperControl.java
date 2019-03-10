@@ -36,6 +36,10 @@ public class GripperControl{
         this.setpoint = setpoint;
     }
 
+    public void reset(){
+        state = States.reset;
+    }
+
     public void run(){
         switch(state){
             case disabled:
@@ -44,7 +48,7 @@ public class GripperControl{
                 }
                 break;
             case reset:
-                gripper.setVoltage(6);
+                gripper.setVoltage(4.5);
                 if(gripper.getReset()){
                     state = States.running;
                 }

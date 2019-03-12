@@ -23,14 +23,14 @@ public class Gripper{
         return instance;
     }
 
-    TalonSRX pivot, rollers;
-    Coordinate senZero, senNinety;
-    DoubleSolenoid grip;
-    DigitalInput reset;
+    private TalonSRX pivot, rollers;
+    private Coordinate senZero, senNinety;
+    private DoubleSolenoid grip;
+    private DigitalInput reset;
 
     private Gripper(){
         pivot = new TalonSRX(Constants.Gripper.pivotNum);
-        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         senZero = new Coordinate(Constants.Gripper.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.Gripper.ninetyDegVal, Math.PI/2);
 
@@ -42,18 +42,18 @@ public class Gripper{
     }
 
     public void periodic(){
-        // SmartDashboard.putNumber("Raw Gripper Enc", pivot.getSelectedSensorPosition());
-        // SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle()/Units.Angle.degrees);
-        // SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle()/Units.Angle.degrees);
+        SmartDashboard.putNumber("Raw Gripper Enc", pivot.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle()/Units.Angle.degrees);
+        SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle()/Units.Angle.degrees);
 
         // SmartDashboard.putNumber("Gripper Current", rollers.getOutputCurrent());
 
-        // SmartDashboard.putBoolean("Gripper Reset", getReset());
+        SmartDashboard.putBoolean("Gripper Reset", getReset());
 
-        // System.out.println("Gripper Reset: "+getReset());
-
-        if(getReset())
+        if(getReset()){
             pivot.setSelectedSensorPosition(0);
+            System.out.println("Gripper Reset: "+getReset());
+        }
     }
 
     public boolean getReset(){
@@ -80,7 +80,7 @@ public class Gripper{
     }
 
     public void hatchHold(){
-        rollers.set(ControlMode.PercentOutput, -.167);
+        rollers.set(ControlMode.PercentOutput, -.041666);
     }
 
     public void hatchRelease(){
@@ -100,10 +100,10 @@ public class Gripper{
     }
 
     public void hatchMode(){
-        // grip.set(Value.kReverse);
+        grip.set(Value.kForward);
     }
     public void ballMode(){
-        // grip.set(Value.kForward);
+        grip.set(Value.kReverse);
     }
 
     /**

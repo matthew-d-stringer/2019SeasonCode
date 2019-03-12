@@ -67,26 +67,6 @@ public class MainArmControl{
         mpStartAngle = arm.getAngle();
     }
 
-    public void setSetpoint(double set){
-        set = Math.max(set, -95*Units.Angle.degrees);
-        set = Math.min(set, 235*Units.Angle.degrees);
-        if(!Util.inErrorRange(set, setpoint, 5*Units.Angle.degrees)){
-            mpStartTime = time.get();
-            mpStartAngle = arm.getAngle();
-            if(set < Math.PI/2 && set < mpStartAngle){
-                mpMaxVel = 0.25*Units.Angle.revolutions;
-            }else if(set > Math.PI/2 && set > mpStartAngle){
-                mpMaxVel = 0.25*Units.Angle.revolutions;
-            }else{
-                mpMaxVel = mpDefaultMaxVel;
-            }
-            mpAcc = calculateAcc(set, mpStartAngle, mpMaxAcc);
-        }
-        setpoint = set;
-        // mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
-        mp.updateConstraints(mpStartAngle, new TrapezoidalMp.constraints(set-mpStartAngle, mpMaxVel, mpMaxAcc));
-    }
-
     public double getSetpoint(){
         return setpoint;
     }
@@ -96,25 +76,33 @@ public class MainArmControl{
         if(tSet < -130*Units.Angle.degrees){
             tSet = 2*Math.PI - Math.abs(tSet);
         }
-        tSet = Math.max(tSet, -110*Units.Angle.degrees);
-        tSet = Math.min(tSet, 215*Units.Angle.degrees);
+        setSetpoint(tSet);
+    }
+
+    public void setSetpoint(double set){
+        set = Math.max(set, -110*Units.Angle.degrees);
+        set = Math.min(set, 215*Units.Angle.degrees);
         // System.out.println("tSet before: "+tSet/Units.Angle.degrees);
-        if(!Util.inErrorRange(tSet, setpoint, 5*Units.Angle.degrees)){
+        double mpSet = set;
+        if(!Util.inErrorRange(set, setpoint, 5*Units.Angle.degrees)){
             mpStartTime = time.get();
             mpStartAngle = arm.getAngle();
-            if(tSet < Math.PI/2 && tSet < mpStartAngle){
+            if(mpSet > Math.PI/2 && mpSet < 85*Units.Angle.degrees){
+                mpSet = Math.PI/2;
+            }
+            if(mpSet < Math.PI/2 && mpSet < mpStartAngle){
                 mpMaxVel = 0.25*Units.Angle.revolutions;
-            }else if(tSet > Math.PI/2 && tSet > mpStartAngle){
+            }else if(mpSet > Math.PI/2 && mpSet > mpStartAngle){
                 mpMaxVel = 0.25*Units.Angle.revolutions;
             }else{
                 mpMaxVel = mpDefaultMaxVel;
             }
-            mpAcc = calculateAcc(tSet, mpStartAngle, mpMaxAcc);
+            mpAcc = calculateAcc(mpSet, mpStartAngle, mpMaxAcc);
         }
+        setpoint = set;
         // System.out.println("mpStartAngle: "+mpStartAngle);
         // System.out.println("tSet after: "+tSet/Units.Angle.degrees);
-        setpoint = tSet;
-        mp.updateConstraints(mpStartAngle, new TrapezoidalMp.constraints(tSet-mpStartAngle, mpMaxVel, mpMaxAcc));
+        mp.updateConstraints(mpStartAngle, new TrapezoidalMp.constraints(mpSet-mpStartAngle, mpMaxVel, mpMaxAcc));
     }
 
     private double calculateAcc(double setpoint, double angle, double maxAcc){
@@ -198,6 +186,6 @@ public class MainArmControl{
     }
 
     public boolean finishedMovement(){
-        return mpFinished() && inErrorRange(5*Units.Angle.degrees);
+        return mpFinished() && inErrorRange(15*Units.Angle.degrees);
     }
 }

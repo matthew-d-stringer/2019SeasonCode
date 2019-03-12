@@ -1,5 +1,13 @@
 package subsystems;
 
+import org.apache.commons.math3.filter.DefaultProcessModel;
+import org.apache.commons.math3.filter.KalmanFilter;
+import org.apache.commons.math3.filter.ProcessModel;
+import org.apache.commons.math3.linear.Array2DRowFieldMatrix;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
+
 import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.RobotState;
@@ -26,6 +34,7 @@ public class MainArmControl{
     States state = States.disabled;
     double setpoint = 0;
     MainArm arm;
+    double mpDefaultMaxVel = 1*Units.Angle.revolutions;
     double mpMaxVel = 1*Units.Angle.revolutions; // was 6
     double mpMaxAcc = 2.25*Units.Angle.revolutions;
     double mpAcc = mpMaxAcc;
@@ -35,6 +44,18 @@ public class MainArmControl{
     Timer time = new Timer();
     double mpStartTime, mpStartAngle;
     boolean wasEnabled = false;
+
+    // KalmanFilter filter;
+    // RealMatrix A = new Array2DRowRealMatrix(new double[][] {
+    //     {0d, 1d},
+    //     {0d, -0.4672}
+    // });
+    // RealMatrix B = new Array2DRowRealMatrix(new double[][] {
+    //     {0d},
+    //     {17.66}
+    // });
+    // RealMatrix H = new Array2DRowRealMatrix(new double[][] {{1, 1}});
+    // RealMatrix Q = new Array2DRowRealMatrix(new double[] {0});
 
     private MainArmControl(){
         arm = MainArm.getInstance();
@@ -52,6 +73,13 @@ public class MainArmControl{
         if(!Util.inErrorRange(set, setpoint, 5*Units.Angle.degrees)){
             mpStartTime = time.get();
             mpStartAngle = arm.getAngle();
+            if(set < Math.PI/2 && set < mpStartAngle){
+                mpMaxVel = 0.25*Units.Angle.revolutions;
+            }else if(set > Math.PI/2 && set > mpStartAngle){
+                mpMaxVel = 0.25*Units.Angle.revolutions;
+            }else{
+                mpMaxVel = mpDefaultMaxVel;
+            }
             mpAcc = calculateAcc(set, mpStartAngle, mpMaxAcc);
         }
         setpoint = set;
@@ -74,6 +102,13 @@ public class MainArmControl{
         if(!Util.inErrorRange(tSet, setpoint, 5*Units.Angle.degrees)){
             mpStartTime = time.get();
             mpStartAngle = arm.getAngle();
+            if(tSet < Math.PI/2 && tSet < mpStartAngle){
+                mpMaxVel = 0.25*Units.Angle.revolutions;
+            }else if(tSet > Math.PI/2 && tSet > mpStartAngle){
+                mpMaxVel = 0.25*Units.Angle.revolutions;
+            }else{
+                mpMaxVel = mpDefaultMaxVel;
+            }
             mpAcc = calculateAcc(tSet, mpStartAngle, mpMaxAcc);
         }
         // System.out.println("mpStartAngle: "+mpStartAngle);

@@ -5,6 +5,7 @@ import coordinates.Heading;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import robot.Constants;
+import utilPackage.LowPassFilter;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
 import utilPackage.Util;
@@ -31,15 +32,18 @@ public class MainArmControl{
     double mpAcc = mpMaxAcc;
     Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
     Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 1.4*Units.Angle.revolutions);
-    volatile TrapezoidalMp mp;
+    TrapezoidalMp mp;
     Timer time = new Timer();
     double mpStartTime, mpStartAngle;
     boolean wasEnabled = false;
+
+    LowPassFilter armFilter;
 
     private MainArmControl(){
         arm = MainArm.getInstance();
         mpStartAngle = arm.getAngle();
         mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
+        armFilter = new LowPassFilter(0.8);
     }
 
     public void resetForTeleop(){
@@ -48,7 +52,7 @@ public class MainArmControl{
 
     boolean prev = false;
     public void setSetpoint(double set){
-        set = Math.max(set, -110*Units.Angle.degrees);
+        set = Math.max(set, -90*Units.Angle.degrees);
         set = Math.min(set, 215*Units.Angle.degrees);
         // System.out.println("tSet before: "+tSet/Units.Angle.degrees);
         if(!Util.inErrorRange(set, setpoint, 5*Units.Angle.degrees)){
@@ -57,7 +61,8 @@ public class MainArmControl{
         // System.out.println("mpStartAngle: "+mpStartAngle);
         // System.out.println("tSet after: "+tSet/Units.Angle.degrees);
         setpoint = set;
-        boolean val = (set > Math.PI/2 && arm.getAngle() > 95*Units.Angle.degrees) || (set < Math.PI/2 && arm.getAngle() < 85*Units.Angle.degrees); 
+        //if the set is more than 90 and the angle is less than 85 or the set is more than 90 and the angle is less than 95
+        boolean val = (set > Math.PI/2 && arm.getAngle() < 85*Units.Angle.degrees) || (set < Math.PI/2 && arm.getAngle() > 95*Units.Angle.degrees); 
         if(val){
             set = Math.PI/2;
         }else if(!val && prev){
@@ -70,6 +75,7 @@ public class MainArmControl{
     private void restartMP(double set){
         mpStartTime = time.get();
         mpStartAngle = arm.getAngle();
+        armFilter.setup(mpStartAngle);
         mpAcc = calculateAcc(set, mpStartAngle, mpMaxAcc);
     }
 
@@ -82,18 +88,7 @@ public class MainArmControl{
         if(tSet < -130*Units.Angle.degrees){
             tSet = 2*Math.PI - Math.abs(tSet);
         }
-        tSet = Math.max(tSet, -110*Units.Angle.degrees);
-        tSet = Math.min(tSet, 215*Units.Angle.degrees);
-        // System.out.println("tSet before: "+tSet/Units.Angle.degrees);
-        if(!Util.inErrorRange(tSet, setpoint, 5*Units.Angle.degrees)){
-            mpStartTime = time.get();
-            mpStartAngle = arm.getAngle();
-            mpAcc = calculateAcc(tSet, mpStartAngle, mpMaxAcc);
-        }
-        System.out.println("mpStartAngle: "+mpStartAngle);
-        // System.out.println("tSet after: "+tSet/Units.Angle.degrees);
-        setpoint = tSet;
-        mp.updateConstraints(mpStartAngle, new TrapezoidalMp.constraints(tSet-mpStartAngle, mpMaxVel, mpMaxAcc));
+        setSetpoint(tSet);
     }
 
     private double calculateAcc(double setpoint, double angle, double maxAcc){
@@ -125,6 +120,7 @@ public class MainArmControl{
                     time.start();
                     mpStartTime = time.get();
                     mpStartAngle = arm.getAngle();
+                    armFilter.setup(arm.getAngle());
                     state = States.running;
                 }
                 break;
@@ -134,13 +130,19 @@ public class MainArmControl{
                 }
                 wasEnabled = RobotState.isEnabled();
 
+                if(arm.getAngle() > 255*Units.Angle.degrees || arm.getAngle() < -130*Units.Angle.degrees){
+                    arm.setVoltage(0);
+                    throw new RuntimeException("Arm Angle is broken");
+                }
+
                 double[] mpSetpoints = mp.Calculate(time.get() - mpStartTime);
                 double mpSetpoint = mpSetpoints[0];
                 // System.out.println("pos: "+mpSetpoints[0]+", vel: "+mpSetpoints[1]+", acc: "+mpSetpoints[2]);
                 // double feedForward = arm.getAntigrav(); 
                 double feedForward = arm.getAntigrav() + arm.getFeedForward(mpSetpoints[1], mpSetpoints[2]);
                 // double error = setpoint - arm.getAngle();
-                double error = mpSetpoint - arm.getAngle();
+                // double error = mpSetpoint - arm.getAngle();
+                double error = mpSetpoint - armFilter.run(arm.getAngle());
                 double dError = -arm.getAngleVel();
                 double p = 14.8871;
                 double d = 3.8448;

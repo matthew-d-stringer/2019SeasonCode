@@ -12,8 +12,8 @@ public class ArmSetpoints{
     double sensitivity = 4;
 
     public ArmSetpoints(){
-        hatchLow = -30*Units.Length.inches;
-        hatchMid = 0*Units.Length.inches;
+        hatchLow = -23*Units.Length.inches;
+        hatchMid = 8*Units.Length.inches;
         hatchHigh = 29*Units.Length.inches;
 
         ballLow = -15.5*Units.Length.inches;

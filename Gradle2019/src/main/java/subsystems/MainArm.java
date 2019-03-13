@@ -32,7 +32,7 @@ public class MainArm{
         pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
         pivotSlave = new TalonSRX(Constants.MainArm.slaveNum);
-        pivot.set(ControlMode.Follower, pivot.getDeviceID());
+        pivotSlave.set(ControlMode.Follower, pivot.getDeviceID());
         reset = new DigitalInput(Constants.MainArm.resetNum);
 
         senZero = new Coordinate(Constants.MainArm.zeroDegVal, 0);

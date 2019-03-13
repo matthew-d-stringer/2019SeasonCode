@@ -76,9 +76,10 @@ public class Jevois extends Thread{
             useVision = true;
             position = getDeltaDistance(PositionTracker.getInstance().getPosition(), target.angleX(), target.calcDistance());
             System.out.println(getPT().multC(1/Units.Length.inches).display("PT vector")+"\n");
-            Heading pt = getPT();
+            // Heading pt = getPT();
             // System.out.print("PT angle: "+(pt.getAngle()-Math.PI/2));
             // System.out.println("\tdist: "+pt.getMagnitude()+"\n");
+            Timer.delay(0.01);
         }
     }
 

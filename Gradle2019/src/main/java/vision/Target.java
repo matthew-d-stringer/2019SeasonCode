@@ -24,12 +24,13 @@ public class Target{
     // Sets The Input Stream
     public boolean input(double[] input) {
         try{
-            int contourIndex = (int)input[1];
+            int contourGroup = (int)input[1];
+            int contourSide = (int)input[2];
             contourNumber = input[0];
-            double[] cRow = {input[2],input[3],input[4],input[5]};
-            if(contourIndex == 0){
+            double[] cRow = {input[3],input[4],input[5],input[6]};
+            if(contourSide == 0){
                 ct1.input(cRow);
-            }else if(contourIndex == 1){
+            }else if(contourSide == 1){
                 ct2.input(cRow);
             }
             return true;

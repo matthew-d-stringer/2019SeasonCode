@@ -43,7 +43,7 @@ public class MainArmControl{
         arm = MainArm.getInstance();
         mpStartAngle = arm.getAngle();
         mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
-        armFilter = new LowPassFilter(0.8);
+        armFilter = new LowPassFilter(0.75);
     }
 
     public void resetForTeleop(){
@@ -56,6 +56,11 @@ public class MainArmControl{
         set = Math.min(set, 215*Units.Angle.degrees);
         // System.out.println("tSet before: "+tSet/Units.Angle.degrees);
         if(!Util.inErrorRange(set, setpoint, 5*Units.Angle.degrees)){
+            if(set > Math.PI/2){
+                mpMaxAcc = 0.25*Units.Angle.revolutions;
+            }else{
+                mpMaxAcc = 2.25*Units.Angle.revolutions;
+            }
             restartMP(set);
         }
         // System.out.println("mpStartAngle: "+mpStartAngle);

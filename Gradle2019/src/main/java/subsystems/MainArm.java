@@ -51,6 +51,9 @@ public class MainArm{
         SmartDashboard.putNumber("Arm Antigrav", getAntigrav());
         SmartDashboard.putString("Arm end pos(inches)", Telescope.getInstance().getEndPos().multC(1/Units.Length.inches).display());
 
+        SmartDashboard.putNumber("Arm Master current", pivot.getOutputCurrent());
+        SmartDashboard.putNumber("Arm Slave current", pivotSlave.getOutputCurrent());
+
         SmartDashboard.putBoolean("Arm Reset", getReset());
         if(getReset()){
             pivot.setSelectedSensorPosition(0);

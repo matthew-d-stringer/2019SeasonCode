@@ -43,7 +43,7 @@ public class MainArmControl{
         arm = MainArm.getInstance();
         mpStartAngle = arm.getAngle();
         mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
-        armFilter = new LowPassFilter(0.75);
+        armFilter = new LowPassFilter(0.7);
     }
 
     public void resetForTeleop(){
@@ -149,8 +149,10 @@ public class MainArmControl{
                 // double error = mpSetpoint - arm.getAngle();
                 double error = mpSetpoint - armFilter.run(arm.getAngle());
                 double dError = -arm.getAngleVel();
-                double p = 14.8871;
-                double d = 3.8448;
+                double p = 8.474;
+                double d = 1.6341;
+                p = 9.7581;
+                d = 1.8418;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot
@@ -176,6 +178,9 @@ public class MainArmControl{
         return time.get() - mpStartTime >= mp.getEndTime();
     }
 
+    public boolean mpFinished(double timeAdd){
+        return time.get() - mpStartTime >= mp.getEndTime()+timeAdd;
+    }
     public boolean inErrorRange(double range){
         if(isRunning())
             return Util.inErrorRange(setpoint, arm.getAngle(), range);
@@ -184,6 +189,6 @@ public class MainArmControl{
     }
 
     public boolean finishedMovement(){
-        return mpFinished() && inErrorRange(20*Units.Angle.degrees);
+        return mpFinished(0.5) && inErrorRange(10*Units.Angle.degrees);
     }
 }

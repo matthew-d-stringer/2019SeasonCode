@@ -284,7 +284,11 @@ public class Robot extends IterativeRobot {
                 gripper.hatchGrab();
             }
         }else{
-            gripper.rollerOff();
+            if(controlBoard.isCargoMode()){
+                gripper.rollerOff();
+            }else{
+                gripper.hatchHold();
+            }
         }
 
         teleopPaths.run();

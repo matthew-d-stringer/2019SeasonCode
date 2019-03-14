@@ -69,10 +69,6 @@ public class Jevois extends Thread{
                 useVision = false;
                 continue;
             }
-            if(target.getContourNumber() < 2){
-                useVision = false;
-                continue;
-            }
             useVision = true;
             position = getDeltaDistance(PositionTracker.getInstance().getPosition(), target.angleX(), target.calcDistance());
             System.out.println(getPT().multC(1/Units.Length.inches).display("PT vector")+"\n");

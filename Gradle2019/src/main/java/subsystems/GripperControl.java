@@ -25,6 +25,8 @@ public class GripperControl{
     Gripper gripper;
     double setpoint = 0;
 
+    boolean disableReset = false;
+
     private GripperControl(){
         state = States.disabled;
         gripper = Gripper.getInstance();
@@ -45,11 +47,16 @@ public class GripperControl{
                 break;
             case reset:
                 gripper.setVoltage(6);
+                gripper.enableReset();
                 if(gripper.getReset()){
                     state = States.running;
                 }
                 break;
             case running:
+                if(!disableReset && !gripper.getReset()){
+                    disableReset = true;
+                    gripper.disableReset();
+                }
                 double feedforward = gripper.getAntigrav();
                 double p = 12.6251;
                 double d = 0.3200;

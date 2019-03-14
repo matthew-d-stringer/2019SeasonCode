@@ -28,6 +28,8 @@ public class Gripper{
     DoubleSolenoid grip;
     DigitalInput reset;
 
+    boolean resetEnabled = true;
+
     private Gripper(){
         pivot = new TalonSRX(Constants.Gripper.pivotNum);
         pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
@@ -35,6 +37,9 @@ public class Gripper{
         senNinety = new Coordinate(Constants.Gripper.ninetyDegVal, Math.PI/2);
 
         rollers = Constants.Drive.rightEncoder;
+        rollers.configPeakCurrentDuration(1000);
+        rollers.configPeakCurrentLimit(40);
+        rollers.enableCurrentLimit(true);
 
         reset = new DigitalInput(Constants.Gripper.resetNum);
 
@@ -48,12 +53,22 @@ public class Gripper{
 
         SmartDashboard.putBoolean("Gripper Reset", getReset());
 
-        if(getReset())
+        SmartDashboard.putNumber("Gripper Currrent", rollers.getOutputCurrent());
+
+        if(getReset() && resetEnabled)
             pivot.setSelectedSensorPosition(0);
     }
 
     public boolean getReset(){
         return !reset.get();
+    }
+
+    public void enableReset(){
+        resetEnabled = true;
+    }
+
+    public void disableReset(){
+        resetEnabled = false;
     }
 
     /**
@@ -72,7 +87,11 @@ public class Gripper{
     }
 
     public void hatchRelease(){
-        rollers.set(ControlMode.PercentOutput, 1);
+        rollers.set(ControlMode.PercentOutput, 0.666);
+    }
+
+    public void hatchHold(){
+        rollers.set(ControlMode.PercentOutput, -0.0833);
     }
 
     public void ballGrab(){
@@ -88,10 +107,10 @@ public class Gripper{
     }
 
     public void hatchMode(){
-        // grip.set(Value.kReverse);
+        grip.set(Value.kForward);
     }
     public void ballMode(){
-        // grip.set(Value.kForward);
+        grip.set(Value.kReverse);
     }
 
     /**

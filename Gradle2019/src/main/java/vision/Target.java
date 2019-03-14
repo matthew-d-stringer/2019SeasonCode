@@ -8,7 +8,6 @@ import utilPackage.Util;
 
 public class Target{
 
-    private double contourNumber;
     private Contour ct1, ct2;
 
     public Target(){
@@ -17,20 +16,15 @@ public class Target{
         ct2 = new Contour(blank);
     }
 
-    public double getContourNumber(){
-        return contourNumber;
-    }
-
     // Sets The Input Stream
     public boolean input(double[] input) {
         try{
-            int contourGroup = (int)input[1];
-            int contourSide = (int)input[2];
-            contourNumber = input[0];
-            double[] cRow = {input[3],input[4],input[5],input[6]};
-            if(contourSide == 0){
+            int contourId = (int)input[0];
+            // contourNumber = input[0];
+            double[] cRow = {input[1],input[2],input[3],input[4]};
+            if(contourId == 0){
                 ct1.input(cRow);
-            }else if(contourSide == 1){
+            }else if(contourId == 1){
                 ct2.input(cRow);
             }
             return true;

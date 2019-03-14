@@ -66,7 +66,7 @@ public class TeleopPaths{
             // if(Robot.getControlBoard().isCargoMode())
             //     pt1 = new Coordinate(4.5*Units.Length.feet, 0*Units.Length.feet);
             // else
-            pt1 = new Coordinate(3*Units.Length.feet, 0*Units.Length.feet);
+            pt1 = new Coordinate(2.916*Units.Length.feet, 0*Units.Length.feet);
             Coordinate pt2 = new Coordinate(4*Units.Length.feet, 2*Units.Length.feet);
             forward = Util.mapRange(dist, pt1, pt2);
             forward = Math.min(forward, 6*Units.Length.feet);

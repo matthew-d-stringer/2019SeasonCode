@@ -39,7 +39,7 @@ public class Jevois extends Thread{
 
     private Jevois(){
         // reader = new SerialReader(0);
-        placementOffset = new Coordinate(-5.5, 2.5);
+        placementOffset = new Coordinate(-6.5, 2.5);
         placementOffset.mult(Units.Length.inches);
         position = new Coordinate();
         target = new Target();

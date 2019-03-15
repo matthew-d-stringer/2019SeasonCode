@@ -2,19 +2,19 @@ package autos.actions;
 
 import drive.PositionTracker;
 
-public class WaitUntilY extends Action{
+public class WaitUntilX extends Action{
     PositionTracker tracker;
-    double y;
+    double x;
 
     boolean reverse = false;
 
-    public WaitUntilY(double y){
+    public WaitUntilX(double x){
         tracker = PositionTracker.getInstance();
-        this.y = y;
+        this.x = x;
     }
-    public WaitUntilY(double y, boolean reverse){
+    public WaitUntilX(double x, boolean reverse){
         tracker = PositionTracker.getInstance();
-        this.y = y;
+        this.x = x;
         this.reverse = reverse;
     }
 
@@ -29,9 +29,9 @@ public class WaitUntilY extends Action{
     @Override
     public boolean isFinished() {
         if(reverse)
-            return tracker.getPosition().getPos().getY() < y;
+            return tracker.getPosition().getPos().getX() < x;
         else
-            return tracker.getPosition().getPos().getY() > y;
+            return tracker.getPosition().getPos().getX() > x;
     }
 
     @Override

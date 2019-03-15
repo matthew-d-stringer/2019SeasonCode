@@ -1,6 +1,7 @@
 package autos.actions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ParallelAction extends Action{
@@ -8,6 +9,9 @@ public class ParallelAction extends Action{
 
     public ParallelAction(List<Action> actions){
         this.actions = new ArrayList<>(actions);
+    }
+    public ParallelAction(Action action1, Action action2){
+        this.actions = new ArrayList<>(Arrays.asList(action1, action2));
     }
 
     @Override

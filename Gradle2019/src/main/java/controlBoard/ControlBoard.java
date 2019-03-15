@@ -73,6 +73,11 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
+    public boolean visionDrivePressed() {
+        return joy.getRawButtonPressed(7);
+    }
+
+    @Override
     public boolean climbMode() {
         return buttonPad.getRawButton(6);
     }
@@ -155,6 +160,11 @@ public class ControlBoard extends IControlBoard{
     @Override
     public boolean gripperShoot() {
         return coJoy.getRawButton(1) || joy.getRawButton(6);
+    }
+
+    @Override
+    public boolean gripperShootPressed() {
+        return coJoy.getRawButtonPressed(1) || joy.getRawButtonPressed(6);
     }
 
     // @Override

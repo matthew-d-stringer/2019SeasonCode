@@ -4,6 +4,8 @@ import coordinates.Coordinate;
 import coordinates.Heading;
 import drive.DriveOutput;
 import drive.DriveOutput.Modes;
+import edu.wpi.first.wpilibj.Timer;
+import utilPackage.Derivative;
 import utilPackage.Units;
 import utilPackage.Util;
 import vision.Jevois;
@@ -11,17 +13,23 @@ import vision.Jevois;
 public class VisionPursuit extends Action{
 
     boolean isDone = false;
-    double distance = 2.5*Units.Length.feet;
+    double distance = 2.55*Units.Length.feet;
+    Derivative dAngle;
 
     public VisionPursuit(){
+        dAngle = new Derivative();
     }
     public VisionPursuit(double stopDist){
+        dAngle = new Derivative();
         distance = stopDist;
     }
 
     @Override
     public void start() {
         isDone = false;
+        Heading target = Jevois.getInstance().getPT();
+        double angle = Math.PI/2 - target.getAngle();
+        dAngle.reset(Timer.getFPGATimestamp(), angle);
     }
 
     @Override
@@ -31,10 +39,10 @@ public class VisionPursuit extends Action{
         double angle = Math.PI/2 - target.getAngle();
         double dist = target.getMagnitude();
 
-        turn = 1.1*angle;
+        turn = 1.05*angle + 0.1*dAngle.Calculate(angle, Timer.getFPGATimestamp());
         Coordinate pt1;
-        pt1 = new Coordinate(3*Units.Length.feet, 0*Units.Length.feet);
-        Coordinate pt2 = new Coordinate(4*Units.Length.feet, 3*Units.Length.feet);
+        pt1 = new Coordinate(2.55*Units.Length.feet, 0*Units.Length.feet);
+        Coordinate pt2 = new Coordinate(4*Units.Length.feet, 2*Units.Length.feet);
         forward = Util.mapRange(dist, pt1, pt2);
         forward = Math.min(forward, 6*Units.Length.feet);
 
@@ -43,7 +51,7 @@ public class VisionPursuit extends Action{
 
         DriveOutput.getInstance().set(Modes.Velocity, outRight, outLeft);
 
-        isDone = forward < 1*Units.Length.feet;
+        isDone = forward < 0.4*Units.Length.feet;
 }
 
     @Override
@@ -53,6 +61,6 @@ public class VisionPursuit extends Action{
 
     @Override
     public void done() {
-        DriveOutput.getInstance().setNoVelocity();;
+        DriveOutput.getInstance().setNoVelocity();
     }
 }

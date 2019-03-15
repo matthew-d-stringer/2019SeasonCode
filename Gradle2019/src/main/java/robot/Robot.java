@@ -157,6 +157,7 @@ public class Robot extends IterativeRobot {
     }
 
     double last = Timer.getFPGATimestamp();
+    double hatchShootTime;
     @Override
     public void teleopPeriodic() {
         double dt = Timer.getFPGATimestamp() - last;
@@ -219,7 +220,8 @@ public class Robot extends IterativeRobot {
             if(Double.isNaN(len)){
                 len = Constants.Telescope.lenRetract;
             }
-            armPos.setMagnitude(Math.min(controlBoard.armLength(), Constants.Telescope.lenRetract+ 8*Units.Length.inches));
+            // armPos.setMagnitude(Math.min(controlBoard.armLength(), Constants.Telescope.lenRetract + 5*Units.Length.inches));
+            armPos.setMagnitude(Constants.Telescope.lenRetract + 5*Units.Length.inches);
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallLow(controlBoard.getCoJoyPos().getY());
                 armPos.setYMaintainMag(setpoints.getBallLow(), controlBoard.flipArm());
@@ -230,7 +232,8 @@ public class Robot extends IterativeRobot {
             // armPos.setYMaintainMag(-25.5*Units.Length.inches, controlBoard.flipArm());
         }
         if(controlBoard.armToHatchSecondLevel()){
-            armPos.setMagnitude(controlBoard.armLength());
+            // armPos.setMagnitude(controlBoard.armLength());
+            armPos.setMagnitude(Constants.Telescope.lenRetract);
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallMid(controlBoard.getCoJoyPos().getY());
                 armPos.setYMaintainMag(setpoints.getBallMid(), controlBoard.flipArm());
@@ -240,7 +243,6 @@ public class Robot extends IterativeRobot {
             }
         }
         if(controlBoard.armToHatchThirdLevel()){
-            // high = incrementPreset(high);
             double y;
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallHigh(controlBoard.getCoJoyPos().getY());
@@ -252,7 +254,8 @@ public class Robot extends IterativeRobot {
                 setpoints.incrementHatchHigh(controlBoard.getCoJoyPos().getY());
                 y = setpoints.getHatchHigh();
             }
-            armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
+            // armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
+            armPos.setMagnitude(Math.max(Constants.Telescope.lenExtend, y));
             armPos.setYMaintainMag(y,controlBoard.flipArm());
         }
         armControl.setArmPosition(armPos);
@@ -271,11 +274,19 @@ public class Robot extends IterativeRobot {
             armControl.setGriperMode(GripperMode.level);
         }
 
+        if(controlBoard.gripperShootPressed()){
+            hatchShootTime = Timer.getFPGATimestamp();
+        }
+
         if(controlBoard.gripperShoot()){
             if(controlBoard.isCargoMode()){
                 gripper.ballRelease();
             }else{
-                gripper.hatchRelease();
+                if(Timer.getFPGATimestamp() - hatchShootTime > 0.3){
+                    gripper.rollerOff();
+                }else{
+                    gripper.hatchRelease();
+                }
             }
         }else if(controlBoard.gripperGrab()){
             if(controlBoard.isCargoMode()){

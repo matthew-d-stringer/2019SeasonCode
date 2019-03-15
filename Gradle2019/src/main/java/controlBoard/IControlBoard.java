@@ -13,6 +13,7 @@ public abstract class IControlBoard{
     public abstract double armLength();
     public abstract boolean slowDrive();
     public abstract boolean visionDrive();
+    public abstract boolean visionDrivePressed();
 
     public abstract boolean climbMode();
 
@@ -34,6 +35,7 @@ public abstract class IControlBoard{
     public abstract boolean decrementOffset();
 
     public abstract boolean gripperShoot();
+    public abstract boolean gripperShootPressed();
 
     public abstract boolean climbUp();
     public abstract boolean climbRetract();

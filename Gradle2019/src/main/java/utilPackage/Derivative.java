@@ -4,6 +4,11 @@ public class Derivative {
 	
 	public Derivative() {
 	}
+
+	public void reset(double time, double val){
+		pTime = time;
+		pVal = val;
+	}
 	
 	public double Calculate(double _val, double time){
 		val = _val;

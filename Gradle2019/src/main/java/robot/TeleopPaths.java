@@ -7,7 +7,9 @@ import drive.DriveOutput;
 import drive.PositionTracker;
 import drive.DriveOutput.Modes;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import path.TrajectoryList;
+import utilPackage.Derivative;
 import utilPackage.FancyDrive;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
@@ -25,9 +27,12 @@ public class TeleopPaths{
     DrivePath feedToClosestCargo;
     DrivePath feedToMidCargo;
     DrivePath feedToFarCargo;
+    Derivative dAngle;
     public TeleopPaths(FancyDrive drive){
         joyPath = Robot.getControlBoard().getPathsJoystick();
         this.drive = drive;
+
+        dAngle = new Derivative();
 
         constraints = new TrapezoidalMp.constraints(0, 13*Units.Length.feet, 7*Units.Length.feet);
 
@@ -54,20 +59,28 @@ public class TeleopPaths{
         }
         drive.enabled(false);
 
+        if(Robot.getControlBoard().visionDrivePressed()){
+            Heading target = Jevois.getInstance().getPT();
+            double angle = Math.PI/2 - target.getAngle();
+            dAngle.reset(Timer.getFPGATimestamp(), angle);
+        }
+
         if(Robot.getControlBoard().visionDrive()){
             double turn, forward;
             Heading target = Jevois.getInstance().getPT();
             double angle = Math.PI/2 - target.getAngle();
             double dist = target.getMagnitude();
 
-            turn = 1.1*angle;
+            // turn = 1.1*angle;
+            turn = 1.05*angle + 0.1*dAngle.Calculate(angle, Timer.getFPGATimestamp());
             // turn = 2*angle;
             Coordinate pt1;
             // if(Robot.getControlBoard().isCargoMode())
             //     pt1 = new Coordinate(4.5*Units.Length.feet, 0*Units.Length.feet);
             // else
-            pt1 = new Coordinate(2.916*Units.Length.feet, 0*Units.Length.feet);
-            Coordinate pt2 = new Coordinate(4*Units.Length.feet, 2*Units.Length.feet);
+            // pt1 = new Coordinate(2.916*Units.Length.feet, 0*Units.Length.feet);
+            pt1 = new Coordinate(2.45*Units.Length.feet, 0*Units.Length.feet);
+            Coordinate pt2 = new Coordinate(3.5*Units.Length.feet, 2*Units.Length.feet); //was 4
             forward = Util.mapRange(dist, pt1, pt2);
             forward = Math.min(forward, 6*Units.Length.feet);
             // forward = 2*Units.Length.feet;
@@ -79,6 +92,7 @@ public class TeleopPaths{
                 DriveOutput.getInstance().set(Modes.Velocity, outRight, outLeft);
             // else
             //     DriveOutput.getInstance().setNoVelocity();
+            return;
         }
 
         //Left, closest Cargo

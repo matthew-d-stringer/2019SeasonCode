@@ -1,6 +1,7 @@
 package autos.actions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SeriesAction extends Action{
@@ -9,6 +10,10 @@ public class SeriesAction extends Action{
 
     public SeriesAction(List<Action> actions){
         remainingActions = new ArrayList<>(actions);
+        cAction = null;
+    }
+    public SeriesAction(Action action1, Action action2){
+        remainingActions = new ArrayList<>(Arrays.asList(action1, action2));
         cAction = null;
     }
 

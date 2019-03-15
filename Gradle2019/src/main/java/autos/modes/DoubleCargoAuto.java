@@ -3,10 +3,16 @@ package autos.modes;
 import autos.AutoEndedException;
 import autos.actions.ArmToLevel;
 import autos.actions.DrivePath;
+import autos.actions.ParallelAction;
+import autos.actions.SeriesAction;
 import autos.actions.VisionPursuit;
+import autos.actions.WaitAction;
+import autos.actions.WaitUntilX;
 import autos.actions.ArmToLevel.GripperMode;
 import autos.actions.ArmToLevel.Levels;
 import drive.PositionTracker;
+import robot.Constants;
+import subsystems.Gripper;
 import utilPackage.TrapezoidalMp;
 import utilPackage.Units;
 
@@ -18,8 +24,8 @@ public class DoubleCargoAuto extends AutoMode{
         stopToRefill,
         refillTo3rdStop,
         stopToMidGoal;
-    VisionPursuit finishRefill;
-    ArmToLevel reset;
+    VisionPursuit placeCloseGoal, finishRefill;
+    ArmToLevel reset, low;
 
     public DoubleCargoAuto(){
         setInitPos(9.56, 5.64);
@@ -32,14 +38,18 @@ public class DoubleCargoAuto extends AutoMode{
 
         String path = "Left/DoubleCargoAuto";
         startTo1stStop = DrivePath.createFromFileOnRoboRio(path, "startTo1stStop", constraints);
-        startTo1stStop.setVerticalThresh(0.5*Units.Length.inches);
+        startTo1stStop.setVerticalThresh(1*Units.Length.inches);
         startTo1stStop.setTurnCorrection(0.20);
         startTo1stStop.setReverse(true);
 
-        stopToCloseGoal = DrivePath.createFromFileOnRoboRio(path, "1stStopToCloseGoal", place, 1);
-        stopToCloseGoal.setVerticalThresh(0.5*Units.Length.inches);
-        stopToCloseGoal.setlookAhead(2.25*Units.Length.feet);
-        stopToCloseGoal.setTurnCorrection(0.90);// was 0.4
+        placeCloseGoal = new VisionPursuit();
+        low = new ArmToLevel(Levels.low, false, GripperMode.hatch);
+        low.setArmLen(Constants.Telescope.lenRetract + 5*Units.Length.inches);
+
+        // stopToCloseGoal = DrivePath.createFromFileOnRoboRio(path, "1stStopToCloseGoal", place, 1);
+        // stopToCloseGoal.setVerticalThresh(0.5*Units.Length.inches);
+        // stopToCloseGoal.setlookAhead(2.25*Units.Length.feet);
+        // stopToCloseGoal.setTurnCorrection(0.90);// was 0.4
 
         closeGoalTo2ndStop = DrivePath.createFromFileOnRoboRio(path, "closeGoalTo2ndStop", constraints);
         closeGoalTo2ndStop.setVerticalThresh(0.5*Units.Length.inches);
@@ -48,7 +58,7 @@ public class DoubleCargoAuto extends AutoMode{
         closeGoalTo2ndStop.setReverse(true);
 
         stopToRefill = DrivePath.createFromFileOnRoboRio(path, "2ndStopToRefill", toRefill);
-        stopToRefill.setVerticalThresh(3*Units.Length.inches);
+        stopToRefill.setVerticalThresh(4*Units.Length.inches);
         stopToRefill.setTurnCorrection(0.30);
 
         finishRefill = new VisionPursuit();
@@ -70,12 +80,23 @@ public class DoubleCargoAuto extends AutoMode{
     @Override
     public void auto() throws AutoEndedException {
         PositionTracker.getInstance().robotBackward();
+        Gripper.getInstance().hatchHold();
         runAction(reset);
-        runAction(startTo1stStop);
-        runAction(stopToCloseGoal);
+        // runAction(startTo1stStop);
+        // runAction(low);
+        // runAction(stopToCloseGoal);
+        runAction(new ParallelAction(startTo1stStop, new SeriesAction(new WaitUntilX(8*Units.Length.feet), low)));
+        runAction(placeCloseGoal);
+        Gripper.getInstance().hatchRelease();
+        runAction(new WaitAction(0.5));
+        Gripper.getInstance().rollerOff();
+        runAction(reset);
         runAction(closeGoalTo2ndStop);
         runAction(stopToRefill);
+        runAction(low);
+        Gripper.getInstance().hatchGrab();
         runAction(finishRefill);
-        runAction(refillTo3rdStop);
+        Gripper.getInstance().hatchHold();
+        // runAction(refillTo3rdStop);
     }
 }

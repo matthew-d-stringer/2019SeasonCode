@@ -42,7 +42,7 @@ public class FancyDrive {
 			outwheel *= 0.3333;
 		}else{
 			y*= 0.66;
-			outwheel *= 0.9;
+			outwheel *= 0.88;
 		}
 		double rightVal = 12*(y+outwheel);
 		double leftVal = 12*(y-outwheel);

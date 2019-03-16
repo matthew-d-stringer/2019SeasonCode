@@ -208,12 +208,14 @@ public class Robot extends IterativeRobot {
         if(controlBoard.armToInside()){
             armPos.setAngle(-86*Units.Angle.degrees);
             armPos.setMagnitude(Constants.Telescope.lenRetract);
+            teleopPaths.setMiddle(false);
         }
         if(controlBoard.armToBallGoal()){
             double len = controlBoard.armLength();
             setpoints.incrementBallGoal(controlBoard.getCoJoyPos().getY());
             armPos.setMagnitude(len);
             armPos.setYMaintainMag(setpoints.getBallGoal(),controlBoard.flipArm());
+            teleopPaths.setMiddle(false);
         }
         if(controlBoard.armToHatchPickup()){
             double len = controlBoard.armLength();
@@ -229,6 +231,7 @@ public class Robot extends IterativeRobot {
                 setpoints.incrementHatchLow(controlBoard.getCoJoyPos().getY());
                 armPos.setYMaintainMag(setpoints.getHatchLow(), controlBoard.flipArm());
             }
+            teleopPaths.setMiddle(false);
             // armPos.setYMaintainMag(-25.5*Units.Length.inches, controlBoard.flipArm());
         }
         if(controlBoard.armToHatchSecondLevel()){
@@ -241,6 +244,7 @@ public class Robot extends IterativeRobot {
                 setpoints.incrementHatchMid(controlBoard.getCoJoyPos().getY());
                 armPos.setYMaintainMag(setpoints.getHatchMid(), controlBoard.flipArm());
             }
+            teleopPaths.setMiddle(true);
         }
         if(controlBoard.armToHatchThirdLevel()){
             double y;
@@ -257,6 +261,7 @@ public class Robot extends IterativeRobot {
             // armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
             armPos.setMagnitude(Constants.Telescope.lenExtend-2*Units.Length.inches);
             armPos.setYMaintainMag(y,controlBoard.flipArm());
+            teleopPaths.setMiddle(false);
         }
         armControl.setArmPosition(armPos);
         SmartDashboard.putString("Arm pos set", armPos.display());
@@ -282,7 +287,7 @@ public class Robot extends IterativeRobot {
             if(controlBoard.isCargoMode()){
                 gripper.ballRelease();
             }else{
-                if(Timer.getFPGATimestamp() - hatchShootTime > 0.3){
+                if(Timer.getFPGATimestamp() - hatchShootTime > 0.2){
                     gripper.rollerOff();
                 }else{
                     gripper.hatchRelease();

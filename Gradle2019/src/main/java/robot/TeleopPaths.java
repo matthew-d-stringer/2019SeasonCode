@@ -28,6 +28,8 @@ public class TeleopPaths{
     DrivePath feedToMidCargo;
     DrivePath feedToFarCargo;
     Derivative dAngle;
+
+    boolean middle = false;
     public TeleopPaths(FancyDrive drive){
         joyPath = Robot.getControlBoard().getPathsJoystick();
         this.drive = drive;
@@ -40,6 +42,10 @@ public class TeleopPaths{
         feedToMidCargo = DrivePath.createFromFileOnRoboRio("Teleop/Left", "feedToMidCargo", constraints);
         feedToFarCargo = DrivePath.createFromFileOnRoboRio("Teleop/Left", "feedToFarCargo", constraints);
         // feedToFarCargo.setlookAhead(3*Units.Length.feet);
+    }
+
+    public void setMiddle(boolean middle){
+        this.middle = middle;
     }
 
     public void run(){
@@ -79,8 +85,14 @@ public class TeleopPaths{
             //     pt1 = new Coordinate(4.5*Units.Length.feet, 0*Units.Length.feet);
             // else
             // pt1 = new Coordinate(2.916*Units.Length.feet, 0*Units.Length.feet);
-            pt1 = new Coordinate(2.4*Units.Length.feet, 0*Units.Length.feet);
-            Coordinate pt2 = new Coordinate(3.5*Units.Length.feet, 2*Units.Length.feet); //was 4
+            Coordinate pt2;
+            if(middle){
+                pt1 = new Coordinate(3.2*Units.Length.feet, 0*Units.Length.feet);
+                pt2 = new Coordinate(4.3*Units.Length.feet, 2*Units.Length.feet); //was 4
+            }else{
+                pt1 = new Coordinate(2.4*Units.Length.feet, 0*Units.Length.feet);
+                pt2 = new Coordinate(3.5*Units.Length.feet, 2*Units.Length.feet); //was 4
+            }
             forward = Util.mapRange(dist, pt1, pt2);
             forward = Math.min(forward, 6*Units.Length.feet);
             // forward = 2*Units.Length.feet;

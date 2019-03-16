@@ -58,8 +58,8 @@ public class GripperControl{
                     gripper.disableReset();
                 }
                 double feedforward = gripper.getAntigrav();
-                double p = 12.6251;
-                double d = 0.3200;
+                double p = 22.4535;
+                double d = 0.4829;
                 double error;
                 if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
                     error = Math.max(45*Units.Angle.degrees, setpoint) - gripper.getRelAngle();

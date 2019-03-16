@@ -91,7 +91,7 @@ public class Gripper{
     }
 
     public void hatchHold(){
-        rollers.set(ControlMode.PercentOutput, -0.0833);
+        rollers.set(ControlMode.PercentOutput, -0.0416666);
     }
 
     public void ballGrab(){
@@ -107,10 +107,10 @@ public class Gripper{
     }
 
     public void hatchMode(){
-        grip.set(Value.kForward);
+        grip.set(Value.kReverse);
     }
     public void ballMode(){
-        grip.set(Value.kReverse);
+        grip.set(Value.kForward);
     }
 
     /**
@@ -166,6 +166,6 @@ public class Gripper{
     }
 
     public double getAntigrav(){
-        return 2.2247*getCom().getX();
+        return 2.3134*getCom().getX();
     }
 }

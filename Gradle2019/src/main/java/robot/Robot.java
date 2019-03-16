@@ -255,7 +255,7 @@ public class Robot extends IterativeRobot {
                 y = setpoints.getHatchHigh();
             }
             // armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
-            armPos.setMagnitude(Math.max(Constants.Telescope.lenExtend, y));
+            armPos.setMagnitude(Constants.Telescope.lenExtend-2*Units.Length.inches);
             armPos.setYMaintainMag(y,controlBoard.flipArm());
         }
         armControl.setArmPosition(armPos);

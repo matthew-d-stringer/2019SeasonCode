@@ -39,27 +39,28 @@ public class DoubleCargoAuto extends AutoMode{
         String path = "Left/DoubleCargoAuto";
         startTo1stStop = DrivePath.createFromFileOnRoboRio(path, "startTo1stStop", constraints);
         startTo1stStop.setVerticalThresh(1*Units.Length.inches);
-        startTo1stStop.setTurnCorrection(0.20);
+        startTo1stStop.setTurnCorrection(0.10);
+        startTo1stStop.setlookAhead(3.5*Units.Length.feet);
         startTo1stStop.setReverse(true);
 
         placeCloseGoal = new VisionPursuit();
         low = new ArmToLevel(Levels.low, false, GripperMode.hatch);
         low.setArmLen(Constants.Telescope.lenRetract + 5*Units.Length.inches);
 
-        // stopToCloseGoal = DrivePath.createFromFileOnRoboRio(path, "1stStopToCloseGoal", place, 1);
-        // stopToCloseGoal.setVerticalThresh(0.5*Units.Length.inches);
-        // stopToCloseGoal.setlookAhead(2.25*Units.Length.feet);
-        // stopToCloseGoal.setTurnCorrection(0.90);// was 0.4
+        stopToCloseGoal = DrivePath.createFromFileOnRoboRio(path, "1stStopToCloseGoal", place, 1);
+        stopToCloseGoal.setVerticalThresh(0.5*Units.Length.inches);
+        stopToCloseGoal.setlookAhead(2.25*Units.Length.feet);
+        stopToCloseGoal.setTurnCorrection(0.90);// was 0.4
 
         closeGoalTo2ndStop = DrivePath.createFromFileOnRoboRio(path, "closeGoalTo2ndStop", constraints);
-        closeGoalTo2ndStop.setVerticalThresh(0.5*Units.Length.inches);
-        closeGoalTo2ndStop.setTurnCorrection(0.9);
+        closeGoalTo2ndStop.setVerticalThresh(1*Units.Length.inches);
+        closeGoalTo2ndStop.setTurnCorrection(0.7);
         closeGoalTo2ndStop.setlookAhead(2*Units.Length.feet);
         closeGoalTo2ndStop.setReverse(true);
 
         stopToRefill = DrivePath.createFromFileOnRoboRio(path, "2ndStopToRefill", toRefill);
         stopToRefill.setVerticalThresh(4*Units.Length.inches);
-        stopToRefill.setTurnCorrection(0.30);
+        stopToRefill.setTurnCorrection(0.20);
 
         finishRefill = new VisionPursuit();
 
@@ -82,18 +83,18 @@ public class DoubleCargoAuto extends AutoMode{
         PositionTracker.getInstance().robotBackward();
         Gripper.getInstance().hatchHold();
         runAction(reset);
-        // runAction(startTo1stStop);
-        // runAction(low);
-        // runAction(stopToCloseGoal);
-        runAction(new ParallelAction(startTo1stStop, new SeriesAction(new WaitUntilX(8*Units.Length.feet), low)));
+        runAction(startTo1stStop);
+        runAction(low);
+        runAction(stopToCloseGoal);
+
+        runAction(new ParallelAction(startTo1stStop, new SeriesAction(new WaitUntilX(7*Units.Length.feet), low)));
         runAction(placeCloseGoal);
         Gripper.getInstance().hatchRelease();
         runAction(new WaitAction(0.5));
         Gripper.getInstance().rollerOff();
-        runAction(reset);
         runAction(closeGoalTo2ndStop);
         runAction(stopToRefill);
-        runAction(low);
+        // runAction(low);
         Gripper.getInstance().hatchGrab();
         runAction(finishRefill);
         Gripper.getInstance().hatchHold();

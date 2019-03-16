@@ -1,6 +1,7 @@
 package autos.actions;
 
 import coordinates.Heading;
+import edu.wpi.first.wpilibj.Timer;
 import robot.Constants;
 import subsystems.ArmSystemControl;
 import subsystems.MainArmControl;
@@ -26,6 +27,7 @@ public class ArmToLevel extends Action{
     double armLength;
 
     ArmSystemControl armControl;
+    double startVal;
 
     public ArmToLevel(Levels level, boolean reverse, GripperMode mode){
         this.reverse = reverse;
@@ -61,12 +63,15 @@ public class ArmToLevel extends Action{
         setpoint.setMagnitude(armLength);
         switch(level){
             case reset:
-                setpoint.setAngle(-90*Units.Angle.degrees);
+                setpoint.setAngle(-85*Units.Angle.degrees);
                 setpoint.setMagnitude(Constants.Telescope.lenRetract);
+                break;
             case loading:
+                setpoint.setMagnitude(Constants.Telescope.lenRetract + 5*Units.Length.inches);
                 setpoint.setYMaintainMag(-24.5*Units.Length.inches, reverse);
                 break;
             case low:
+                setpoint.setMagnitude(Constants.Telescope.lenRetract + 5*Units.Length.inches);
                 setpoint.setYMaintainMag(-24.5*Units.Length.inches, reverse);
                 break;
             case middle:
@@ -79,6 +84,7 @@ public class ArmToLevel extends Action{
                 break;
         }
         armControl.setArmPosition(setpoint);
+        startVal = Timer.getFPGATimestamp();
     }
         
     @Override
@@ -89,9 +95,9 @@ public class ArmToLevel extends Action{
     @Override
     public boolean isFinished() {
         if(checkWithTelescope)
-            return armControl.isDone();
+            return armControl.isDone() && Timer.getFPGATimestamp() - startVal > 0.5;
         else
-            return MainArmControl.getInstance().finishedMovement();
+            return MainArmControl.getInstance().finishedMovement() && Timer.getFPGATimestamp() - startVal > 0.1;
     }
 
     @Override

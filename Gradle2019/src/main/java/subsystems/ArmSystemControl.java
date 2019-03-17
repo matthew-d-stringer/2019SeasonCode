@@ -34,8 +34,7 @@ public class ArmSystemControl extends Thread{
     GripperControl gripper;
     ClimberControl climber;
     States state;
-    double offset = 0*Units.Angle.degrees;
-    double backOffset = 0*Units.Angle.degrees;
+    double gripperSet = 0*Units.Angle.degrees;
 
     boolean disable = false;
 
@@ -70,7 +69,11 @@ public class ArmSystemControl extends Thread{
     }
 
     public void incrementOffset(double joystick){
-        offset += joystick*4*6*Units.Length.inches * 0.1;
+        gripperSet += joystick*4*6*Units.Length.inches * 0.1;
+    }
+
+    public void setGripperSetpoint(double setpoint){
+        this.gripperSet = setpoint;
     }
 
     @Override
@@ -98,15 +101,15 @@ public class ArmSystemControl extends Thread{
                             gripper.setSetpoint(Constants.Gripper.maxAngle);
                         }else if(armAngle < Math.PI/2){
                             if(gMode == GripperMode.pickup){
-                                gripper.setSetpoint(offset-10*Units.Angle.degrees-3*Math.PI/4 - armAngle);
+                                gripper.setSetpoint(gripperSet - 10*Units.Angle.degrees - armAngle);
                             }else{
-                                gripper.setSetpoint(offset-armAngle);
+                                gripper.setSetpoint(gripperSet - armAngle);
                             }                        
                         }else{
                             if(gMode == GripperMode.pickup){
-                                gripper.setSetpoint(backOffset+offset+Math.PI - 3*Math.PI/4 - armAngle);
+                                gripper.setSetpoint(gripperSet+Math.PI - 3*Math.PI/4 - armAngle);
                             }else if(gMode == GripperMode.level){
-                                gripper.setSetpoint(backOffset+offset+Math.PI - armAngle);
+                                gripper.setSetpoint(gripperSet+Math.PI - armAngle);
                             }else{
                                 // if(Heading.createPolarHeading(armAngle, telescope.getSetpoint()).getY() > 36*Units.Length.inches)
                                 //     gripper.setSetpoint(backOffset-30*Units.Angle.degrees+offset+Math.PI - Math.PI/2 - armAngle);

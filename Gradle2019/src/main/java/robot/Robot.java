@@ -287,7 +287,7 @@ public class Robot extends IterativeRobot {
             if(controlBoard.isCargoMode()){
                 gripper.ballRelease();
             }else{
-                if(Timer.getFPGATimestamp() - hatchShootTime > 0.3){
+                if(Timer.getFPGATimestamp() - hatchShootTime > 0.4){
                     gripper.rollerOff();
                 }else{
                     gripper.hatchRelease();

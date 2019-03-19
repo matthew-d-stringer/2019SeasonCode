@@ -15,6 +15,8 @@ public class VisionPursuit extends Action{
     boolean isDone = false;
     double distance = 2.6*Units.Length.feet;
     double finishThresh = 0.4*Units.Length.feet;
+    double deccelDist = 1.1*Units.Length.feet;
+    double maxVel = 6*Units.Length.feet;
     Derivative dAngle;
 
     public VisionPursuit(){
@@ -30,6 +32,20 @@ public class VisionPursuit extends Action{
      */
     public void setFinishThresh(double finishThresh) {
         this.finishThresh = finishThresh;
+    }
+
+    /**
+     * @param deccelDist the deccelDist to set
+     */
+    public void setDeccelDist(double deccelDist) {
+        this.deccelDist = deccelDist;
+    }
+
+    /**
+     * @param maxVel the maxVel to set
+     */
+    public void setMaxVel(double maxVel) {
+        this.maxVel = maxVel;
     }
 
     @Override
@@ -50,9 +66,9 @@ public class VisionPursuit extends Action{
         turn = 1.05*angle + 0.1*dAngle.Calculate(angle, Timer.getFPGATimestamp());
         Coordinate pt1;
         pt1 = new Coordinate(distance, 0*Units.Length.feet);
-        Coordinate pt2 = new Coordinate(distance+1.1*Units.Length.feet, 2*Units.Length.feet);
+        Coordinate pt2 = new Coordinate(distance+deccelDist, 2*Units.Length.feet);
         forward = Util.mapRange(dist, pt1, pt2);
-        forward = Math.min(forward, 6*Units.Length.feet);
+        forward = Math.min(forward, maxVel);
 
         double outLeft = -turn + forward;
         double outRight = turn + forward;

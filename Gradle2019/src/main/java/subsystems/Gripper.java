@@ -9,6 +9,7 @@ import coordinates.Heading;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
@@ -57,10 +58,15 @@ public class Gripper{
 
         if(getReset() && resetEnabled)
             pivot.setSelectedSensorPosition(0);
+        // Timer.delay(0.02);
     }
 
     public boolean getReset(){
         return !reset.get();
+    }
+
+    public void manualReset(){
+        pivot.setSelectedSensorPosition(0);
     }
 
     public void enableReset(){

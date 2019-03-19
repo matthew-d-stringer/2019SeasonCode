@@ -28,7 +28,7 @@ public class DoubleCargoAuto extends AutoMode{
         stopToMidGoal,
         midGoalTo4thStop;
     VisionPursuit placeCloseGoal, finishRefill, placeMidGoal;
-    ArmToLevel reset, low;
+    ArmToLevel reset, low, loading;
 
     public DoubleCargoAuto(){
         setInitPos(9.56, 5.64);
@@ -36,8 +36,9 @@ public class DoubleCargoAuto extends AutoMode{
         TrapezoidalMp.constraints slow = new TrapezoidalMp.constraints(0, 5*Units.Length.feet, 2*Units.Length.feet);
         TrapezoidalMp.constraints place = new TrapezoidalMp.constraints(0, 7*Units.Length.feet, 7*Units.Length.feet);
         TrapezoidalMp.constraints constraints = new TrapezoidalMp.constraints(0, 15*Units.Length.feet, 9*Units.Length.feet);
-        TrapezoidalMp.constraints toRefill = new TrapezoidalMp.constraints(0, 15*Units.Length.feet, 5*Units.Length.feet);
+        TrapezoidalMp.constraints toRefill = new TrapezoidalMp.constraints(0, 15*Units.Length.feet, 8*Units.Length.feet);
         TrapezoidalMp.constraints fast = new TrapezoidalMp.constraints(0, 15*Units.Length.feet, 12*Units.Length.feet);
+        TrapezoidalMp.constraints omegaFast = new TrapezoidalMp.constraints(0, 20*Units.Length.feet, 16*Units.Length.feet);
 
         String path = "Left/DoubleCargoAuto";
         startTo1stStop = DrivePath.createFromFileOnRoboRio(path, "startTo1stStop", fast);
@@ -47,9 +48,8 @@ public class DoubleCargoAuto extends AutoMode{
         startTo1stStop.setReverse(true);
 
         placeCloseGoal = new VisionPursuit();
+        placeCloseGoal.setDeccelDist(1.1*Units.Length.feet);
 
-        low = new ArmToLevel(Levels.low, false, GripperMode.hatch);
-        low.setArmLen(Constants.Telescope.lenRetract + 5*Units.Length.inches);
 
         stopToCloseGoal = DrivePath.createFromFileOnRoboRio(path, "1stStopToCloseGoal", place, 1);
         stopToCloseGoal.setVerticalThresh(0.5*Units.Length.inches);
@@ -68,12 +68,14 @@ public class DoubleCargoAuto extends AutoMode{
         stopToRefill.setTurnCorrection(0.15);
 
         finishRefill = new VisionPursuit(2.65*Units.Length.feet);
+        finishRefill.setDeccelDist(0.9*Units.Length.feet);
         finishRefill.setFinishThresh(0.4*Units.Length.feet);
 
-        refillTo3rdStop = DrivePath.createFromFileOnRoboRio(path, "refillTo3rdStop", slow);
-        refillTo3rdStop.setVerticalThresh(1*Units.Length.inches);
-        refillTo3rdStop.setTurnCorrection(0.2);
-        refillTo3rdStop.setlookAhead(3*Units.Length.feet);
+        refillTo3rdStop = DrivePath.createFromFileOnRoboRio(path, "refillTo3rdStop", constraints);
+        refillTo3rdStop.setVerticalThresh(2*Units.Length.inches);
+        refillTo3rdStop.setTurnCorrection(0.15);
+        // refillTo3rdStop.setlookAhead(3.75*Units.Length.feet);
+        refillTo3rdStop.setlookAhead(5*Units.Length.feet);
         refillTo3rdStop.setReverse(true);
 
         stopToMidGoal = DrivePath.createFromFileOnRoboRio(path, "3rdStopToMidGoal", place, 1);
@@ -89,6 +91,8 @@ public class DoubleCargoAuto extends AutoMode{
         midGoalTo4thStop.setReverse(true);
 
         reset = new ArmToLevel(Levels.reset, false, GripperMode.hatch);
+        low = new ArmToLevel(Levels.low, false, GripperMode.hatch);
+        loading = new ArmToLevel(Levels.loading, false, GripperMode.hatch);
     }
 
     @Override
@@ -97,24 +101,24 @@ public class DoubleCargoAuto extends AutoMode{
         Gripper.getInstance().hatchHold();
         ArmSystemControl.getInstance().setGripperSetpoint(0*Units.Angle.degrees);
         runAction(reset);
-        runAction(new ParallelAction(startTo1stStop, new SeriesAction(new WaitUntilX(8.5*Units.Length.feet, true), low)));
+        runAction(new ParallelAction(startTo1stStop, new SeriesAction(new WaitUntilX(9.1*Units.Length.feet, true), low)));
         // runAction(stopToCloseGoal);
 
         runAction(placeCloseGoal);
         Gripper.getInstance().hatchRelease();
-        runAction(new WaitAction(0.4));
-        Gripper.getInstance().rollerOff();
+        // runAction(new WaitAction(0.4));
         runAction(closeGoalTo2ndStop);
-        runAction(stopToRefill);
+        Gripper.getInstance().rollerOff();
+        runAction(new ParallelAction(stopToRefill, loading));
         // runAction(low);
         Gripper.getInstance().hatchGrab();
         runAction(finishRefill);
         Gripper.getInstance().hatchHold();
-        runAction(refillTo3rdStop);
+        runAction(new ParallelAction(refillTo3rdStop, low));
         runAction(placeMidGoal);
         Gripper.getInstance().hatchRelease();
         // runAction(new WaitAction(0.7));
-        runAction(midGoalTo4thStop);
+        // runAction(midGoalTo4thStop);
         Gripper.getInstance().rollerOff();
     }
 }

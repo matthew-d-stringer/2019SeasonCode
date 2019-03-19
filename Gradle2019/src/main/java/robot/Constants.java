@@ -69,7 +69,7 @@ public class Constants {
 	public static class Gripper{
 		public static int pivotNum = 40;
 		public static int rollerNum = 41;
-		public static int resetNum = 8;
+		public static int resetNum = 9;
 
 		public static int[] gripNum = {6,2};
 

@@ -21,7 +21,6 @@ public class Climber{
 
     TalonSRX climbMotor;
     Coordinate conv1, conv2;
-    DoubleSolenoid guides;
 
     private Climber(){
         climbMotor = new TalonSRX(Constants.Climber.climbNum);
@@ -31,8 +30,6 @@ public class Climber{
         conv1 = new Coordinate(Constants.Climber.topVal, Constants.Climber.topLen);
         conv2 = new Coordinate(Constants.Climber.bottomVal, Constants.Climber.bottomLen);
         SmartDashboard.putBoolean("Climber Reset", false);
-
-        guides = new DoubleSolenoid(Constants.Climber.guideNums[0], Constants.Climber.guideNums[1]);
     }
 
     public void periodic(){
@@ -44,13 +41,6 @@ public class Climber{
             reset();
             SmartDashboard.putBoolean("Climber Reset", false);
         }
-    }
-
-    public void guidesDown(){
-        guides.set(Constants.Climber.down);
-    }
-    public void guidesUp(){
-        guides.set(Constants.Climber.up);
     }
 
     public double getAntigrav(){

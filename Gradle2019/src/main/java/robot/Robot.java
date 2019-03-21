@@ -149,7 +149,6 @@ public class Robot extends IterativeRobot {
         // armControl.setSetpoints(0*Units.Angle.degrees, 0);
         last = Timer.getFPGATimestamp();
         climber.reset();
-        climber.guidesUp();
         mRunner.setInitPosFeet(2.20, 1.74);
         mRunner.robotForward();
 

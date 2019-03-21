@@ -24,7 +24,7 @@ public class ClimbCode{
         controls = Robot.getControlBoard();
         climber = Climber.getInstance();
         drive = DriveOutput.getInstance();
-        climber.guidesUp();
+        //TODO: guides up
         wait = new Timer();
     }
 
@@ -52,7 +52,7 @@ public class ClimbCode{
                 climber.setVoltage(0);
                 if(controls.climbUp()){
                     climber.reset();
-                    climber.guidesDown();
+                    //TODO: add climbs down
                     wait.start();
                     state = States.extend;
                 }

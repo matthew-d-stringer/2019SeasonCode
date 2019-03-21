@@ -84,6 +84,23 @@ public class Constants {
 		public static double minAngle = -112*Units.Angle.degrees; 
 	}
 
+	public static class GroundGripper{
+		public static int pivotNum = -1; //TODO: give this a value
+		public static int rollersNum = -1; //TODO: give this a value
+		public static int resetNum = -1; //TODO: give this a value
+
+		public static double encAt0 = 0; //TODO: give this a value
+		public static double encAt90 = 0; //TODO: give this a value
+
+		public static double maxAngle = 170*Units.Angle.degrees; //TODO: give this a value
+		public static double ballGrabAngle = 30*Units.Angle.degrees; //TODO: give this a value
+
+		public static double armClearenceAngle = -30*Units.Angle.degrees; //TODO: give this a value
+		public static double inOutAngle = 45*Units.Angle.degrees; 
+
+		public static double comOffsetAngle = -0.50483; 
+	}
+
 	public static class Climber{
 		public static int climbNum = 30;
 		public static int footNum = 31;

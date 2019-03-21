@@ -53,10 +53,10 @@ public class GripperControl{
                 }
                 break;
             case running:
-                if(!disableReset && !gripper.getReset()){
-                    disableReset = true;
-                    gripper.disableReset();
-                }
+                // if(!disableReset && !gripper.getReset()){
+                //     disableReset = true;
+                //     gripper.disableReset();
+                // }
                 double feedforward = gripper.getAntigrav();
                 double p = 22.4535;
                 double d = 0.4829;

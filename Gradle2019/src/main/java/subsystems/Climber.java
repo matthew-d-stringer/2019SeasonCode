@@ -19,14 +19,13 @@ public class Climber{
         return instance;
     }
 
-    TalonSRX climbMotor, foot;
+    TalonSRX climbMotor;
     Coordinate conv1, conv2;
     DoubleSolenoid guides;
 
     private Climber(){
         climbMotor = new TalonSRX(Constants.Climber.climbNum);
         climbMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
-        foot = new TalonSRX(Constants.Climber.footNum);
         // climbMotor.configPeakCurrentLimit(38);
         // climbMotor.enableCurrentLimit(true);
         conv1 = new Coordinate(Constants.Climber.topVal, Constants.Climber.topLen);
@@ -52,11 +51,6 @@ public class Climber{
     }
     public void guidesUp(){
         guides.set(Constants.Climber.up);
-    }
-
-    public void outputToRollers(double out){
-        out = Math.abs(out)/12;
-        foot.set(ControlMode.PercentOutput, out);
     }
 
     public double getAntigrav(){

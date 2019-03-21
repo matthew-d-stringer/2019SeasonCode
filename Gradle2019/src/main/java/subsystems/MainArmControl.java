@@ -37,6 +37,8 @@ public class MainArmControl{
     double mpStartTime, mpStartAngle;
     boolean wasEnabled = false;
 
+    boolean ballClearence = false;
+
     LowPassFilter armFilter;
 
     private MainArmControl(){
@@ -46,13 +48,21 @@ public class MainArmControl{
         armFilter = new LowPassFilter(0.7);
     }
 
+    public void commandBallClearence(boolean ballClearence){
+        this.ballClearence = ballClearence;
+    }
+
     public void resetForTeleop(){
         mpStartAngle = arm.getAngle();
     }
 
     boolean prev = false;
     public void setSetpoint(double set){
+        if(!ballClearence){
         set = Math.max(set, -90*Units.Angle.degrees);
+        }else{
+            set = Math.max(set, -30*Units.Angle.degrees);
+        }
         set = Math.min(set, 215*Units.Angle.degrees);
         // System.out.println("tSet before: "+tSet/Units.Angle.degrees);
         if(!Util.inErrorRange(set, setpoint, 5*Units.Angle.degrees)){

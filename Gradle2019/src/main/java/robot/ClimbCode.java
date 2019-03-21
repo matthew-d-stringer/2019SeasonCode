@@ -76,7 +76,7 @@ public class ClimbCode{
                 double vel = 2*Units.Length.feet;
                 drive.set(DriveOutput.Modes.Velocity, vel, vel);
                 if(controls.climbUp()){
-                    climber.outputToRollers(12);
+                    //TODO: add output to rollers
                 }else{
                     state = States.retract;
                 }

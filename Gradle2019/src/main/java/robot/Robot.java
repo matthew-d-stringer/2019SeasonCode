@@ -15,6 +15,7 @@ import drive.Drive;
 import drive.DriveOutput;
 import drive.PositionTracker;
 import drive.DriveOutput.Modes;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotState;
@@ -111,14 +112,22 @@ public class Robot extends IterativeRobot {
     public void robotPeriodic(){
         // SmartDashboard.putNumber("Right Vel SI", 0);
         // SmartDashboard.putNumber("Left Vel SI", 0);
-        controlBoard.display();
-        driveOut.display();
-        drive.display();
-        mRunner.display();
+        // controlBoard.display();
+        // driveOut.display();
+        // drive.display();
+        // mRunner.display();
+        // arm.display();
         arm.periodic();
+        // telescope.display();
         telescope.periodic();
+        // gripper.display();
         gripper.periodic();
         climber.periodic();
+        // try{
+        //     Jevois.getInstance().run();
+        // }catch(Exception e){
+        //     System.out.println("Vision error");
+        // }
 
         // SmartDashboard.putString("Delta Position", Jevois.getInstance().getPosition().display());
         // SmartDashboard.putString("Relative Vector", Jevois.getInstance().getPT().display());

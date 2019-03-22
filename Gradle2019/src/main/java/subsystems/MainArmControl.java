@@ -27,7 +27,7 @@ public class MainArmControl{
     States state = States.disabled;
     double setpoint = 0;
     MainArm arm;
-    double mpMaxVel = 6*Units.Angle.revolutions;
+    double mpMaxVel = 0.45*Units.Angle.revolutions; //was 6
     double mpMaxAcc = 2.25*Units.Angle.revolutions;
     double mpAcc = mpMaxAcc;
     Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
@@ -45,7 +45,7 @@ public class MainArmControl{
         arm = MainArm.getInstance();
         mpStartAngle = arm.getAngle();
         mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
-        armFilter = new LowPassFilter(0.6);
+        armFilter = new LowPassFilter(0.7);
     }
 
     public void commandBallClearence(boolean ballClearence){
@@ -77,6 +77,7 @@ public class MainArmControl{
         // System.out.println("tSet after: "+tSet/Units.Angle.degrees);
         setpoint = set;
         //if the set is more than 90 and the angle is less than 85 or the set is more than 90 and the angle is less than 95
+        //aka if the arm is flipping
         boolean val = (set > Math.PI/2 && arm.getAngle() < 85*Units.Angle.degrees) || (set < Math.PI/2 && arm.getAngle() > 95*Units.Angle.degrees); 
         if(val){
             set = Math.PI/2;
@@ -159,10 +160,10 @@ public class MainArmControl{
                 // double error = mpSetpoint - arm.getAngle();
                 double error = mpSetpoint - armFilter.run(arm.getAngle());
                 double dError = -arm.getAngleVel();
-                double p = 8.474;
-                double d = 1.6341;
-                p = 9.7581;
-                d = 1.8418;
+                double p = 9.7581;
+                double d = 1.8418;
+                p = 6.2233;
+                d = 1.9402;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot

@@ -35,14 +35,16 @@ public class Telescope{
         reset = new DigitalInput(Constants.Telescope.resetNum);
     }
 
-    public void periodic(){
+    public void display(){
         SmartDashboard.putNumber("Raw Telescope Enc", telescope.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Telescope Distance", getDistance());
         SmartDashboard.putNumber("Telescope Antigrav", getAntigrav());
         SmartDashboard.putString("Main Arm Endpoint", getEndPos().display());
         
         SmartDashboard.putBoolean("Telescope reset", getReset());
+    }
 
+    public void periodic(){
         if(getReset())
             telescope.setSelectedSensorPosition(0);
     }

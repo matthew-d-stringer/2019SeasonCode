@@ -4,6 +4,7 @@ import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
 import utilPackage.Units;
 import utilPackage.Util;
@@ -78,7 +79,17 @@ public class ArmSystemControl extends Thread{
 
     @Override
     public void run() {
+        int i = 0;
+        double lastTime = Timer.getFPGATimestamp();
         while(true){
+            i++;
+            double cTime = Timer.getFPGATimestamp();
+            double loopSpeed = cTime - lastTime;
+            lastTime = cTime;
+            if(loopSpeed > 0.02 && i%20 == 0){
+                SmartDashboard.putNumber("Arm loop speed error", 1000*(loopSpeed-0.02));
+                // System.out.println("Arm loop speed error"+0.02-loopSpeed);
+            }
             if(!disable){
                 arm.run();
                 telescope.run();

@@ -45,7 +45,7 @@ public class MainArm{
         SmartDashboard.putBoolean("Arm Reset", false);
     }
 
-    public void periodic(){
+    public void display(){
         SmartDashboard.putNumber("Raw Arm Enc", pivot.getSelectedSensorPosition());
         SmartDashboard.putNumber("Arm Enc", Units.convertUnits(getAngle(), Units.Angle.degrees));
         SmartDashboard.putNumber("Arm Enc Vel", Units.convertUnits(getAngleVel(), Units.Angle.degrees));
@@ -56,6 +56,9 @@ public class MainArm{
         SmartDashboard.putNumber("Arm Slave current", pivotSlave.getOutputCurrent());
 
         SmartDashboard.putBoolean("Arm Reset", getReset());
+    }
+
+    public void periodic(){
         if(getReset()){
             pivot.setSelectedSensorPosition(0);
         }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.kauailabs.navx.frc.AHRS;
 
 import coordinates.*;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -82,6 +83,9 @@ public class PositionTracker extends Thread implements IPositionTracker{
             double dt = Timer.getFPGATimestamp() - last;
             last = Timer.getFPGATimestamp();
 
+            if(RobotState.isOperatorControl()){
+                break;
+            }
             pHeading.setAngle(heading.getAngle());
             heading.setRobotAngle(getAngle());
             // Heading tempHeading = new Heading(heading);

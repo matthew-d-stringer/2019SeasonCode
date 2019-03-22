@@ -45,7 +45,7 @@ public class Gripper{
         grip = new DoubleSolenoid(Constants.Gripper.gripNum[0], Constants.Gripper.gripNum[1]);
     }
 
-    public void periodic(){
+    public void display(){
         SmartDashboard.putNumber("Raw Gripper Enc", pivot.getSelectedSensorPosition());
         SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle()/Units.Angle.degrees);
         SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle()/Units.Angle.degrees);
@@ -53,7 +53,9 @@ public class Gripper{
         SmartDashboard.putBoolean("Gripper Reset", getReset());
 
         SmartDashboard.putNumber("Gripper Currrent", rollers.getOutputCurrent());
+    }
 
+    public void periodic(){
         if(getReset() && resetEnabled)
             pivot.setSelectedSensorPosition(0);
         // Timer.delay(0.02);

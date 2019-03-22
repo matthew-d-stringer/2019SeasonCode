@@ -8,8 +8,6 @@ import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
@@ -101,7 +99,7 @@ public class Gripper{
     }
 
     public void ballGrab(){
-        rollers.set(ControlMode.PercentOutput, 1);
+        rollers.set(ControlMode.PercentOutput, 0.8);
     }
 
     public void ballRelease(){

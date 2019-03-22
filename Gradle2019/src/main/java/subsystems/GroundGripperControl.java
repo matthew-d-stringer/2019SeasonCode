@@ -29,8 +29,8 @@ public class GroundGripperControl{
     SubStates substate;
     double setpoint;
 
-    final double p = 9.6819;
-    final double d = 1.8380;
+    final double p = 7.6967;
+    final double d = 1.4005;
 
     private GroundGripperControl(){
         gripper = GroundGripper.getInstance();

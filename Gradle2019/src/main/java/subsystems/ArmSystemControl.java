@@ -101,7 +101,7 @@ public class ArmSystemControl extends Thread{
                             gripper.setSetpoint(Constants.Gripper.maxAngle);
                         }else if(armAngle < Math.PI/2){
                             if(gMode == GripperMode.pickup){
-                                gripper.setSetpoint(gripperSet - 10*Units.Angle.degrees - armAngle);
+                                gripper.setSetpoint(gripperSet - 19*Units.Angle.degrees - armAngle);
                             }else{
                                 gripper.setSetpoint(gripperSet - armAngle);
                             }                        

@@ -104,7 +104,8 @@ public class ControlBoard extends IControlBoard{
 
     @Override
     public boolean flipArm() {
-        return buttonPad.getRawButton(9);
+        // return buttonPad.getRawButton(9);
+        return false; //TODO: fix flipping arm
     }
 
     @Override

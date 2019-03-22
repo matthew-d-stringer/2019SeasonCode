@@ -46,7 +46,7 @@ public class GripperControl{
                 }
                 break;
             case reset:
-                gripper.setVoltage(6);
+                gripper.setVoltage(3);
                 gripper.enableReset();
                 if(gripper.getReset()){
                     state = States.running;

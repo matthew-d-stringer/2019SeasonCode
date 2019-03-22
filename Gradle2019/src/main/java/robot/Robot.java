@@ -165,7 +165,7 @@ public class Robot extends IterativeRobot {
         if(controlBoard.resetTelescope()){
             TelescopeControl.getInstance().reset();
         }
-        
+
         if(controlBoard.climbMode() /* && !ClimbCode.getInstance().isDone()*/){
             armControl.disable(true);
             arm.setVoltage(0);
@@ -190,12 +190,12 @@ public class Robot extends IterativeRobot {
             return;
         }else{
             armControl.disable(false);
-            climber.setVoltage(0);
+            climber.setVoltage(1);
         }
 
         if(controlBoard.armToBallPickup()){
             // armPos.setXY(20*Units.Length.inches, -42*Units.Length.inches);
-            armPos = Heading.createPolarHeading(-70*Units.Angle.degrees, Constants.Telescope.lenExtend);
+            armPos = Heading.createPolarHeading(-65*Units.Angle.degrees, Constants.Telescope.lenExtend);
         }
 
         if(controlBoard.incrementOffset()){
@@ -268,7 +268,7 @@ public class Robot extends IterativeRobot {
 
         if(controlBoard.isCargoMode()){
             gripper.ballMode();
-            if(armPos.getY() < -30*Units.Length.inches){
+            if(armPos.getY() < setpoints.getHatchLow()){
                 armControl.setGriperMode(GripperMode.pickup);
             }else{
                 armControl.setGriperMode(GripperMode.level);

@@ -19,7 +19,7 @@ public class GroundGripper{
         return instance;
     }
 
-    TalonSRX pivot, rollers;
+    TalonSRX pivot, rollers, encoder;
     DigitalInput reset;
 
     Coordinate encConv0, encConv90;
@@ -30,21 +30,25 @@ public class GroundGripper{
         pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         rollers = new TalonSRX(Constants.GroundGripper.rollersNum);
         rollers.configFactoryDefault();
+        encoder = Constants.GroundGripper.pivotEncoder;
         reset = new DigitalInput(Constants.GroundGripper.resetNum);
 
         encConv0 = new Coordinate(Constants.GroundGripper.encAt0, 0);
         encConv90 = new Coordinate(Constants.GroundGripper.encAt90, Math.PI/2);
+
+        SmartDashboard.putBoolean("Manual Reset", false);
     }
     
     public void periodic(){
-        if(getReset()){
-            pivot.setSelectedSensorPosition(0);
+        if(getReset() && SmartDashboard.getBoolean("Manual Reset", false)){
+            // pivot.setSelectedSensorPosition(0);
+            encoder.setSelectedSensorPosition(0);
         }
     }
 
     public void display(){
         SmartDashboard.putBoolean("Ground Gripper Reset", getReset());
-        SmartDashboard.putNumber("Ground Gripper Raw Enc", pivot.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Ground Gripper Raw Enc", encoder.getSelectedSensorPosition());
         SmartDashboard.putNumber("Ground Gripper Angle", getAngle());
     }
 
@@ -53,15 +57,15 @@ public class GroundGripper{
     }
 
     public double getAngle(){
-        return Util.mapRange(pivot.getSelectedSensorPosition(), encConv0, encConv90);
+        return Util.mapRange(encoder.getSelectedSensorPosition(), encConv0, encConv90);
     }
 
     public double getAngleVel(){
-        return Util.slope(encConv0, encConv90)*pivot.getSelectedSensorVelocity()/0.1;
+        return Util.slope(encConv0, encConv90)*encoder.getSelectedSensorVelocity()/0.1;
     }
 
     public double getAntigrav(){
-        return 0.80248*Math.cos(getAngle()-Constants.GroundGripper.comOffsetAngle)+0.013285*getAngleVel();
+        return 0.50155*Math.cos(getAngle()-Constants.GroundGripper.comOffsetAngle)+0.021256*getAngleVel();
     }
 
     public double getClimbAntigrav(){
@@ -70,7 +74,7 @@ public class GroundGripper{
 
     public void setVoltage(double volts){
         //TODO: correct the direction
-        pivot.set(ControlMode.PercentOutput, volts/12);
+        encoder.set(ControlMode.PercentOutput, volts/12);
     }
 
     public void rollersGrab(){

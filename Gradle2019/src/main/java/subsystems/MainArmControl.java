@@ -45,7 +45,7 @@ public class MainArmControl{
         arm = MainArm.getInstance();
         mpStartAngle = arm.getAngle();
         mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
-        armFilter = new LowPassFilter(0.7);
+        armFilter = new LowPassFilter(0.6);
     }
 
     public void commandBallClearence(boolean ballClearence){

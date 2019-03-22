@@ -25,7 +25,7 @@ public class Constants {
 		public static int MLeftNum = 11, MRightNum = 14;
 		public static int[] slaveNums = {10,12, 13,15}; //left to right
 		public static TalonSRX rightEncoder = new TalonSRX(41);
-		public static TalonSRX leftEncoder = new TalonSRX(22);
+		public static TalonSRX leftEncoder = new TalonSRX(50); //was 22
 		public static double wheelDiameter = 5.5, // inches
 				wheelCircumference = wheelDiameter * Math.PI, // inches
 				robotDiameter = 29; // inches (for estimating angle without a gyro)
@@ -41,7 +41,7 @@ public class Constants {
 		public static double zeroDegVal = 940;
 		public static double ninetyDegVal = 1895;
 
-		public static double insideAngle = -75*Units.Angle.degrees;
+		public static double insideAngle = -70*Units.Angle.degrees;
 		
 		public static double maxXVal = (44-15)*Units.Length.inches;
 		public static double minXVal = (-45.5+15)*Units.Length.inches;
@@ -50,6 +50,7 @@ public class Constants {
 	public static class Telescope{
 		public static int telescopeNum = 21;
 		public static int resetNum = 7;
+
 
 		public static double mass = 2.53139782*Units.Mass.kilograms;
 
@@ -67,7 +68,7 @@ public class Constants {
 	}
 
 	public static class Gripper{
-		public static int pivotNum = 40;
+		public static int pivotNum = 40; //reads from 22
 		public static int rollerNum = 41;
 		public static int resetNum = 9;
 
@@ -78,16 +79,17 @@ public class Constants {
 		public static double comLength = 0.14759186*Units.Length.meters;
 		public static double angleOffsetFromHatch = 0*Units.Angle.radians;
 		
-		public static double zeroDegVal = 3344;
-		public static double ninetyDegVal = 0;
+		public static double zeroDegVal = 4862;
+		public static double ninetyDegVal = 1081;
 		public static double maxAngle = 90*Units.Angle.degrees; 
 		public static double minAngle = -112*Units.Angle.degrees; 
 	}
 
 	public static class GroundGripper{
-		public static int pivotNum = -1; //TODO: give this a value
-		public static int rollersNum = -1; //TODO: give this a value
-		public static int resetNum = -1; //TODO: give this a value
+		public static int pivotNum = 50; 
+		public static int rollersNum = 51; 
+		public static int resetNum = 8; 
+		public static TalonSRX pivotEncoder = new TalonSRX(22); //TODO change this
 
 		public static double encAt0 = 0; //TODO: give this a value
 		public static double encAt90 = 0; //TODO: give this a value

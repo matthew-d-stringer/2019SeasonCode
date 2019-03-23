@@ -41,6 +41,7 @@ public class ArmSystemControl extends Thread{
     boolean disable = false;
 
     private ArmSystemControl(){
+        this.setPriority(10);
         gMode = GripperMode.level;
         arm = MainArmControl.getInstance();
         telescope = TelescopeControl.getInstance();

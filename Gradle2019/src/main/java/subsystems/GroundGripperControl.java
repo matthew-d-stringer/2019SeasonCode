@@ -2,6 +2,7 @@ package subsystems;
 
 import edu.wpi.first.wpilibj.RobotState;
 import robot.Constants;
+import utilPackage.Units;
 
 public class GroundGripperControl{
     private static GroundGripperControl instance;
@@ -61,7 +62,7 @@ public class GroundGripperControl{
     }
 
     public void climbing(){
-        setpoint = 0;
+        setpoint = 3*Units.Angle.degrees;
         substate = SubStates.climbing;
     }
 

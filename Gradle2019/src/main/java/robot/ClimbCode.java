@@ -59,6 +59,7 @@ public class ClimbCode{
     }
 
     public void run(){
+        double vel = 2*Units.Length.feet;
         switch(state){
             case wait:
                 climber.setVoltage(0);
@@ -72,7 +73,7 @@ public class ClimbCode{
                 }
                 break;
             case extend:
-                drive.setNoVoltage();
+                drive.set(DriveOutput.Modes.Velocity, vel, vel);
                 GroundGripper.getInstance().rollersOff();
                 if(controls.climbUp() && wait.get() > 1.5){
                     climber.setVoltage(-12);
@@ -84,11 +85,7 @@ public class ClimbCode{
                 }
                 break;
             case roll:
-                if(climber.getClimbLen() > 0.9)
-                    climber.setVoltage(climber.getAntigrav());
-                else
-                    climber.setVoltage(-6);
-                double vel = 2*Units.Length.feet;
+                climber.setVoltage(climber.getAntigrav());
                 drive.set(DriveOutput.Modes.Velocity, vel, vel);
                 if(controls.climbForward()){
                     GroundGripper.getInstance().rollersClimb();

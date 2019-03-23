@@ -31,6 +31,7 @@ public class DriveOutput extends Thread{
     private DriveController vController;
 
     private DriveOutput(){
+        this.setPriority(9);
         vController = DriveController.getInstance();
     }
 

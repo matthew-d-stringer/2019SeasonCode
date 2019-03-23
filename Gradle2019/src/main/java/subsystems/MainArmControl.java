@@ -162,8 +162,8 @@ public class MainArmControl{
                 double dError = -arm.getAngleVel();
                 double p = 9.7581;
                 double d = 1.8418;
-                p = 5.5786;
-                d = 1.7568;
+                p = 6.3307;
+                d = 2.0345;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot
@@ -180,7 +180,11 @@ public class MainArmControl{
                 // SmartDashboard.putNumber("Arm Temp Setpoint", tempSetpoint/Units.Angle.degrees);
                 // SmartDashboard.putNumber("Arm Error", error/Units.Angle.degrees);
                 // arm.setVoltage(feedForward);
-                arm.setVoltage(feedForward+feedBack);
+                if(Util.inErrorRange(setpoint, arm.getAngle(), 6*Units.Angle.degrees)){
+                    arm.setVoltage(feedForward);
+                }else{
+                    arm.setVoltage(feedForward+feedBack);
+                }
                 break;
         }
     }

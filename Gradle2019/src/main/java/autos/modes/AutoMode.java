@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import robot.Robot;
 import utilPackage.Units;
 
 public abstract class AutoMode extends Thread{
@@ -54,17 +55,23 @@ public abstract class AutoMode extends Thread{
     }
     
     public void runAction(Action action) throws AutoEndedException{
+        if(Robot.getControlBoard().autoStop()){
+            return;
+        }
         SmartDashboard.putString("Current Action: ", action.getClass().getSimpleName());
         isActiveWithThrow();
         SmartDashboard.putString("Action Message", "Starting Action");
         action.start();
-        while(!action.isFinished() && isActiveWithThrow()){
+        while(!action.isFinished() && isActiveWithThrow() && !Robot.getControlBoard().autoStop()){
             SmartDashboard.putString("Action Message", "Updating Action");
             try{
                 action.update();
             }catch(RuntimeException e){
                 e.printStackTrace();
             }
+        }
+        if(Robot.getControlBoard().autoStop()){
+            return;
         }
         SmartDashboard.putString("Action Message", "Finishing Action");
         action.done();

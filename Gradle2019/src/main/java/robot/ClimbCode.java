@@ -1,10 +1,15 @@
 package robot;
 
 import controlBoard.IControlBoard;
+import coordinates.Heading;
 import drive.DriveOutput;
 import edu.wpi.first.wpilibj.Timer;
+import subsystems.ArmSystemControl;
 import subsystems.Climber;
 import subsystems.GroundGripper;
+import subsystems.GroundGripperControl;
+import subsystems.MainArm;
+import subsystems.MainArmControl;
 import utilPackage.Units;
 
 public class ClimbCode{
@@ -18,14 +23,20 @@ public class ClimbCode{
 
     IControlBoard controls;
     Climber climber;
+    GroundGripper gripper;
+    GroundGripperControl gripperControl;
     DriveOutput drive;
+    IControlBoard controlBoard;
     Timer wait;
 
     private ClimbCode(){
         controls = Robot.getControlBoard();
         climber = Climber.getInstance();
+        gripper = GroundGripper.getInstance();
+        gripperControl = GroundGripperControl.getInstance();
         drive = DriveOutput.getInstance();
-        //TODO: guides up
+        gripperControl.retract();
+        controlBoard = Robot.getControlBoard();
         wait = new Timer();
     }
 
@@ -51,12 +62,11 @@ public class ClimbCode{
         switch(state){
             case wait:
                 climber.setVoltage(0);
-                GroundGripper.getInstance().setVoltage(0);
+                ArmSystemControl.getInstance().setSetpoints(0, 0.1);
                 GroundGripper.getInstance().rollersOff();
-                if(controls.climbUp()){
+                if(controls.climbUp() && MainArmControl.getInstance().finishedMovement()){
                     climber.reset();
-                    //TODO: add climbs down and change this
-                    GroundGripper.getInstance().setVoltage(-12);
+                    gripperControl.climbing();
                     wait.start();
                     state = States.extend;
                 }
@@ -69,7 +79,7 @@ public class ClimbCode{
                 }else{
                     climber.setVoltage(climber.getAntigrav());
                 }
-                if(climber.getClimbLen() > 0.9){
+                if(controlBoard.climbForward()){
                     state = States.roll;
                 }
                 break;
@@ -80,23 +90,26 @@ public class ClimbCode{
                     climber.setVoltage(-6);
                 double vel = 2*Units.Length.feet;
                 drive.set(DriveOutput.Modes.Velocity, vel, vel);
-                if(controls.climbUp()){
-                    //TODO: add output to rollers
+                if(controls.climbForward()){
                     GroundGripper.getInstance().rollersClimb();
-                }else{
+                }else if(controls.climbRetract()){
                     state = States.retract;
                 }
                 break;
             case retract:
                 drive.setNoVoltage();
                 GroundGripper.getInstance().rollersOff();
-                if(controls.climbUp()){
+                gripperControl.retract();
+                if(controls.climbForward()){
                     state = States.roll;
                 }
-                climber.setVoltage(5);
-                if(climber.getClimbLen() < 0.1){
+                if(controlBoard.climbRetract()){
+                    climber.setVoltage(8); //was 5
+                }else{
+                    climber.setVoltage(climber.getAntigrav()); 
+                }
+                if(climber.getClimbLen() < 0.1 && climber.getCurrent() > 30){
                     climber.setVoltage(0);
-                    state = States.done;
                 }
                 break;
             case done:
@@ -104,4 +117,10 @@ public class ClimbCode{
                 break;
         }
     }
+    // boolean disableClimbUp = false;
+    // public void run(){
+    //     if(controlBoard.climbUp()){
+
+    //     }
+    // }
 }

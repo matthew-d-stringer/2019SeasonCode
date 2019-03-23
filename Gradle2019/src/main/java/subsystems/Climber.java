@@ -47,6 +47,10 @@ public class Climber{
         return -2;
     }
 
+    public double getCurrent(){
+        return climbMotor.getOutputCurrent();
+    }
+
     public double getClimbLen(){
         return Util.mapRange(climbMotor.getSelectedSensorPosition(), conv1, conv2);
     }

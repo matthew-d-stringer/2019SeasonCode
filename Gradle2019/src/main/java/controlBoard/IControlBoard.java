@@ -15,6 +15,8 @@ public abstract class IControlBoard{
     public abstract boolean visionDrive();
     public abstract boolean visionDrivePressed();
 
+    public abstract boolean autoStop();
+
     public abstract boolean climbMode();
 
     public abstract boolean resetTelescope();
@@ -38,6 +40,7 @@ public abstract class IControlBoard{
     public abstract boolean gripperShootPressed();
 
     public abstract boolean climbUp();
+    public abstract boolean climbForward();
     public abstract boolean climbRetract();
 
     public void display(){

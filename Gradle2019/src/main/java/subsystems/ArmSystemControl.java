@@ -33,6 +33,7 @@ public class ArmSystemControl extends Thread{
     MainArmControl arm;
     TelescopeControl telescope;
     GripperControl gripper;
+    GroundGripperControl groundGripper;
     ClimberControl climber;
     States state;
     double gripperSet = 0*Units.Angle.degrees;
@@ -44,6 +45,7 @@ public class ArmSystemControl extends Thread{
         arm = MainArmControl.getInstance();
         telescope = TelescopeControl.getInstance();
         gripper = GripperControl.getInstance();
+        groundGripper = GroundGripperControl.getInstance();
         climber = ClimberControl.getInstance();
         state = States.disabled;
     }
@@ -79,21 +81,22 @@ public class ArmSystemControl extends Thread{
 
     @Override
     public void run() {
-        int i = 0;
-        double lastTime = Timer.getFPGATimestamp();
+        // int i = 0;
+        // double lastTime = Timer.getFPGATimestamp();
         while(true){
-            i++;
-            double cTime = Timer.getFPGATimestamp();
-            double loopSpeed = cTime - lastTime;
-            lastTime = cTime;
-            if(loopSpeed > 0.02 && i%20 == 0){
-                SmartDashboard.putNumber("Arm loop speed error", 1000*(loopSpeed-0.02));
-                // System.out.println("Arm loop speed error"+0.02-loopSpeed);
-            }
+            // i++;
+            // double cTime = Timer.getFPGATimestamp();
+            // double loopSpeed = cTime - lastTime;
+            // lastTime = cTime;
+            // if(loopSpeed > 0.02 && i%20 == 0){
+            //     SmartDashboard.putNumber("Arm loop speed error", 1000*(loopSpeed-0.02));
+            //     // System.out.println("Arm loop speed error"+0.02-loopSpeed);
+            // }
             if(!disable){
                 arm.run();
                 telescope.run();
                 gripper.run();
+                groundGripper.run();
                 // climber.run();
                 switch(state){
                     case disabled:

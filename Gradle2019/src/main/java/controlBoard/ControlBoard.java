@@ -78,6 +78,11 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
+    public boolean autoStop() {
+        return buttonPad.getRawButton(14);
+    }
+
+    @Override
     public boolean climbMode() {
         return buttonPad.getRawButton(6);
     }
@@ -151,6 +156,11 @@ public class ControlBoard extends IControlBoard{
     @Override
     public boolean climbUp() {
         return buttonPad.getRawButton(11);
+    }
+
+    @Override
+    public boolean climbForward() {
+        return buttonPad.getRawButton(15);
     }
 
     @Override

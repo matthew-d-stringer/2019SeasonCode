@@ -83,9 +83,9 @@ public class PositionTracker extends Thread implements IPositionTracker{
             double dt = Timer.getFPGATimestamp() - last;
             last = Timer.getFPGATimestamp();
 
-            if(RobotState.isOperatorControl()){
-                break;
-            }
+            // if(RobotState.isOperatorControl()){
+            //     break;
+            // }
             pHeading.setAngle(heading.getAngle());
             heading.setRobotAngle(getAngle());
             // Heading tempHeading = new Heading(heading);

@@ -91,14 +91,16 @@ public class Constants {
 		public static int resetNum = 8; 
 		public static TalonSRX pivotEncoder = new TalonSRX(22); //TODO change this
 
-		public static double encAt0 = 0; //TODO: give this a value
-		public static double encAt90 = 0; //TODO: give this a value
+		public static double encAt10 = 4166; //TODO: give this a value
+		public static double encAt90 = 1966; //TODO: give this a value
 
-		public static double maxAngle = 170*Units.Angle.degrees; //TODO: give this a value
-		public static double ballGrabAngle = 30*Units.Angle.degrees; //TODO: give this a value
+		public static double maxAngle = 161*Units.Angle.degrees; //TODO: give this a value
+		public static double ballGrabAngle = 60*Units.Angle.degrees; //TODO: give this a value
+		public static double inClereance = 155*Units.Angle.degrees;
+		public static double outClereance = 90*Units.Angle.degrees;
 
-		public static double armClearenceAngle = -30*Units.Angle.degrees; //TODO: give this a value
-		public static double inOutAngle = 45*Units.Angle.degrees; 
+		public static double armClearenceAngle = 0*Units.Angle.degrees; //TODO: give this a value
+		public static double inOutAngle = 90*Units.Angle.degrees; 
 
 		public static double comOffsetAngle = -0.50483; 
 	}
@@ -108,7 +110,7 @@ public class Constants {
 		public static int footNum = 31;
 
 		public static double topVal = 0;
-		public static double bottomVal = -255000;
+		public static double bottomVal = 308677;
 
 		public static double topLen = 0;
 		public static double bottomLen = 1;

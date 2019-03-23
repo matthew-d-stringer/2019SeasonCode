@@ -28,7 +28,7 @@ public class MainArmControl{
     double setpoint = 0;
     MainArm arm;
     double mpMaxVel = 0.45*Units.Angle.revolutions; //was 6
-    double mpMaxAcc = 2.25*Units.Angle.revolutions;
+    double mpMaxAcc = 0.6*Units.Angle.revolutions; //was 2.25
     double mpAcc = mpMaxAcc;
     Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
     Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 1.4*Units.Angle.revolutions);
@@ -59,9 +59,9 @@ public class MainArmControl{
     boolean prev = false;
     public void setSetpoint(double set){
         if(!ballClearence){
-        set = Math.max(set, -90*Units.Angle.degrees);
+            set = Math.max(set, -90*Units.Angle.degrees);
         }else{
-            set = Math.max(set, -30*Units.Angle.degrees);
+            set = Math.max(set, 20*Units.Angle.degrees);
         }
         set = Math.min(set, 215*Units.Angle.degrees);
         // System.out.println("tSet before: "+tSet/Units.Angle.degrees);
@@ -162,8 +162,8 @@ public class MainArmControl{
                 double dError = -arm.getAngleVel();
                 double p = 9.7581;
                 double d = 1.8418;
-                p = 6.2233;
-                d = 1.9402;
+                p = 5.5786;
+                d = 1.7568;
                 // double feedBack = p*error + d*dError.getOut();
                 double feedBack = p*error + d*dError;
                 //If going down in front of bot

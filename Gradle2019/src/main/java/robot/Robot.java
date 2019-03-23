@@ -26,6 +26,8 @@ import subsystems.ArmSystemControl;
 import subsystems.Climber;
 import subsystems.ClimberControl;
 import subsystems.Gripper;
+import subsystems.GroundGripper;
+import subsystems.GroundGripperControl;
 import subsystems.MainArm;
 import subsystems.MainArmControl;
 import subsystems.Telescope;
@@ -44,6 +46,7 @@ public class Robot extends IterativeRobot {
     MainArm arm;
     Telescope telescope;
     Gripper gripper;
+    GroundGripper groundGripper;
     Climber climber;
 
     ArmSystemControl armControl;
@@ -77,6 +80,7 @@ public class Robot extends IterativeRobot {
         arm = MainArm.getInstance();
         telescope = Telescope.getInstance();
         gripper = Gripper.getInstance();
+        groundGripper = GroundGripper.getInstance();
         climber = Climber.getInstance();
 
         driveOut.start();
@@ -90,6 +94,8 @@ public class Robot extends IterativeRobot {
         setpoints = new ArmSetpoints();
         teleopPaths = new TeleopPaths(driveCode);
 
+        // GroundGripperControl.getInstance().disable();
+        GroundGripperControl.getInstance().retract();
         climberControl = ClimberControl.getInstance();
         armControl = ArmSystemControl.getInstance();
         armControl.start();
@@ -120,8 +126,10 @@ public class Robot extends IterativeRobot {
         arm.periodic();
         // telescope.display();
         telescope.periodic();
-        // gripper.display();
+        gripper.display();
         gripper.periodic();
+        groundGripper.display();
+        groundGripper.periodic();
         climber.periodic();
         // try{
         //     Jevois.getInstance().run();
@@ -161,6 +169,8 @@ public class Robot extends IterativeRobot {
         mRunner.setInitPosFeet(2.20, 1.74);
         mRunner.robotForward();
 
+        groundGripper.rollersOff();
+
         MainArmControl.getInstance().resetForTeleop();
     }
 
@@ -176,9 +186,9 @@ public class Robot extends IterativeRobot {
         }
 
         if(controlBoard.climbMode() /* && !ClimbCode.getInstance().isDone()*/){
-            armControl.disable(true);
-            arm.setVoltage(0);
-            telescope.setVoltage(0);
+            // armControl.disable(true);
+            // arm.setVoltage(0);
+            // telescope.setVoltage(0);
             ClimbCode.getInstance().run();
             // driveCode.run();
             // // arm.setVoltage(12*controlBoard.getCoJoyPos().getY());
@@ -212,6 +222,12 @@ public class Robot extends IterativeRobot {
         }else if(controlBoard.decrementOffset()){
             armControl.incrementOffset(-1);
         }
+
+        // if(controlBoard.isCargoMode()){
+        //     GroundGripperControl.getInstance().ballGrab();
+        // }else{
+        //     GroundGripperControl.getInstance().retract();
+        // }
 
         if(controlBoard.armToInside()){
             armPos.setAngle(-86*Units.Angle.degrees);
@@ -364,52 +380,16 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void testInit() {
-        // armControl.setArmPosition(Heading.createPolarHeading(0, Constants.Telescope.lenRetract));
+        armControl.disable(true);
+        telescope.setVoltage(0);
+        gripper.setVoltage(0);
+        arm.setVoltage(0);
     }
 
     @Override
     public void testPeriodic() {
-        // climber.outputToRollers(2);
-        // arm.disable(true);
-        // telescope.setVoltage(0);
-        // arm.setVoltage(3);
-        // if(controlBoard.climbUp()){
-        //     climberControl.setMode(ClimberControl.Modes.climbUp);
-        // }else if(controlBoard.climbDown()){
-        //     climberControl.setMode(ClimberControl.Modes.climbDown);
-        // }else{
-        //     climberControl.setMode(ClimberControl.Modes.hold);
-        // }
-        // climberControl.run();
-
-        // climber.setVoltage(2);
-        // if(controlBoard.ballRollerGrab()){
-        //     gripper.rollerGrab();
-        //     gripper.hatchLock();
-        // }else{
-        //     gripper.hatchLock();
-        //     gripper.rollerOff();
-        // }
-
-        // armControl.disable(true);
-        // arm.setVoltage(12*controlBoard.getJoystickPos().getY());
-
-        // double turn, forward;
-        // Heading target = Jevois.getInstance().getPT();
-        // double angle = Math.PI/2 - target.getAngle();
-        // double dist = target.getMagnitude();
-
-        // turn = 1.5*angle;
-        // Coordinate pt1 = new Coordinate(2.5*Units.Length.feet, 0*Units.Length.feet);
-        // Coordinate pt2 = new Coordinate(8*Units.Length.feet, 3*Units.Length.feet);
-        // forward = Util.mapRange(dist, pt1, pt2);
-
-        // double outLeft = -turn + forward;
-        // double outRight = turn + forward;
-
-        // driveOut.set(Modes.Velocity, outRight, outLeft);
-
-        // driveOut.set(Modes.Velocity, 5*Units.Length.feet, 5*Units.Length.feet);
-        // driveOut.display();
+        // groundGripper.setVoltage(12*controlBoard.getJoystickPos().getY() + groundGripper.getAntigrav());
+        GroundGripperControl.getInstance().run();
+        GroundGripper.getInstance().rollersClimb();
     }
 }

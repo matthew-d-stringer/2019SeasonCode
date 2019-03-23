@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.RobotState;
 import robot.Constants;
 
 public class GroundGripperControl{
-    private GroundGripperControl instance;
-    public GroundGripperControl getInstance(){
+    private static GroundGripperControl instance;
+    public static GroundGripperControl getInstance(){
         if(instance == null){
             instance = new GroundGripperControl();
         }
@@ -25,18 +25,29 @@ public class GroundGripperControl{
     }
 
     GroundGripper gripper;
+    MainArm arm;
     States state;
     SubStates substate;
     double setpoint;
+    boolean disabled = false;
 
-    final double p = 7.6967;
+    final double p = 5.6031;
     final double d = 1.4005;
 
     private GroundGripperControl(){
         gripper = GroundGripper.getInstance();
+        arm = MainArm.getInstance();
         state = States.disabled;
         substate = SubStates.in;
         setpoint = Constants.GroundGripper.maxAngle;
+    }
+
+    public void enable(){
+        disabled = false;
+    }
+
+    public void disable(){
+        disabled = true;
     }
 
     public void retract(){
@@ -55,7 +66,8 @@ public class GroundGripperControl{
     }
 
     public void run(){
-        switch(state){
+        if(!disabled){       
+            switch(state){
             case disabled:
                 if(RobotState.isEnabled()){
                     state = States.reset;
@@ -83,12 +95,27 @@ public class GroundGripperControl{
                     MainArmControl.getInstance().commandBallClearence(false);
                 }
 
-                double error = setpoint - gripper.getAngle();
+                double error;
+                // if(arm.getAngle() > 0){
+                    error = setpoint - gripper.getAngle();
+                // }else{
+                //     double tSet = setpoint;
+                //     if(angle < clearenceAngle){
+                //         tSet = Math.min(Constants.GroundGripper.outClereance, tSet);
+                //     }else{
+                //         tSet = Math.max(Constants.GroundGripper.inClereance, tSet);
+                //     }
+                //     error = tSet - gripper.getAngle();
+                // }
                 double derror = -gripper.getAngleVel();
                 double feedback = p*error+d*derror;
 
                 gripper.setVoltage(feedforward+feedback);
                 break;
+            }
+        }else{
+            gripper.setVoltage(0);
+            MainArmControl.getInstance().commandBallClearence(false);
         }
-    }
+     }
 }

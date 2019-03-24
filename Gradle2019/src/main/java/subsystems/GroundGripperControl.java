@@ -62,7 +62,7 @@ public class GroundGripperControl{
     }
 
     public void climbing(){
-        setpoint = 3*Units.Angle.degrees;
+        setpoint = -5*Units.Angle.degrees;
         substate = SubStates.climbing;
     }
 

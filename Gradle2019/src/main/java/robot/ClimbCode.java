@@ -76,7 +76,7 @@ public class ClimbCode{
                 drive.set(DriveOutput.Modes.Velocity, vel, vel);
                 GroundGripper.getInstance().rollersOff();
                 if(controls.climbUp() && wait.get() > 1.5){
-                    climber.setVoltage(-12);
+                    climber.setVoltage(-8);
                 }else{
                     climber.setVoltage(climber.getAntigrav());
                 }

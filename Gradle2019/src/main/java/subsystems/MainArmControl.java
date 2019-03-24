@@ -59,7 +59,7 @@ public class MainArmControl{
     boolean prev = false;
     public void setSetpoint(double set){
         if(!ballClearence){
-            set = Math.max(set, -90*Units.Angle.degrees);
+            set = Math.max(set, -100*Units.Angle.degrees);
         }else{
             set = Math.max(set, 20*Units.Angle.degrees);
         }

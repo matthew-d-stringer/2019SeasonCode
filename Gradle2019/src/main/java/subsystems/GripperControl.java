@@ -62,7 +62,7 @@ public class GripperControl{
                 double d = 0.4829;
                 double error;
                 if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
-                    error = Math.max(45*Units.Angle.degrees, setpoint) - gripper.getRelAngle();
+                    error = Math.max(Constants.Gripper.maxAngle, setpoint) - gripper.getRelAngle();
                 }else{
                     error = setpoint - gripper.getRelAngle();
                 }

@@ -81,7 +81,7 @@ public class Constants {
 		
 		public static double zeroDegVal = 4862;
 		public static double ninetyDegVal = 1081;
-		public static double maxAngle = 90*Units.Angle.degrees; 
+		public static double maxAngle = 115*Units.Angle.degrees; 
 		public static double minAngle = -112*Units.Angle.degrees; 
 	}
 

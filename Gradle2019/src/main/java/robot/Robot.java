@@ -88,7 +88,8 @@ public class Robot extends IterativeRobot {
         // mode = new FarNearLeftHatchAuto();
         // mode = new SkidDrive();
 
-        mode = new DoubleCargoAuto();
+        // mode = new DoubleCargoAuto();
+        mode = new CenterLeftAuto();
 
         driveCode = new FancyDrive();
 
@@ -122,7 +123,7 @@ public class Robot extends IterativeRobot {
         // controlBoard.display();
         // driveOut.display();
         // drive.display();
-        // mRunner.display();
+        mRunner.display();
         // arm.display();
         arm.periodic();
         // telescope.display();
@@ -231,7 +232,7 @@ public class Robot extends IterativeRobot {
         // }
 
         if(controlBoard.armToInside()){
-            armPos.setAngle(-86*Units.Angle.degrees);
+            armPos.setAngle(-100*Units.Angle.degrees);
             armPos.setMagnitude(Constants.Telescope.lenRetract);
             teleopPaths.setMiddle(false);
         }

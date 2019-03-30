@@ -17,6 +17,7 @@ public class GripperControl{
 
     public enum States{
         disabled,
+        preReset,
         reset, 
         running;
     }
@@ -33,7 +34,7 @@ public class GripperControl{
     }
 
     public void setSetpoint(double setpoint){
-        SmartDashboard.putNumber("Gripper setpoint", setpoint);
+        SmartDashboard.putNumber("Gripper setpoint", setpoint/Units.Angle.degrees);
         setpoint = Util.forceInRange(setpoint, Constants.Gripper.minAngle, Constants.Gripper.maxAngle);
         this.setpoint = setpoint;
     }
@@ -45,10 +46,17 @@ public class GripperControl{
                     state = States.reset;
                 }
                 break;
+            case preReset:
+                gripper.setVoltage(-2);
+                gripper.enableReset();
+                if(!gripper.getReset()){
+                    state = States.reset;
+                }
             case reset:
                 gripper.setVoltage(3);
                 gripper.enableReset();
                 if(gripper.getReset()){
+                    gripper.setVoltage(0);
                     state = States.running;
                 }
                 break;

@@ -79,9 +79,9 @@ public class Constants {
 		public static double comLength = 0.14759186*Units.Length.meters;
 		public static double angleOffsetFromHatch = 0*Units.Angle.radians;
 		
-		public static double zeroDegVal = 4862;
-		public static double ninetyDegVal = 1081;
-		public static double maxAngle = 115*Units.Angle.degrees; 
+		public static double zeroDegVal = 3401;
+		public static double ninetyDegVal = 0;
+		public static double maxAngle = 89*Units.Angle.degrees; 
 		public static double minAngle = -112*Units.Angle.degrees; 
 	}
 

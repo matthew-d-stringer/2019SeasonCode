@@ -76,7 +76,7 @@ public class MainArm{
         if(disable){
             voltage = 0;
         }
-        SmartDashboard.putNumber("Arm voltage", voltage);
+        // SmartDashboard.putNumber("Arm voltage", voltage);
         // voltage = Util.forceInRange(voltage, -4, 4);
         pivot.set(ControlMode.PercentOutput, -voltage/12);
     }

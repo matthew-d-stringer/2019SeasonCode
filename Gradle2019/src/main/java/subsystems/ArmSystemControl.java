@@ -125,7 +125,11 @@ public class ArmSystemControl extends Thread{
                             if(gMode == GripperMode.pickup){
                                 gripper.setSetpoint(gripperSet+Math.PI - 3*Math.PI/4 - armAngle);
                             }else if(gMode == GripperMode.level){
-                                gripper.setSetpoint(gripperSet+Math.PI - armAngle);
+                                if(armAngle < Constants.MainArm.insideAngle){
+                                    gripper.setSetpoint(90*Units.Angle.degrees);
+                                }else{
+                                    gripper.setSetpoint(gripperSet+Math.PI - armAngle);
+                                }
                             }else{
                                 // if(Heading.createPolarHeading(armAngle, telescope.getSetpoint()).getY() > 36*Units.Length.inches)
                                 //     gripper.setSetpoint(backOffset-30*Units.Angle.degrees+offset+Math.PI - Math.PI/2 - armAngle);

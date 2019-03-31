@@ -89,13 +89,12 @@ public class TelescopeControl{
                 // double tmpSetpoint = mp.Calculate(time.get())[0];
                 // ble tmpSetpoint = setpoint;
                 double tmpSetpoint = setpoint;
-                    error = tmpSetpoint - telescope.getDistance();
 
-                if(MainArmControl.getInstance().finishedMovement())
+                if(MainArmControl.getInstance().finishedMovement()){
                     error = tmpSetpoint - telescope.getDistance();
-                else 
-                    error = Constants.Telescope.lenRetract - telescope.getDistance();
-                if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
+                }else if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
+                    error = Math.min(Constants.Telescope.lenInside, tmpSetpoint) - telescope.getDistance();
+                }else{
                     error = Constants.Telescope.lenRetract - telescope.getDistance();
                 }
                 double derror = -telescope.getVel();
@@ -109,6 +108,10 @@ public class TelescopeControl{
 
     public boolean inErrorRange(double range){
         return Util.inErrorRange(setpoint, telescope.getDistance(), range);
+    }
+
+    public boolean retracted(){
+        return Util.inErrorRange(Constants.Telescope.lenRetract, telescope.getDistance(), 1*Units.Length.inches);
     }
 
     public void reset(){

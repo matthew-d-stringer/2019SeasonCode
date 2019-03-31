@@ -216,7 +216,8 @@ public class Robot extends IterativeRobot {
 
         if(controlBoard.armToBallPickup()){
             // armPos.setXY(20*Units.Length.inches, -42*Units.Length.inches);
-            armPos = Heading.createPolarHeading(-65*Units.Angle.degrees, Constants.Telescope.lenExtend);
+            // armPos = Heading.createPolarHeading(-65*Units.Angle.degrees, Constants.Telescope.lenExtend);
+            armPos = Heading.createPolarHeading(-84*Units.Angle.degrees, Constants.Telescope.lenRetract + 4*Units.Length.inches);
         }
 
         if(controlBoard.incrementOffset()){
@@ -225,11 +226,11 @@ public class Robot extends IterativeRobot {
             armControl.incrementOffset(-1);
         }
 
-        // if(controlBoard.isCargoMode()){
-        //     GroundGripperControl.getInstance().ballGrab();
-        // }else{
-        //     GroundGripperControl.getInstance().retract();
-        // }
+        if(controlBoard.isCargoMode()){
+            GroundGripperControl.getInstance().ballGrab();
+        }else{
+            GroundGripperControl.getInstance().retract();
+        }
 
         if(controlBoard.armToInside()){
             armPos.setAngle(-100*Units.Angle.degrees);
@@ -295,7 +296,8 @@ public class Robot extends IterativeRobot {
 
         if(controlBoard.isCargoMode()){
             gripper.ballMode();
-            if(armPos.getY() < setpoints.getHatchLow()){
+            if(armPos.getMagnitude() < Constants.Telescope.lenRetract+1*Units.Length.inches && 
+                armPos.getAngle() < -80*Units.Angle.degrees){
                 armControl.setGriperMode(GripperMode.pickup);
             }else{
                 armControl.setGriperMode(GripperMode.level);
@@ -310,6 +312,7 @@ public class Robot extends IterativeRobot {
         }
 
         if(controlBoard.gripperShoot()){
+            groundGripper.rollersOff();
             if(controlBoard.isCargoMode()){
                 gripper.ballRelease();
             }else{
@@ -322,10 +325,13 @@ public class Robot extends IterativeRobot {
         }else if(controlBoard.gripperGrab()){
             if(controlBoard.isCargoMode()){
                 gripper.ballGrab();
+                groundGripper.rollersGrab();
             }else{
                 gripper.hatchGrab();
+                groundGripper.rollersOff();
             }
         }else{
+            groundGripper.rollersOff();
             if(controlBoard.isCargoMode()){
                 gripper.rollerOff();
             }else{

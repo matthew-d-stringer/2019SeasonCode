@@ -3,6 +3,7 @@ package subsystems;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
+import robot.Robot;
 import utilPackage.Units;
 import utilPackage.Util;
 
@@ -43,7 +44,8 @@ public class GripperControl{
         switch(state){
             case disabled:
                 if(RobotState.isEnabled() && TelescopeControl.getInstance().isRunning()){
-                    state = States.reset;
+                    state = States.preReset;
+                    // state = States.reset;
                 }
                 break;
             case preReset:
@@ -70,7 +72,11 @@ public class GripperControl{
                 double d = 0.4829;
                 double error;
                 if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
-                    error = Math.max(Constants.Gripper.maxAngle, setpoint) - gripper.getRelAngle();
+                    if(Robot.getControlBoard().isCargoMode()){
+                        error = 60*Units.Angle.degrees - gripper.getRelAngle();
+                    }else{
+                        error = Math.max(Constants.Gripper.maxAngle, setpoint) - gripper.getRelAngle();
+                    }
                 }else{
                     error = setpoint - gripper.getRelAngle();
                 }

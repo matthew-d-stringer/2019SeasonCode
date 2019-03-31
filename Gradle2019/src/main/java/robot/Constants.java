@@ -38,10 +38,10 @@ public class Constants {
 
 		public static double mass = 7.14505445-3.39681515*Units.Mass.kilograms; //everything but the gripper
 
-		public static double zeroDegVal = 940;
-		public static double ninetyDegVal = 1895;
+		public static double zeroDegVal = 1014;
+		public static double ninetyDegVal = 1982;
 
-		public static double insideAngle = -70*Units.Angle.degrees;
+		public static double insideAngle = -80*Units.Angle.degrees;
 		
 		public static double maxXVal = (44-15)*Units.Length.inches;
 		public static double minXVal = (-45.5+15)*Units.Length.inches;
@@ -63,6 +63,8 @@ public class Constants {
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
 		public static double comRetract = 0.3291279*Units.Length.meters, comExtend = 0.3996022*Units.Length.meters;
 
+		public static double lenInside = 29.2675*Units.Length.inches;
+
 		public static double momentOfInertiaRetracted = 0.5029945;//Kg m^2
 		public static double momentOfInertiaExtended = 0.73141154;//Kg m^2
 	}
@@ -79,8 +81,8 @@ public class Constants {
 		public static double comLength = 0.14759186*Units.Length.meters;
 		public static double angleOffsetFromHatch = 0*Units.Angle.radians;
 		
-		public static double zeroDegVal = 3401;
-		public static double ninetyDegVal = 0;
+		public static double zeroDegVal = 4856;
+		public static double ninetyDegVal = 916;
 		public static double maxAngle = 89*Units.Angle.degrees; 
 		public static double minAngle = -112*Units.Angle.degrees; 
 	}
@@ -95,9 +97,9 @@ public class Constants {
 		public static double encAt90 = 1966; //TODO: give this a value
 
 		public static double maxAngle = 161*Units.Angle.degrees; //TODO: give this a value
-		public static double ballGrabAngle = 60*Units.Angle.degrees; //TODO: give this a value
+		public static double ballGrabAngle = 39*Units.Angle.degrees; //TODO: give this a value
 		public static double inClereance = 155*Units.Angle.degrees;
-		public static double outClereance = 90*Units.Angle.degrees;
+		public static double outClereance = 45*Units.Angle.degrees;
 
 		public static double armClearenceAngle = 0*Units.Angle.degrees; //TODO: give this a value
 		public static double inOutAngle = 90*Units.Angle.degrees; 

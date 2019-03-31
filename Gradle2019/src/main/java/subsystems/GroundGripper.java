@@ -75,7 +75,7 @@ public class GroundGripper{
     }
 
     public void setVoltage(double volts){
-        pivot.set(ControlMode.PercentOutput, -volts/12);
+        pivot.set(ControlMode.PercentOutput, volts/12);
     }
 
     public void rollersGrab(){

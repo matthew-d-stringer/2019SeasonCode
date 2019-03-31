@@ -39,6 +39,7 @@ public abstract class IControlBoard{
     public abstract boolean gripperShoot();
     public abstract boolean gripperShootPressed();
 
+    public abstract boolean lowClimb();
     public abstract boolean climbUp();
     public abstract boolean climbForward();
     public abstract boolean climbRetract();

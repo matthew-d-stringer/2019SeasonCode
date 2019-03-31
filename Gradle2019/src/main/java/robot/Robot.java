@@ -187,27 +187,8 @@ public class Robot extends IterativeRobot {
             TelescopeControl.getInstance().reset();
         }
 
-        if(controlBoard.climbMode() /* && !ClimbCode.getInstance().isDone()*/){
-            // armControl.disable(true);
-            // arm.setVoltage(0);
-            // telescope.setVoltage(0);
-            ClimbCode.getInstance().run();
-            // driveCode.run();
-            // // arm.setVoltage(12*controlBoard.getCoJoyPos().getY());
-            // // climberControl.run();
-            // if(controlBoard.climbUp() /*&& climber.getClimbLen() < 0.95*/){
-            //     // climberControl.setMode(ClimberControl.Modes.climbUp);
-            //     climber.setVoltage(-12);
-            // }else if(controlBoard.climbRetract() /*&& climber.getClimbLen() > 0.1*/){
-            //     // climberControl.setMode(ClimberControl.Modes.climbDown);
-            //     climber.setVoltage(12);
-            // }else{
-            //     // climberControl.setMode(ClimberControl.Modes.hold);
-            //     if(climber.getClimbLen() < 0.1)
-            //         climber.setVoltage(0.25);
-            //     else
-            //         climber.setVoltage(climber.getAntigrav());
-            // }
+        if(controlBoard.climbMode()){
+            ClimbCode.getInstance().run(driveCode);
             return;
         }else{
             armControl.disable(false);

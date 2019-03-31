@@ -102,7 +102,7 @@ public class Constants {
 		public static double outClereance = 45*Units.Angle.degrees;
 
 		public static double armClearenceAngle = 0*Units.Angle.degrees; //TODO: give this a value
-		public static double inOutAngle = 90*Units.Angle.degrees; 
+		public static double inOutAngle = 130*Units.Angle.degrees; 
 
 		public static double comOffsetAngle = -0.50483; 
 	}

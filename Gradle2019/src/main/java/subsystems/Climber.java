@@ -44,7 +44,7 @@ public class Climber{
     }
 
     public double getAntigrav(){
-        return -4;
+        return -1.5;
     }
 
     public double getCurrent(){

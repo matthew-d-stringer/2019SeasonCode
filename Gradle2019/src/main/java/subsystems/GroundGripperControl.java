@@ -65,9 +65,22 @@ public class GroundGripperControl{
         climbing = false;
     }
 
+    public void preClimb(){
+        setpoint = 70*Units.Angle.degrees;
+        climbing = false;
+    }
     public void climbing(){
         setpoint = -5*Units.Angle.degrees;
         climbing = true;
+    }
+    public void lowclimbing(){
+        setpoint = -5*Units.Angle.degrees;
+        climbing = true;
+    }
+
+    public void afterClimb(){
+        setpoint = 20*Units.Angle.degrees;
+        climbing = false;
     }
 
     public void run(){
@@ -100,9 +113,9 @@ public class GroundGripperControl{
                     case Static:
                         tSet = setpoint;
                         armControl.commandBallClearence(false);
-                        if(setpoint < clearenceAngle && !armControl.finishedMovement()){
-                            tSet = 10*Units.Angle.degrees;
-                        }
+                        // if(setpoint < clearenceAngle && !armControl.finishedMovement()){
+                        //     tSet = 10*Units.Angle.degrees;
+                        // }
                         if(setpoint > clearenceAngle && pSetpoint <= clearenceAngle){
                             substate = SubStates.Transitioning;
                         }else if(setpoint < clearenceAngle && pSetpoint >= clearenceAngle){

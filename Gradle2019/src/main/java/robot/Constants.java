@@ -81,8 +81,8 @@ public class Constants {
 		public static double comLength = 0.14759186*Units.Length.meters;
 		public static double angleOffsetFromHatch = 0*Units.Angle.radians;
 		
-		public static double zeroDegVal = 4856;
-		public static double ninetyDegVal = 916;
+		public static double zeroDegVal = 4859;
+		public static double ninetyDegVal = 1042;
 		public static double maxAngle = 89*Units.Angle.degrees; 
 		public static double minAngle = -112*Units.Angle.degrees; 
 	}
@@ -93,10 +93,13 @@ public class Constants {
 		public static int resetNum = 8; 
 		public static TalonSRX pivotEncoder = new TalonSRX(22); //TODO change this
 
-		public static double encAt10 = 4166; //TODO: give this a value
-		public static double encAt90 = 1966; //TODO: give this a value
+		//NOT ARM GRIPPER
+		public static double encAt10 = 4028; 
+		//NOT ARM GRIPPER
+		public static double encAt90 = 1752; 
+		//NOT ARM GRIPPER
 
-		public static double maxAngle = 161*Units.Angle.degrees; //TODO: give this a value
+		public static double maxAngle = 151*Units.Angle.degrees; //TODO: give this a value
 		public static double ballGrabAngle = 39*Units.Angle.degrees; //TODO: give this a value
 		public static double inClereance = 155*Units.Angle.degrees;
 		public static double outClereance = 45*Units.Angle.degrees;

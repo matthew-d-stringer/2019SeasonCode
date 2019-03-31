@@ -92,7 +92,7 @@ public class GroundGripperControl{
                 }
                 break;
             case reset:
-                gripper.setVoltage(2);
+                gripper.setVoltage(4);
                 if(gripper.getReset()){
                     state = States.running;
                 }
@@ -113,9 +113,9 @@ public class GroundGripperControl{
                     case Static:
                         tSet = setpoint;
                         armControl.commandBallClearence(false);
-                        // if(setpoint < clearenceAngle && !armControl.finishedMovement()){
-                        //     tSet = 10*Units.Angle.degrees;
-                        // }
+                        if(setpoint < clearenceAngle && !armControl.finishedMovement() && !climbing){
+                            tSet = 10*Units.Angle.degrees;
+                        }
                         if(setpoint > clearenceAngle && pSetpoint <= clearenceAngle){
                             substate = SubStates.Transitioning;
                         }else if(setpoint < clearenceAngle && pSetpoint >= clearenceAngle){

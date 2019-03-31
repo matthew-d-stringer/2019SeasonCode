@@ -124,11 +124,11 @@ public class Robot extends IterativeRobot {
         // driveOut.display();
         // drive.display();
         mRunner.display();
-        arm.display();
+        // arm.display();
         arm.periodic();
         // telescope.display();
         telescope.periodic();
-        gripper.display();
+        // gripper.display();
         gripper.periodic();
         groundGripper.display();
         groundGripper.periodic();
@@ -198,7 +198,7 @@ public class Robot extends IterativeRobot {
         if(controlBoard.armToBallPickup()){
             // armPos.setXY(20*Units.Length.inches, -42*Units.Length.inches);
             // armPos = Heading.createPolarHeading(-65*Units.Angle.degrees, Constants.Telescope.lenExtend);
-            armPos = Heading.createPolarHeading(-84*Units.Angle.degrees, Constants.Telescope.lenRetract + 4*Units.Length.inches);
+            armPos = Heading.createPolarHeading(-87*Units.Angle.degrees, Constants.Telescope.lenRetract + 4*Units.Length.inches);
         }
 
         if(controlBoard.incrementOffset()){

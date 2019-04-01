@@ -38,8 +38,8 @@ public class Constants {
 
 		public static double mass = 7.14505445-3.39681515*Units.Mass.kilograms; //everything but the gripper
 
-		public static double zeroDegVal = 1014;
-		public static double ninetyDegVal = 1982;
+		public static double zeroDegVal = 1038;
+		public static double ninetyDegVal = 1988;
 
 		public static double insideAngle = -80*Units.Angle.degrees;
 		

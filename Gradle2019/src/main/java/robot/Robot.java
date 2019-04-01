@@ -124,7 +124,7 @@ public class Robot extends IterativeRobot {
         // driveOut.display();
         // drive.display();
         mRunner.display();
-        // arm.display();
+        arm.display();
         arm.periodic();
         // telescope.display();
         telescope.periodic();

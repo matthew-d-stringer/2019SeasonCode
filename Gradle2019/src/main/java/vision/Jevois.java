@@ -51,7 +51,7 @@ public class Jevois extends Thread{
     public void run() {
         serial = new SerialPort(115200, SerialPort.Port.kUSB);
         serial.enableTermination();
-        // startJevois();
+        startJevois();
         while(!this.interrupted()){
             // serial.writeString("ping\n");
             String rawInput = serial.readString();

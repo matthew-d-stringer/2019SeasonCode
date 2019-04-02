@@ -205,6 +205,6 @@ public class MainArmControl{
 
     public boolean finishedMovement(){
         // return mpFinished(0.25) && inErrorRange(10*Units.Angle.degrees);
-        return mpFinished() && inErrorRange(15*Units.Angle.degrees);
+        return mpFinished() && inErrorRange(20*Units.Angle.degrees);
     }
 }

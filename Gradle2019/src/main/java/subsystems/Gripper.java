@@ -82,10 +82,7 @@ public class Gripper{
      * @param voltage positive is up, negative is down
      */
     public void setVoltage(double voltage){
-        // if(Constants.isCompBot)
-            pivot.set(ControlMode.PercentOutput, -voltage/12);
-        // else
-        //     pivot.set(ControlMode.PercentOutput, -voltage/12);
+        pivot.set(ControlMode.PercentOutput, -voltage/12);
     }
 
     public void hatchGrab(){
@@ -93,7 +90,7 @@ public class Gripper{
     }
 
     public void hatchRelease(){
-        rollers.set(ControlMode.PercentOutput, 0.666);
+        rollers.set(ControlMode.PercentOutput, 1);
     }
 
     public void hatchHold(){
@@ -108,6 +105,10 @@ public class Gripper{
         rollers.set(ControlMode.PercentOutput, -1);
     }
 
+    public void ballHold(){
+        rollers.set(ControlMode.PercentOutput, 0.166666);
+    }
+
     public void rollerOff(){
         rollers.set(ControlMode.PercentOutput, 0);
     }
@@ -117,6 +118,9 @@ public class Gripper{
     }
     public void ballMode(){
         grip.set(Value.kForward);
+    }
+    public void ballClamp(){
+        grip.set(Value.kReverse);
     }
 
     /**

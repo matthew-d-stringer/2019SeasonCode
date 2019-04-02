@@ -101,7 +101,7 @@ public class ControlBoard extends IControlBoard{
     public boolean gripperGrab() {
         return joy.getRawButton(5);
     }
-    
+
     @Override
     public boolean isCargoMode() {
         return buttonPad.getRawButton(7);
@@ -183,8 +183,8 @@ public class ControlBoard extends IControlBoard{
         return coJoy.getRawButtonPressed(1) || joy.getRawButtonPressed(6);
     }
 
-    // @Override
-    // public boolean ballPistonGrab() {
-    //     return ballPistonGrab.toggleVar(joy.getRawButton(2));
-    // }
+    @Override
+    public boolean ballPistonGrab() {
+        return ballPistonGrab.toggleVar(joy.getRawButton(2));
+    }
 }

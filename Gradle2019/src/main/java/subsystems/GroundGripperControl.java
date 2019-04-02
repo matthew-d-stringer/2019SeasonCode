@@ -114,7 +114,7 @@ public class GroundGripperControl{
                         tSet = setpoint;
                         armControl.commandBallClearence(false);
                         if(setpoint < clearenceAngle && !armControl.finishedMovement() && !climbing){
-                            tSet = 10*Units.Angle.degrees;
+                            tSet = 7*Units.Angle.degrees;
                         }
                         if(setpoint > clearenceAngle && pSetpoint <= clearenceAngle){
                             substate = SubStates.Transitioning;

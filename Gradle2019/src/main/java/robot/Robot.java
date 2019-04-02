@@ -84,19 +84,15 @@ public class Robot extends IterativeRobot {
         climber = Climber.getInstance();
 
         driveOut.start();
-        // mode = new DoubleHatchAuto(false);
-        // mode = new FarNearLeftHatchAuto();
-        // mode = new SkidDrive();
-
-        // mode = new DoubleCargoAuto();
-        mode = new CenterLeftAuto();
+        // mode = new CenterLeftAuto();
+        mode = new DoubleRocketAuto();
 
         driveCode = new FancyDrive();
 
         setpoints = new ArmSetpoints();
         teleopPaths = new TeleopPaths(driveCode);
 
-        // GroundGripperControl.getInstance().disable();
+        GroundGripperControl.getInstance().disable();
         GroundGripperControl.getInstance().retract();
         climberControl = ClimberControl.getInstance();
         armControl = ArmSystemControl.getInstance();
@@ -109,8 +105,7 @@ public class Robot extends IterativeRobot {
         }
 
         autoChooser = new SendableChooser<>();
-        autoChooser.addDefault("Double Hatch Left", DoubleHatchAuto.getLeftName());
-        autoChooser.addObject("Double Hatch Right", DoubleHatchAuto.getRightName());
+        autoChooser.setDefaultOption("Double Rocket Auto", DoubleRocketAuto.getSelecterName());
         SmartDashboard.putData(autoChooser);
 
         Jevois.getInstance().start();
@@ -128,7 +123,7 @@ public class Robot extends IterativeRobot {
         arm.periodic();
         // telescope.display();
         telescope.periodic();
-        // gripper.display();
+        gripper.display();
         gripper.periodic();
         groundGripper.display();
         groundGripper.periodic();
@@ -198,7 +193,10 @@ public class Robot extends IterativeRobot {
         if(controlBoard.armToBallPickup()){
             // armPos.setXY(20*Units.Length.inches, -42*Units.Length.inches);
             // armPos = Heading.createPolarHeading(-65*Units.Angle.degrees, Constants.Telescope.lenExtend);
-            armPos = Heading.createPolarHeading(-87*Units.Angle.degrees, Constants.Telescope.lenRetract + 4*Units.Length.inches);
+            // armPos = Heading.createPolarHeading(-87*Units.Angle.degrees, Constants.Telescope.lenRetract + 4*Units.Length.inches);
+            armPos.setAngle(-100*Units.Angle.degrees);
+            armPos.setMagnitude(Constants.Telescope.lenRetract);
+            teleopPaths.setMiddle(false);
         }
 
         if(controlBoard.incrementOffset()){
@@ -207,11 +205,6 @@ public class Robot extends IterativeRobot {
             armControl.incrementOffset(-1);
         }
 
-        if(controlBoard.isCargoMode()){
-            GroundGripperControl.getInstance().ballGrab();
-        }else{
-            GroundGripperControl.getInstance().retract();
-        }
 
         if(controlBoard.armToInside()){
             armPos.setAngle(-100*Units.Angle.degrees);
@@ -262,21 +255,36 @@ public class Robot extends IterativeRobot {
                 if(controlBoard.flipArm()){
                     y += 6*Units.Angle.degrees;
                 }
+                // armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
+                armPos.setMagnitude(Constants.Telescope.lenExtend);
             }else{
                 setpoints.incrementHatchHigh(controlBoard.getCoJoyPos().getY());
                 y = setpoints.getHatchHigh();
+                armPos.setMagnitude(Constants.Telescope.lenExtend-2*Units.Length.inches);
             }
             // armPos.setMagnitude(Math.max(controlBoard.armLength(), y));
-            armPos.setMagnitude(Constants.Telescope.lenExtend-2*Units.Length.inches);
             armPos.setYMaintainMag(y,controlBoard.flipArm());
             teleopPaths.setMiddle(false);
         }
         armControl.setArmPosition(armPos);
         SmartDashboard.putString("Arm pos set", armPos.display());
 
+        if(controlBoard.isCargoMode()){
+            if(armPos.getY() > setpoints.getBallMid() && MainArmControl.getInstance().finishedMovement()){
+                GroundGripperControl.getInstance().retract();
+            }else{
+                GroundGripperControl.getInstance().ballGrab();
+            }
+        }else{
+            GroundGripperControl.getInstance().retract();
+        }
 
         if(controlBoard.isCargoMode()){
-            gripper.ballMode();
+            if(controlBoard.ballPistonGrab()){
+                gripper.ballClamp();
+            }else{
+                gripper.ballMode();
+            }
             if(armPos.getMagnitude() < Constants.Telescope.lenRetract+1*Units.Length.inches && 
                 armPos.getAngle() < -80*Units.Angle.degrees){
                 armControl.setGriperMode(GripperMode.pickup);
@@ -297,7 +305,7 @@ public class Robot extends IterativeRobot {
             if(controlBoard.isCargoMode()){
                 gripper.ballRelease();
             }else{
-                if(Timer.getFPGATimestamp() - hatchShootTime > 0.4){
+                if(Timer.getFPGATimestamp() - hatchShootTime > 0.8){
                     gripper.rollerOff();
                 }else{
                     gripper.hatchRelease();
@@ -314,7 +322,7 @@ public class Robot extends IterativeRobot {
         }else{
             groundGripper.rollersOff();
             if(controlBoard.isCargoMode()){
-                gripper.rollerOff();
+                gripper.ballHold();
             }else{
                 gripper.hatchHold();
             }

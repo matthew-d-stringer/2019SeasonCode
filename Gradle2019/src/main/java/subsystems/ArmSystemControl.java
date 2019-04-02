@@ -73,8 +73,7 @@ public class ArmSystemControl extends Thread{
     }
 
     public void incrementOffset(double joystick){
-        //TODO: add this back
-        // gripperSet += joystick*4*6*Units.Length.inches * 0.1;
+        gripperSet += joystick*4*6*Units.Length.inches * 0.1;
     }
 
     public void setGripperSetpoint(double setpoint){

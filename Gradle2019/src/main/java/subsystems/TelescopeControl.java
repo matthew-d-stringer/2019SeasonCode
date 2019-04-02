@@ -90,7 +90,9 @@ public class TelescopeControl{
                 // ble tmpSetpoint = setpoint;
                 double tmpSetpoint = setpoint;
 
+                //TODO: make this code not stupid
                 if(MainArmControl.getInstance().finishedMovement()){
+//If the movement is done then it assumes everythingis fine
                     error = tmpSetpoint - telescope.getDistance();
                 }else if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
                     error = Math.min(Constants.Telescope.lenInside, tmpSetpoint) - telescope.getDistance();

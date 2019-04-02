@@ -41,7 +41,7 @@ public class Constants {
 		public static double zeroDegVal = 1038;
 		public static double ninetyDegVal = 1988;
 
-		public static double insideAngle = -80*Units.Angle.degrees;
+		public static double insideAngle = -82*Units.Angle.degrees;
 		
 		public static double maxXVal = (44-15)*Units.Length.inches;
 		public static double minXVal = (-45.5+15)*Units.Length.inches;
@@ -91,7 +91,7 @@ public class Constants {
 		public static int pivotNum = 50; 
 		public static int rollersNum = 51; 
 		public static int resetNum = 8; 
-		public static TalonSRX pivotEncoder = new TalonSRX(22); //TODO change this
+		public static TalonSRX pivotEncoder = new TalonSRX(22); 
 
 		//NOT ARM GRIPPER
 		public static double encAt10 = 4028; 
@@ -99,12 +99,12 @@ public class Constants {
 		public static double encAt90 = 1752; 
 		//NOT ARM GRIPPER
 
-		public static double maxAngle = 151*Units.Angle.degrees; //TODO: give this a value
-		public static double ballGrabAngle = 39*Units.Angle.degrees; //TODO: give this a value
+		public static double maxAngle = 151*Units.Angle.degrees; 
+		public static double ballGrabAngle = 39*Units.Angle.degrees; 
 		public static double inClereance = 155*Units.Angle.degrees;
 		public static double outClereance = 45*Units.Angle.degrees;
 
-		public static double armClearenceAngle = 0*Units.Angle.degrees; //TODO: give this a value
+		public static double armClearenceAngle = 0*Units.Angle.degrees; 
 		public static double inOutAngle = 130*Units.Angle.degrees; 
 
 		public static double comOffsetAngle = -0.50483; 

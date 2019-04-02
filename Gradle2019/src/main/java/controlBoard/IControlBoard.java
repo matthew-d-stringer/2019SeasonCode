@@ -44,6 +44,8 @@ public abstract class IControlBoard{
     public abstract boolean climbForward();
     public abstract boolean climbRetract();
 
+    public abstract boolean ballPistonGrab();
+
     public void display(){
         SmartDashboard.putString("Co-joystick pos", getCoJoyPos().display());
         SmartDashboard.putBoolean("Arm to inside", armToInside());

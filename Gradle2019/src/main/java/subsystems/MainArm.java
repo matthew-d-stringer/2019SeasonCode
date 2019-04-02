@@ -25,12 +25,15 @@ public class MainArm{
     Coordinate comRetract, comExtend;
     DigitalInput reset;
 
+    final double sensorToAngleConv, angleToSensorConv;
+
     private boolean disable = false;
 
     private MainArm(){
         pivot = new TalonSRX(Constants.MainArm.pivotNum);
         pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
+
         // pivotSlave = new TalonSRX(Constants.MainArm.slaveNum);
         pivotSlave = Constants.GroundGripper.pivotEncoder;
         pivotSlave.set(ControlMode.Follower, pivot.getDeviceID());
@@ -38,6 +41,9 @@ public class MainArm{
 
         senZero = new Coordinate(Constants.MainArm.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.MainArm.ninetyDegVal, Math.PI/2);
+
+        sensorToAngleConv = Util.slope(senZero, senNinety);
+        angleToSensorConv = Util.slope(senZero.reverseC(), senNinety.reverseC());
 
         comRetract = new Coordinate(Constants.Telescope.lenRetract, Constants.Telescope.comRetract);
         comExtend = new Coordinate(Constants.Telescope.lenExtend, Constants.Telescope.comExtend);
@@ -88,6 +94,7 @@ public class MainArm{
     public double getAngle(){
         return Util.mapRange(pivot.getSelectedSensorPosition(), senZero, senNinety);
     }
+
     public double getAngleVel(){
         return pivot.getSelectedSensorVelocity()*Util.slope(senZero, senNinety)/0.1;
     }
@@ -119,5 +126,21 @@ public class MainArm{
         mag = Util.forceInRange(mag, Constants.Telescope.lenRetract, Constants.Telescope.lenExtend);
         pos.setMagnitude(mag);
         return pos;
+    }
+
+    //Talon Functions
+    protected TalonSRX getPivotMotor(){
+        return pivot;
+    }
+
+    public double angleToEncoder(double angle){
+        return Util.mapRange(angle, senZero.reverseC(), senNinety.reverseC());
+    }
+
+    public double convertKpTalon(double kP){
+        return sensorToAngleConv * kP * (1023/12);
+    }
+    public double convertKdTalon(double kD){
+        return sensorToAngleConv/0.01 * kD * (1023/12);
     }
 }

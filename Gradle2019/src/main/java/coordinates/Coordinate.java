@@ -204,6 +204,10 @@ public class Coordinate {
 		return Math.hypot(this.getX(), this.getY());
 	}
 	
+	public Coordinate reverseC(){
+		return new Coordinate(y,x);
+	}
+
 	public static double getAngleBetween(Coordinate pt1, Coordinate pt2){
 		double dotProduct = Coordinate.dotProduct(pt1, pt2);
 		double cosOut = dotProduct/(pt1.getMagnitude()*pt2.getMagnitude());

@@ -1,5 +1,8 @@
 package subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXPIDSetConfiguration;
+
 import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.RobotState;
@@ -41,10 +44,14 @@ public class MainArmControl{
 
     LowPassFilter armFilter;
 
+    double p = 9.7581;
+    double d = 1.8418;
+
     private MainArmControl(){
         arm = MainArm.getInstance();
         mpStartAngle = arm.getAngle();
         mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
+
         armFilter = new LowPassFilter(0.7);
     }
 
@@ -160,8 +167,6 @@ public class MainArmControl{
                 // double error = mpSetpoint - arm.getAngle();
                 double error = mpSetpoint - armFilter.run(arm.getAngle());
                 double dError = -arm.getAngleVel();
-                double p = 9.7581;
-                double d = 1.8418;
                 // p = 6.3307;
                 // d = 2.0345;
                 // double feedBack = p*error + d*dError.getOut();

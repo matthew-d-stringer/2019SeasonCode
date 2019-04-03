@@ -17,6 +17,10 @@ public class CenterLeftAuto extends AutoMode{
     VisionPursuit place;
 
     ArmToLevel out;
+
+    public static String getSelectedString(){
+        return "CenterLeftAuto";
+    }
     
     public CenterLeftAuto(){
         TrapezoidalMp.constraints slow = new TrapezoidalMp.constraints(0, 5*Units.Length.feet, 2*Units.Length.feet);
@@ -26,7 +30,9 @@ public class CenterLeftAuto extends AutoMode{
 
         out = new ArmToLevel(Levels.low, false, GripperMode.hatch);
 
-        place = new VisionPursuit();
+        place = new VisionPursuit(2.3*Units.Length.feet);
+        place.setFinishThresh(0.4*Units.Length.feet);
+        place.setDeccelDist(0.9*Units.Length.feet);
         setInitPos(13.475, 5.64);
     }
 

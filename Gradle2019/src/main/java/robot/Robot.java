@@ -84,9 +84,6 @@ public class Robot extends IterativeRobot {
         climber = Climber.getInstance();
 
         driveOut.start();
-        // mode = new CenterLeftAuto();
-        // mode = new DoubleRocketAuto();
-        mode = new DoubleCargoAuto();
 
         driveCode = new FancyDrive();
 
@@ -106,7 +103,8 @@ public class Robot extends IterativeRobot {
         }
 
         autoChooser = new SendableChooser<>();
-        autoChooser.setDefaultOption("Double Rocket Auto", DoubleRocketAuto.getSelecterName());
+        autoChooser.setDefaultOption("Center Left Auto", CenterLeftAuto.getSelectedString());
+        autoChooser.addOption("Double Hatch Auto", DoubleCargoAuto.getSelectorName());
         SmartDashboard.putData(autoChooser);
 
         Jevois.getInstance().start();
@@ -352,11 +350,13 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-        // if((String)autoChooser.getSelected() == DoubleHatchAuto.getLeftName()){
-        //     mode = new DoubleHatchAuto(false);
-        // }else if((String)autoChooser.getSelected() == DoubleHatchAuto.getRightName()){
-        //     mode = new DoubleHatchAuto(true);
-        // }
+        if((String)autoChooser.getSelected() == CenterLeftAuto.getSelectedString()){
+            mode = new CenterLeftAuto();
+        }else if((String)autoChooser.getSelected() == DoubleCargoAuto.getSelectorName()){
+            mode = new DoubleCargoAuto();
+        }else{
+            mode = new CenterLeftAuto();
+        }
         PositionTracker.getInstance().robotForward();
         driveOut.setNoVoltage();
         mode.start();

@@ -34,6 +34,10 @@ public class DoubleCargoAuto extends AutoMode{
     PointTurn turnFromGoal;
     ArmToLevel reset, low, loading;
 
+    public static String getSelectorName(){
+        return "DoubleCargoAuto";
+    }
+
     public DoubleCargoAuto(){
         setInitPos(9.56, 5.64);
 
@@ -78,8 +82,11 @@ public class DoubleCargoAuto extends AutoMode{
 
         // finishRefill = new VisionPursuit(2.65*Units.Length.feet);
         finishRefill = new VisionPursuit();
-        finishRefill.setDeccelDist(0.8*Units.Length.feet);
-        finishRefill.setFinishThresh(0.4*Units.Length.feet);
+        finishRefill.disableAfterTime(2.5);
+        finishRefill.setFinishThresh(0.3*Units.Length.feet);
+        finishRefill.setDeccelDist(1.1*Units.Length.feet);
+        // finishRefill.setDeccelDist(0.8*Units.Length.feet);
+        // finishRefill.setFinishThresh(0.4*Units.Length.feet);
 
         refillTo3rdStop = DrivePath.createFromFileOnRoboRio(path, "refillTo3rdStop", constraints);
         refillTo3rdStop.setVerticalThresh(2*Units.Length.inches);

@@ -89,16 +89,15 @@ public class TelescopeControl{
                 // double tmpSetpoint = mp.Calculate(time.get())[0];
                 // ble tmpSetpoint = setpoint;
                 double tmpSetpoint = setpoint;
-
-                //TODO: make this code not stupid
-                if(MainArmControl.getInstance().finishedMovement()){
-//If the movement is done then it assumes everythingis fine
-                    error = tmpSetpoint - telescope.getDistance();
+                
+                if(!MainArmControl.getInstance().finishedMovement()){
+                    error = Constants.Telescope.lenRetract - telescope.getDistance();
                 }else if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
                     error = Math.min(Constants.Telescope.lenInside, tmpSetpoint) - telescope.getDistance();
                 }else{
-                    error = Constants.Telescope.lenRetract - telescope.getDistance();
+                    error = tmpSetpoint - telescope.getDistance();
                 }
+
                 double derror = -telescope.getVel();
                 SmartDashboard.putNumber("Telescope error", error);
                 double feedback = p*error + d*derror;

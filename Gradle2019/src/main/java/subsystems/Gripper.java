@@ -28,6 +28,8 @@ public class Gripper{
     DigitalInput reset;
 
     boolean resetEnabled = true;
+    boolean pReset;
+    boolean hasReset = false;
 
     private Gripper(){
         pivot = new TalonSRX(Constants.Gripper.pivotNum);
@@ -43,6 +45,8 @@ public class Gripper{
         reset = new DigitalInput(Constants.Gripper.resetNum);
 
         grip = new DoubleSolenoid(Constants.Gripper.gripNum[0], Constants.Gripper.gripNum[1]);
+
+        pReset = getReset();
     }
 
     public void display(){
@@ -56,13 +60,21 @@ public class Gripper{
     }
 
     public void periodic(){
-        if(getReset() && resetEnabled)
+        boolean reset = getReset();
+        if(reset != pReset && resetEnabled){
             pivot.setSelectedSensorPosition(0);
+            hasReset = true;
+        }
         // Timer.delay(0.02);
+        pReset = reset;
     }
 
     public boolean getReset(){
         return !reset.get();
+    }
+
+    public boolean hasReset(){
+        return hasReset;
     }
 
     public void manualReset(){
@@ -94,7 +106,7 @@ public class Gripper{
     }
 
     public void hatchHold(){
-        rollers.set(ControlMode.PercentOutput, -0.0416666);
+        rollers.set(ControlMode.PercentOutput, -0.125);
     }
 
     public void ballGrab(){

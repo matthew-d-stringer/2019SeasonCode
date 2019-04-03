@@ -20,8 +20,8 @@ public class CenterLeftAuto extends AutoMode{
     
     public CenterLeftAuto(){
         TrapezoidalMp.constraints slow = new TrapezoidalMp.constraints(0, 5*Units.Length.feet, 2*Units.Length.feet);
-        toGoal = DrivePath.createFromFileOnRoboRio("CenterLeftAuto", "toGoal", slow);
-        reverse = DrivePath.createFromFileOnRoboRio("CenterLeftAuto", "reverse", slow);
+        toGoal = DrivePath.createFromFileOnRoboRio("CenterLeftAuto", "toGoal", slow, 10);
+        reverse = DrivePath.createFromFileOnRoboRio("CenterLeftAuto", "reverse", slow, 10);
         reverse.setReverse(true);
 
         out = new ArmToLevel(Levels.low, false, GripperMode.hatch);
@@ -39,5 +39,6 @@ public class CenterLeftAuto extends AutoMode{
         runAction(place);
         Gripper.getInstance().hatchRelease();
         runAction(reverse);
+        Gripper.getInstance().rollerOff();
     }
 }

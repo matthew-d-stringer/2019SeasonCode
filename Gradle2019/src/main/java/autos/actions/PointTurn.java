@@ -13,8 +13,8 @@ import utilPackage.Util;
 public class PointTurn extends Action{
 
     Heading setpoint;
-    final double kP = 1;
-    final double kD = 1;
+    final double kP = 3.25;
+    final double kD = 1.25;
     Derivative dError;
     DriveOutput drive;
     double startTime;
@@ -39,7 +39,7 @@ public class PointTurn extends Action{
         double error = calcError();
         double turnVel = kP*error+kD*dError.Calculate(error, Timer.getFPGATimestamp()-startTime);
         double outputVel = turnVel*Constants.robotWidth/2;
-        drive.set(Modes.Velocity, outputVel, -outputVel);
+        drive.set(Modes.Velocity, -outputVel, outputVel);
     }
     
     @Override

@@ -17,7 +17,10 @@ public class VisionPursuit extends Action{
     double finishThresh = 0.4*Units.Length.feet;
     double deccelDist = 1.1*Units.Length.feet;
     double maxVel = 6*Units.Length.feet;
+    boolean useTimer = false;
     Derivative dAngle;
+    double time = 0;
+    double startTime = 0;
 
     public VisionPursuit(){
         dAngle = new Derivative();
@@ -25,6 +28,11 @@ public class VisionPursuit extends Action{
     public VisionPursuit(double stopDist){
         dAngle = new Derivative();
         distance = stopDist;
+    }
+
+    public void disableAfterTime(double time){
+        useTimer = true;
+        this.time = time;
     }
 
     /**
@@ -54,6 +62,8 @@ public class VisionPursuit extends Action{
         Heading target = Jevois.getInstance().getPT();
         double angle = Math.PI/2 - target.getAngle();
         dAngle.reset(Timer.getFPGATimestamp(), angle);
+
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -80,7 +90,7 @@ public class VisionPursuit extends Action{
 
     @Override
     public boolean isFinished() {
-        return isDone;
+        return isDone || Timer.getFPGATimestamp() - startTime > time;
     }
 
     @Override

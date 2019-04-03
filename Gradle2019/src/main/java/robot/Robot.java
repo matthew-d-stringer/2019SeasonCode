@@ -85,7 +85,8 @@ public class Robot extends IterativeRobot {
 
         driveOut.start();
         // mode = new CenterLeftAuto();
-        mode = new DoubleRocketAuto();
+        // mode = new DoubleRocketAuto();
+        mode = new DoubleCargoAuto();
 
         driveCode = new FancyDrive();
 

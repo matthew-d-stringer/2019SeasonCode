@@ -90,6 +90,8 @@ public class Robot extends IterativeRobot {
         setpoints = new ArmSetpoints();
         teleopPaths = new TeleopPaths(driveCode);
 
+        mode = new DoubleCargoAuto();
+
         // GroundGripperControl.getInstance().disable();
         GroundGripperControl.getInstance().retract();
         climberControl = ClimberControl.getInstance();

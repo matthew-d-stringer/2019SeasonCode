@@ -30,6 +30,8 @@ public class PositionTracker extends Thread implements IPositionTracker{
 
     private PositionTracker(){
         vmxPi = new AHRS(Port.kMXP);
+        SmartDashboard.putNumber("Location Reset X (feet)", 0);
+        SmartDashboard.putNumber("Location Reset Y (feet)", 0);
         this.start();
     }
 
@@ -171,7 +173,9 @@ public class PositionTracker extends Thread implements IPositionTracker{
     public void display(){
         if(SmartDashboard.getBoolean("Reset Location", false)){
             // setInitPos(new Coordinate());
-            setInitPosFeet(9.56, 5.64);
+            double x = SmartDashboard.getNumber("Location Reset X (feet)",0);
+            double y = SmartDashboard.getNumber("Location Reset Y (feet)",0);
+            setInitPosFeet(x, y);
             SmartDashboard.putBoolean("Reset Location", false);
         }
 

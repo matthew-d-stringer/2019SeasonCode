@@ -155,7 +155,7 @@ public class ControlBoard extends IControlBoard{
 
     @Override
     public boolean lowClimb() {
-        return buttonPad.getRawButton(1);
+        return buttonPad.getRawButton(2);
     }
 
     @Override

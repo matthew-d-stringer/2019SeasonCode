@@ -60,13 +60,17 @@ public class Gripper{
     }
 
     public void periodic(){
-        boolean reset = getReset();
-        if(reset != pReset && resetEnabled){
-            pivot.setSelectedSensorPosition(0);
-            hasReset = true;
-        }
-        // Timer.delay(0.02);
-        pReset = reset;
+        // boolean reset = getReset();
+        // if(reset != pReset && resetEnabled){
+        //     pivot.setSelectedSensorPosition(0);
+        //     hasReset = true;
+        // }
+        // // Timer.delay(0.02);
+        // pReset = reset;
+    }
+
+    public void reset(){
+        pivot.setSelectedSensorPosition(0);
     }
 
     public boolean getReset(){
@@ -141,6 +145,15 @@ public class Gripper{
     public double getRelAngle(){
         return Util.mapRange(pivot.getSelectedSensorPosition(), senNinety, senZero);
     }
+
+    public double getRawEnc(){
+        return pivot.getSelectedSensorPosition();
+    }
+
+    public double getEncoderConv(){
+        return Util.slope(senNinety, senZero);
+    }
+
     /**
      * Calculates angle velocity of gripper 
      */

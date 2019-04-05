@@ -48,7 +48,8 @@ public class Target{
 
     private double calcDistanceHelper(double height){
         // return 15702.43*Math.pow(height, -1.22916);
-        return 10949.85*Math.pow(height, -1.13836);
+        // return 10949.85*Math.pow(height, -1.13836);
+        return 15726.97* Math.pow(height, -1.241622);
     }
 
     //TODO: probably remove this

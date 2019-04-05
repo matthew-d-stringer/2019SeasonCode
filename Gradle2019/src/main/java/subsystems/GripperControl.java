@@ -18,6 +18,8 @@ public class GripperControl{
 
     public enum States{
         disabled,
+        fastPreReset,
+        fastReset,
         preReset,
         reset, 
         running;
@@ -26,6 +28,8 @@ public class GripperControl{
     States state;
     Gripper gripper;
     double setpoint = 0;
+
+    double resetSetpoint = 0;
 
     boolean disableReset = false;
 
@@ -40,25 +44,47 @@ public class GripperControl{
         this.setpoint = setpoint;
     }
 
+    //TODO: Austin Schuh reset
     public void run(){
         switch(state){
             case disabled:
                 if(RobotState.isEnabled() && TelescopeControl.getInstance().isRunning()){
-                    state = States.preReset;
+                    gripper.enableReset();
+                    state = States.fastPreReset;
                     // state = States.reset;
                 }
                 break;
+            case fastPreReset:
+                gripper.setVoltage(-4); //was -3
+                gripper.enableReset();
+                if(!gripper.getReset()){
+                    state = States.fastReset;
+                }
+                break;
+            case fastReset:
+                gripper.setVoltage(2); //was 2
+                gripper.enableReset();
+                if(gripper.getReset()){
+                    state = States.preReset;
+                }
+                break;
             case preReset:
-                gripper.setVoltage(-2);
+                gripper.setVoltage(-1.25); //was -1
                 gripper.enableReset();
                 if(!gripper.getReset()){
                     state = States.reset;
+                    resetSetpoint = gripper.getRawEnc();
                 }
+                break;
             case reset:
-                gripper.setVoltage(2);
+                resetSetpoint -= 1;
+                double tempP = 0.01;
+                tempP /= gripper.getEncoderConv();
+                gripper.setVoltage(tempP*(resetSetpoint - gripper.getRawEnc())); //was 0.75
                 gripper.enableReset();
                 if(gripper.getReset()){
                     gripper.setVoltage(0);
+                    gripper.reset();
                     state = States.running;
                 }
                 break;

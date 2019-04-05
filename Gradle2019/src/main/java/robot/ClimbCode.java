@@ -69,7 +69,7 @@ public class ClimbCode{
             case wait:
                 driveCode.run();
                 climber.setVoltage(0);
-                armControl.setSetpoints(-70*Units.Angle.degrees, 0.1);
+                armControl.setSetpoints(-50*Units.Angle.degrees, 0.1);
                 GroundGripper.getInstance().rollersOff();
                 gripperControl.preClimb();
                 if(controls.climbUp() && MainArmControl.getInstance().finishedMovement()){

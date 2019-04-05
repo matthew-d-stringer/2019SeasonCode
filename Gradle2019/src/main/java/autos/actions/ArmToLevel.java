@@ -68,17 +68,17 @@ public class ArmToLevel extends Action{
                 break;
             case loading:
                 setpoint.setMagnitude(Constants.Telescope.lenRetract + 5*Units.Length.inches);
-                setpoint.setYMaintainMag(-24.5*Units.Length.inches, reverse);
+                setpoint.setYMaintainMag(-23*Units.Length.inches, reverse);//was -24.5
                 break;
             case low:
                 setpoint.setMagnitude(Constants.Telescope.lenRetract + 5*Units.Length.inches);
-                setpoint.setYMaintainMag(-25*Units.Length.inches, reverse);
+                setpoint.setYMaintainMag(-24*Units.Length.inches, reverse);
                 break;
             case middle:
-                setpoint.setYMaintainMag(5*Units.Length.inches, reverse);
+                setpoint.setYMaintainMag(9*Units.Length.inches, reverse);
                 break;
             case high:
-                double y = 33*Units.Length.inches;
+                double y = 15*Units.Length.inches;
                 setpoint.setMagnitude(Math.max(armLength, y));
                 setpoint.setYMaintainMag(y, reverse);
                 break;

@@ -29,6 +29,7 @@ public class TelescopeControl{
     double mpStartTime, mpStartDist;
     double setpoint = 0;
     Timer time;
+    double resetSafetyStartTime = 0;
 
     private TelescopeControl(){
         telescope = Telescope.getInstance();
@@ -66,6 +67,7 @@ public class TelescopeControl{
         switch(state){ 
             case disabled:
                 if(RobotState.isEnabled()){
+                    resetSafetyStartTime = Timer.getFPGATimestamp();
                     state = States.reset;
                     // telescope.setVoltage(telescope.getAntigrav());
                     // time.start();
@@ -73,8 +75,11 @@ public class TelescopeControl{
                 }
                 break;
             case reset:
-                // telescope.setVoltage(-6+telescope.getAntigrav());
-                telescope.setVoltage(-12);
+                if(Timer.getFPGATimestamp() > resetSafetyStartTime + 5){
+                    telescope.setVoltage(0);
+                }else{
+                    telescope.setVoltage(-12);
+                }
                 if(telescope.getReset()){
                     telescope.setVoltage(telescope.getAntigrav());
                     state = States.running;
@@ -116,6 +121,7 @@ public class TelescopeControl{
     }
 
     public void reset(){
+        resetSafetyStartTime = Timer.getFPGATimestamp();
         state = States.reset;
     }
 }

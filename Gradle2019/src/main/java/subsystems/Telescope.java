@@ -28,7 +28,8 @@ public class Telescope{
         telescope = new TalonSRX(Constants.Telescope.telescopeNum);
         telescope.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         telescope.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_5Ms);
-        telescope.configPeakCurrentLimit(20);
+        telescope.configPeakCurrentLimit(30);
+        telescope.configPeakCurrentDuration(500);
         telescope.enableCurrentLimit(true);
 
         senRetract = new Coordinate(Constants.Telescope.retractVal, Constants.Telescope.lenRetract);

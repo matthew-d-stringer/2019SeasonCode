@@ -98,11 +98,11 @@ public class GripperControl{
                 double d = 0.4829;
                 double error;
                 if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
-                    if(Robot.getControlBoard().isCargoMode()){
-                        error = 60*Units.Angle.degrees - gripper.getRelAngle();
-                    }else{
+                    // if(Robot.getControlBoard().isCargoMode()){
+                    //     error = 35*Units.Angle.degrees - gripper.getRelAngle();
+                    // }else{
                         error = Math.max(Constants.Gripper.maxAngle, setpoint) - gripper.getRelAngle();
-                    }
+                    // }
                 }else{
                     error = setpoint - gripper.getRelAngle();
                 }

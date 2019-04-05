@@ -192,12 +192,13 @@ public class Robot extends IterativeRobot {
         }
 
         if(controlBoard.armToBallPickup()){
-            // armPos.setXY(20*Units.Length.inches, -42*Units.Length.inches);
+            armPos.setXY(20*Units.Length.inches, -42*Units.Length.inches);
             // armPos = Heading.createPolarHeading(-65*Units.Angle.degrees, Constants.Telescope.lenExtend);
-            // armPos = Heading.createPolarHeading(-87*Units.Angle.degrees, Constants.Telescope.lenRetract + 4*Units.Length.inches);
-            armPos.setAngle(-100*Units.Angle.degrees);
-            armPos.setMagnitude(Constants.Telescope.lenRetract);
+            armPos = Heading.createPolarHeading(-77*Units.Angle.degrees, Constants.Telescope.lenRetract + 4*Units.Length.inches);
+            // armPos.setAngle(-100*Units.Angle.degrees);
+            // armPos.setMagnitude(Constants.Telescope.lenRetract);
             teleopPaths.setMiddle(false);
+            armControl.setGriperMode(GripperMode.pickup);
         }
 
         if(controlBoard.incrementOffset()){
@@ -211,6 +212,7 @@ public class Robot extends IterativeRobot {
             armPos.setAngle(-100*Units.Angle.degrees);
             armPos.setMagnitude(Constants.Telescope.lenRetract);
             teleopPaths.setMiddle(false);
+            armControl.setGriperMode(GripperMode.level);
         }
         if(controlBoard.armToBallGoal()){
             double len = controlBoard.armLength();
@@ -218,8 +220,10 @@ public class Robot extends IterativeRobot {
             armPos.setMagnitude(len);
             armPos.setYMaintainMag(setpoints.getBallGoal(),controlBoard.flipArm());
             teleopPaths.setMiddle(false);
+            armControl.setGriperMode(GripperMode.level);
         }
         if(controlBoard.armToHatchPickup()){
+            armControl.setGriperMode(GripperMode.level);
             double len = controlBoard.armLength();
             if(Double.isNaN(len)){
                 len = Constants.Telescope.lenRetract;
@@ -237,6 +241,7 @@ public class Robot extends IterativeRobot {
             // armPos.setYMaintainMag(-25.5*Units.Length.inches, controlBoard.flipArm());
         }
         if(controlBoard.armToHatchSecondLevel()){
+            armControl.setGriperMode(GripperMode.level);
             // armPos.setMagnitude(controlBoard.armLength());
             armPos.setMagnitude(Constants.Telescope.lenRetract);
             if(controlBoard.isCargoMode()){
@@ -249,6 +254,7 @@ public class Robot extends IterativeRobot {
             teleopPaths.setMiddle(true);
         }
         if(controlBoard.armToHatchThirdLevel()){
+            armControl.setGriperMode(GripperMode.level);
             double y;
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallHigh(controlBoard.getCoJoyPos().getY());
@@ -286,12 +292,12 @@ public class Robot extends IterativeRobot {
             }else{
                 gripper.ballMode();
             }
-            if(armPos.getMagnitude() < Constants.Telescope.lenRetract+1*Units.Length.inches && 
-                armPos.getAngle() < -80*Units.Angle.degrees){
-                armControl.setGriperMode(GripperMode.pickup);
-            }else{
-                armControl.setGriperMode(GripperMode.level);
-            }
+            // if(armPos.getMagnitude() < Constants.Telescope.lenRetract+1*Units.Length.inches && 
+            //     armPos.getAngle() < -80*Units.Angle.degrees){
+            //     armControl.setGriperMode(GripperMode.pickup);
+            // }else{
+            //     armControl.setGriperMode(GripperMode.level);
+            // }
         }else{
             gripper.hatchMode();
             armControl.setGriperMode(GripperMode.level);

@@ -20,6 +20,7 @@ public abstract class IControlBoard{
     public abstract boolean climbMode();
 
     public abstract boolean resetTelescope();
+    public abstract boolean disableTelescopeGripper();
 
     public abstract boolean quickTurn();
 

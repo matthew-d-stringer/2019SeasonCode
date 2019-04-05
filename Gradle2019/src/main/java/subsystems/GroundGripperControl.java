@@ -117,8 +117,10 @@ public class GroundGripperControl{
                             tSet = 7*Units.Angle.degrees;
                         }
                         if(setpoint > clearenceAngle && pSetpoint <= clearenceAngle){
+                            tSet = pSetpoint;
                             substate = SubStates.Transitioning;
                         }else if(setpoint < clearenceAngle && pSetpoint >= clearenceAngle){
+                            tSet = pSetpoint;
                             substate = SubStates.Transitioning;
                         }else{
                             pSetpoint = setpoint;
@@ -131,7 +133,7 @@ public class GroundGripperControl{
                         }else{
                             tSet = pSetpoint;
                         }
-                        if(Util.inErrorRange(setpoint, angle, 5*Units.Angle.degrees)){
+                        if(Util.inErrorRange(setpoint, angle, 10*Units.Angle.degrees)){
                             pSetpoint = setpoint;
                             substate = SubStates.Static;
                         }

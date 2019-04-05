@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
+import robot.Robot;
 import utilPackage.Units;
 import utilPackage.Util;
 import utilPackage.TrapezoidalMp;
@@ -78,7 +79,7 @@ public class TelescopeControl{
                 if(Timer.getFPGATimestamp() > resetSafetyStartTime + 5){
                     telescope.setVoltage(0);
                 }else{
-                    telescope.setVoltage(-12);
+                    telescope.setVoltage(-6);
                 }
                 if(telescope.getReset()){
                     telescope.setVoltage(telescope.getAntigrav());
@@ -87,6 +88,10 @@ public class TelescopeControl{
                 }
                 break;
             case running:
+                if(Robot.getControlBoard().disableTelescopeGripper()){
+                    telescope.setVoltage(0);
+                    return;
+                }
                 double feedforward = telescope.getAntigrav();
                 double p = 69.9800;
                 double d = 5.6434;

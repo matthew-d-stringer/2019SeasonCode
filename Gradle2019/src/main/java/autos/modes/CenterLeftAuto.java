@@ -30,9 +30,9 @@ public class CenterLeftAuto extends AutoMode{
 
         out = new ArmToLevel(Levels.low, false, GripperMode.hatch);
 
-        place = new VisionPursuit(2.3*Units.Length.feet);
+        place = new VisionPursuit();
         place.setFinishThresh(0.4*Units.Length.feet);
-        place.setDeccelDist(0.9*Units.Length.feet);
+        place.setDeccelDist(1.1*Units.Length.feet);
         setInitPos(13.475, 5.64);
     }
 

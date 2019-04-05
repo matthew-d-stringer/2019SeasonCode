@@ -26,6 +26,7 @@ public class Telescope{
     DigitalInput reset;
     private Telescope(){
         telescope = new TalonSRX(Constants.Telescope.telescopeNum);
+        telescope.configFactoryDefault();
         telescope.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         telescope.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_5Ms);
         telescope.configPeakCurrentLimit(30);

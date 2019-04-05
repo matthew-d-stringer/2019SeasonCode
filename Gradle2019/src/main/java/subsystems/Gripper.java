@@ -114,7 +114,7 @@ public class Gripper{
     }
 
     public void ballGrab(){
-        rollers.set(ControlMode.PercentOutput, 0.8);
+        rollers.set(ControlMode.PercentOutput, 0.75);//was 80%
     }
 
     public void ballRelease(){

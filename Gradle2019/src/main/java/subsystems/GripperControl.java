@@ -44,7 +44,6 @@ public class GripperControl{
         this.setpoint = setpoint;
     }
 
-    //TODO: Austin Schuh reset
     public void run(){
         switch(state){
             case disabled:
@@ -93,6 +92,10 @@ public class GripperControl{
                 //     disableReset = true;
                 //     gripper.disableReset();
                 // }
+                if(Robot.getControlBoard().disableTelescopeGripper()){
+                    gripper.setVoltage(0);
+                    return;
+                }
                 double feedforward = gripper.getAntigrav();
                 double p = 22.4535;
                 double d = 0.4829;

@@ -91,6 +91,11 @@ public class ControlBoard extends IControlBoard{
     public boolean resetTelescope() {
         return buttonPad.getRawButton(22);
     }
+    
+    @Override
+    public boolean disableTelescopeGripper() {
+        return buttonPad.getRawButton(21);
+    }
 
     @Override
     public boolean quickTurn() {

@@ -122,7 +122,7 @@ public class Robot extends IterativeRobot {
         mRunner.display();
         arm.display();
         arm.periodic();
-        // telescope.display();
+        telescope.display();
         telescope.periodic();
         gripper.display();
         gripper.periodic();
@@ -192,9 +192,9 @@ public class Robot extends IterativeRobot {
         }
 
         if(controlBoard.armToBallPickup()){
-            armPos.setXY(20*Units.Length.inches, -42*Units.Length.inches);
+            // armPos.setXY(20*Units.Length.inches, -42*Units.Length.inches);
             // armPos = Heading.createPolarHeading(-65*Units.Angle.degrees, Constants.Telescope.lenExtend);
-            armPos = Heading.createPolarHeading(-77*Units.Angle.degrees, Constants.Telescope.lenRetract + 4*Units.Length.inches);
+            armPos = Heading.createPolarHeading(-77*Units.Angle.degrees, Constants.Telescope.lenRetract + 2.5*Units.Length.inches);
             // armPos.setAngle(-100*Units.Angle.degrees);
             // armPos.setMagnitude(Constants.Telescope.lenRetract);
             teleopPaths.setMiddle(false);

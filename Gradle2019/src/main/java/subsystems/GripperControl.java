@@ -77,7 +77,7 @@ public class GripperControl{
                 break;
             case reset:
                 resetSetpoint -= 1;
-                double tempP = 0.01;
+                double tempP = 0.005;//was 0.01
                 tempP /= gripper.getEncoderConv();
                 gripper.setVoltage(tempP*(resetSetpoint - gripper.getRawEnc())); //was 0.75
                 gripper.enableReset();

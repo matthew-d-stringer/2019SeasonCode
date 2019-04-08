@@ -79,7 +79,7 @@ public class TelescopeControl{
                 if(Timer.getFPGATimestamp() > resetSafetyStartTime + 5){
                     telescope.setVoltage(0);
                 }else{
-                    telescope.setVoltage(-6);
+                    telescope.setVoltage(-12);
                 }
                 if(telescope.getReset()){
                     telescope.setVoltage(telescope.getAntigrav());

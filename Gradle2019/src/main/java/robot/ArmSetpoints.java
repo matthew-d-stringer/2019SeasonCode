@@ -12,9 +12,9 @@ public class ArmSetpoints{
     double sensitivity = 4;
 
     public ArmSetpoints(){
-        hatchLow = -24*Units.Length.inches;
-        hatchMid = 9*Units.Length.inches;
-        hatchHigh = 31*Units.Length.inches;
+        hatchLow = -22*Units.Length.inches;
+        hatchMid = 6*Units.Length.inches;
+        hatchHigh = 30*Units.Length.inches;
 
         ballLow = -7.5*Units.Length.inches;
         ballGoal = -3*Units.Length.inches;//was -3, 6 for loading zone

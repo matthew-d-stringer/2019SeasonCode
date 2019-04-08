@@ -132,12 +132,13 @@ public class DoubleCargoAuto extends AutoMode{
         runAction(closeGoalTo2ndStop);
         Gripper.getInstance().rollerOff();
         runAction(turnFromGoal);
-        runAction(new ParallelAction(stopToRefill, loading));
+        // runAction(new ParallelAction(stopToRefill, loading));
+        runAction(stopToRefill);
         // // runAction(low);
-        Gripper.getInstance().hatchGrab();
-        runAction(finishRefill);
-        Gripper.getInstance().hatchHold();
-        runAction(reverseFromRefill);
+        // Gripper.getInstance().hatchGrab();
+        // runAction(finishRefill);
+        // Gripper.getInstance().hatchHold();
+        // runAction(reverseFromRefill);
 
         // runAction(new ParallelAction(refillTo3rdStop, low));
         // runAction(placeMidGoal);

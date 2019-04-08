@@ -128,7 +128,6 @@ public class Robot extends IterativeRobot {
         gripper.periodic();
         groundGripper.display();
         groundGripper.periodic();
-        climber.periodic();
         // try{
         //     Jevois.getInstance().run();
         // }catch(Exception e){

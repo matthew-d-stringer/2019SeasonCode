@@ -44,6 +44,10 @@ public class GripperControl{
         this.setpoint = setpoint;
     }
 
+    public void reset(){
+        state = States.reset;
+    }
+
     public void run(){
         switch(state){
             case disabled:

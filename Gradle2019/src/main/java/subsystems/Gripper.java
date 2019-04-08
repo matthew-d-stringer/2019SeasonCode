@@ -22,10 +22,10 @@ public class Gripper{
         return instance;
     }
 
-    TalonSRX pivot, rollers;
-    Coordinate senZero, senNinety;
-    DoubleSolenoid grip;
-    DigitalInput reset;
+    private TalonSRX pivot, rollers;
+    private Coordinate senZero, senNinety;
+    private DoubleSolenoid grip;
+    private DigitalInput reset;
 
     boolean resetEnabled = true;
     boolean pReset;
@@ -33,7 +33,7 @@ public class Gripper{
 
     private Gripper(){
         pivot = new TalonSRX(Constants.Gripper.pivotNum);
-        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         senZero = new Coordinate(Constants.Gripper.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.Gripper.ninetyDegVal, Math.PI/2);
 
@@ -53,6 +53,8 @@ public class Gripper{
         SmartDashboard.putNumber("Raw Gripper Enc", pivot.getSelectedSensorPosition());
         SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle()/Units.Angle.degrees);
         SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle()/Units.Angle.degrees);
+
+        // SmartDashboard.putNumber("Gripper Current", rollers.getOutputCurrent());
 
         SmartDashboard.putBoolean("Gripper Reset", getReset());
 
@@ -99,6 +101,10 @@ public class Gripper{
      */
     public void setVoltage(double voltage){
         pivot.set(ControlMode.PercentOutput, -voltage/12);
+    }
+
+    public double getCurrent(){
+        return rollers.getOutputCurrent();
     }
 
     public void hatchGrab(){

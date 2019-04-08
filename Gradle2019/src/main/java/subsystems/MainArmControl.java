@@ -162,7 +162,7 @@ public class MainArmControl{
                 double mpSetpoint = mpSetpoints[0];
                 // System.out.println("pos: "+mpSetpoints[0]+", vel: "+mpSetpoints[1]+", acc: "+mpSetpoints[2]);
                 // double feedForward = arm.getAntigrav(); 
-                double feedForward = arm.getAntigrav() + arm.getFeedForward(mpSetpoints[1], mpSetpoints[2]);
+                double feedForward = arm.getAntigrav() + 1*arm.getFeedForward(mpSetpoints[1], mpSetpoints[2]);
                 // double error = setpoint - arm.getAngle();
                 // double error = mpSetpoint - arm.getAngle();
                 double error = mpSetpoint - armFilter.run(arm.getAngle());

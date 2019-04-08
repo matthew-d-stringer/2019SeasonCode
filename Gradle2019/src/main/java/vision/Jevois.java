@@ -56,8 +56,8 @@ public class Jevois extends Thread{
             // serial.writeString("ping\n");
             String rawInput = serial.readString();
             // System.out.println(rawInput);
-            if(!rawInput.isBlank())
-                System.out.println("Jevois output: "+rawInput.trim());
+            // if(!rawInput.isBlank())
+            //     System.out.println("Jevois output: "+rawInput.trim());
             // else
                 // System.out.println("Jevois output is blank");
             double[] input = getNumberData(rawInput);

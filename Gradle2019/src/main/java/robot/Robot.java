@@ -119,14 +119,14 @@ public class Robot extends IterativeRobot {
         // controlBoard.display();
         // driveOut.display();
         // drive.display();
-        mRunner.display();
-        arm.display();
+        // mRunner.display();
+        // arm.display();
         arm.periodic();
-        telescope.display();
+        // telescope.display();
         telescope.periodic();
-        gripper.display();
+        // gripper.display();
         gripper.periodic();
-        groundGripper.display();
+        // groundGripper.display();
         groundGripper.periodic();
         // try{
         //     Jevois.getInstance().run();
@@ -208,7 +208,8 @@ public class Robot extends IterativeRobot {
 
 
         if(controlBoard.armToInside()){
-            armPos.setAngle(-100*Units.Angle.degrees);
+            // armPos.setAngle(-100*Units.Angle.degrees);
+            armPos.setAngle(-90*Units.Angle.degrees);
             armPos.setMagnitude(Constants.Telescope.lenRetract);
             teleopPaths.setMiddle(false);
             armControl.setGriperMode(GripperMode.level);
@@ -388,13 +389,15 @@ public class Robot extends IterativeRobot {
         armControl.disable(true);
         telescope.setVoltage(0);
         gripper.setVoltage(0);
+        groundGripper.rollersOff();
         arm.setVoltage(0);
     }
 
     @Override
     public void testPeriodic() {
+        arm.setVoltage(arm.getAntigrav());
         // groundGripper.setVoltage(12*controlBoard.getJoystickPos().getY() + groundGripper.getAntigrav());
-        GroundGripperControl.getInstance().run();
-        GroundGripper.getInstance().rollersClimb();
+        // GroundGripperControl.getInstance().run();
+        // GroundGripper.getInstance().rollersClimb();
     }
 }

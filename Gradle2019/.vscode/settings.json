@@ -9,5 +9,13 @@
     "bin/": true,
     ".classpath": true,
     ".project": true
-  }
+  },
+  "spellright.language": [
+    "en"
+  ],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext"
+  ]
 }

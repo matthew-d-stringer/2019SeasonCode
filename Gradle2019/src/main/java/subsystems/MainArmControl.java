@@ -30,8 +30,8 @@ public class MainArmControl{
     States state = States.disabled;
     double setpoint = 0;
     MainArm arm;
-    double mpMaxVel = 0.45*Units.Angle.revolutions; //was 6
-    double mpMaxAcc = 0.6*Units.Angle.revolutions; //was 2.25
+    double mpMaxVel = 0.45*Units.Angle.revolutions; //was 0.45
+    double mpMaxAcc = 0.2*Units.Angle.revolutions; //was 0.6
     double mpAcc = mpMaxAcc;
     Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
     Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 1.4*Units.Angle.revolutions);
@@ -44,15 +44,22 @@ public class MainArmControl{
 
     LowPassFilter armFilter;
 
-    double p = 9.7581;
-    double d = 1.8418;
+    // double p = 9.7581;
+    // double d = 1.8418;
+    // double p = 5.1717;
+    // double d = 1.6148;
+    // double p = 11.3698;
+    // double d = 2.2307;
+    double p = 7.3458;
+    double d = 1.9795;
 
     private MainArmControl(){
         arm = MainArm.getInstance();
         mpStartAngle = arm.getAngle();
         mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
 
-        armFilter = new LowPassFilter(0.7);
+        armFilter = new LowPassFilter(0.8);
+        // armFilter = new LowPassFilter(1);
     }
 
     public void commandBallClearence(boolean ballClearence){
@@ -153,7 +160,8 @@ public class MainArmControl{
                 }
                 wasEnabled = RobotState.isEnabled();
 
-                if(arm.getAngle() > 255*Units.Angle.degrees || arm.getAngle() < -130*Units.Angle.degrees){
+                // if(arm.getAngle() > 255*Units.Angle.degrees || arm.getAngle() < -130*Units.Angle.degrees){
+                if(arm.getAngle() > 90*Units.Angle.degrees || arm.getAngle() < -130*Units.Angle.degrees){
                     arm.setVoltage(0);
                     throw new RuntimeException("Arm Angle is broken");
                 }
@@ -181,11 +189,20 @@ public class MainArmControl{
                     // feedBack = Math.min(feedBack, -4+arm.getAntigrav()); //max down
                     feedBack = Util.forceInRange(feedBack, 12, -2+arm.getAntigrav());
                 }
+
                 // SmartDashboard.putNumber("Arm Setpoint", mp.getConstraints().setpoint/Units.Angle.degrees);
                 // SmartDashboard.putNumber("Arm Temp Setpoint", tempSetpoint/Units.Angle.degrees);
                 // SmartDashboard.putNumber("Arm Error", error/Units.Angle.degrees);
                 // arm.setVoltage(feedForward);
                 if(Util.inErrorRange(setpoint, arm.getAngle(), 6*Units.Angle.degrees)){
+                // if(mpFinished(0.5)){
+                    double overallError = setpoint - arm.getAngle();
+                    double range = 1*Units.Angle.degrees;
+                    if(overallError < -range){
+                        feedBack = Math.max(1, feedBack);
+                    }else if(overallError > range){
+                        feedBack = Math.min(1, feedBack);
+                    }
                     arm.setVoltage(feedForward);
                 }else{
                     arm.setVoltage(feedForward+feedBack);

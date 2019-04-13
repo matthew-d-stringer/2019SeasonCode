@@ -150,12 +150,16 @@ public class ControlBoard extends IControlBoard{
 
     @Override
     public boolean incrementOffset() {
-        return coJoy.getPOV(0) == 0;
+        //TODO: uncopy this
+        // return coJoy.getPOV(0) == 0;
+        return false;
     }
 
     @Override
     public boolean decrementOffset() {
-        return coJoy.getPOV(0) == 180;
+        //TODO: uncopy this
+        // return coJoy.getPOV(0) == 180;
+        return false;
     }
 
     @Override

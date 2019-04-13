@@ -79,7 +79,7 @@ public class TelescopeControl{
                 if(Timer.getFPGATimestamp() > resetSafetyStartTime + 5){
                     telescope.setVoltage(0);
                 }else{
-                    telescope.setVoltage(-12);
+                    telescope.setVoltage(-5);
                 }
                 if(telescope.getReset()){
                     telescope.setVoltage(telescope.getAntigrav());
@@ -93,8 +93,10 @@ public class TelescopeControl{
                     return;
                 }
                 double feedforward = telescope.getAntigrav();
-                double p = 69.9800;
-                double d = 5.6434;
+                // double p = 69.9800;
+                // double d = 5.6434;
+                double p = 48.6113;
+                double d = 3.9207;
                 double error;
                 // double tmpSetpoint = mp.Calculate(time.get())[0];
                 // ble tmpSetpoint = setpoint;

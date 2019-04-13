@@ -2,6 +2,8 @@ package subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import coordinates.Coordinate;
@@ -33,7 +35,11 @@ public class Gripper{
 
     private Gripper(){
         pivot = new TalonSRX(Constants.Gripper.pivotNum);
-        pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        // pivot = Constants.Gripper.pivotTalon;
+        // pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        pivot.configSelectedFeedbackSensor(FeedbackDevice.Analog);
+        pivot.configFeedbackNotContinuous(false, 0);
+        
         senZero = new Coordinate(Constants.Gripper.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.Gripper.ninetyDegVal, Math.PI/2);
 
@@ -57,6 +63,8 @@ public class Gripper{
         // SmartDashboard.putNumber("Gripper Current", rollers.getOutputCurrent());
 
         SmartDashboard.putBoolean("Gripper Reset", getReset());
+        SmartDashboard.putBoolean("Gripper Tach Reset", pivot.getSensorCollection().isFwdLimitSwitchClosed());
+        // SmartDashboard.putBoolean("Gripper Talon Tach", pivot.getForward);
 
         SmartDashboard.putNumber("Gripper Currrent", rollers.getOutputCurrent());
     }
@@ -100,7 +108,7 @@ public class Gripper{
      * @param voltage positive is up, negative is down
      */
     public void setVoltage(double voltage){
-        pivot.set(ControlMode.PercentOutput, -voltage/12);
+        pivot.set(ControlMode.PercentOutput, voltage/12);
     }
 
     public double getCurrent(){
@@ -207,6 +215,7 @@ public class Gripper{
     }
 
     public double getAntigrav(){
-        return 2.3134*getCom().getX();
+        // return 2.3134*getCom().getX();
+        return 2.0202*getCom().getX();
     }
 }

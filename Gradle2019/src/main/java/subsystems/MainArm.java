@@ -2,6 +2,8 @@ package subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -102,7 +104,8 @@ public class MainArm{
     public double getAntigrav(){
         // return 1.2*getComWithoutGripper().normalizeC().getX();
         // return 1.8608*getCom().getX()+0.026452*getAngleVel();
-        return 2.2881*getCom().getX()+0.026452*getAngleVel();
+        // return 2.2881*getCom().getX()+0.026452*getAngleVel();
+        return 1.744*getCom().getX()+0.026452*getAngleVel();
     }
 
     public double getComDist(){

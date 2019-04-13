@@ -120,7 +120,7 @@ public class ArmSystemControl extends Thread{
                             }else{
                                 gripper.setSetpoint(gripperSet - armAngle);
                             }                        
-                        }else{
+                        }/*else{
                             if(gMode == GripperMode.pickup){
                                 gripper.setSetpoint(gripperSet+Math.PI - 3*Math.PI/4 - armAngle);
                             }else if(gMode == GripperMode.level){
@@ -135,7 +135,7 @@ public class ArmSystemControl extends Thread{
                                 // else
                                 //     gripper.setSetpoint(backOffset+offset+Math.PI - Math.PI/2 - armAngle);
                             }
-                        }
+                        }*/
                         break;
                 }
                 Timer.delay(0.007);

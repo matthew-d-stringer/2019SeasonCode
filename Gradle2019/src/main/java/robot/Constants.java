@@ -38,8 +38,8 @@ public class Constants {
 
 		public static double mass = 7.14505445-3.39681515*Units.Mass.kilograms; //everything but the gripper
 
-		public static double zeroDegVal = 964;
-		public static double ninetyDegVal = 1973;
+		public static double zeroDegVal = 1054;
+		public static double ninetyDegVal = 1982;
 
 		public static double insideAngle = -82*Units.Angle.degrees;
 		
@@ -58,31 +58,32 @@ public class Constants {
 		public static double radius = 37.5*Units.Length.milimeters;
 
 		public static double retractVal = 0;
-		public static double extendVal = 4880;
+		// public static double extendVal = 4880;
+		public static double extendVal = -6723;
 
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
-		public static double comRetract = 0.3291279*Units.Length.meters, comExtend = 0.3996022*Units.Length.meters;
+		public static double comRetract = 0.4908*Units.Length.meters, comExtend = 0.663*Units.Length.meters;
 
 		public static double lenInside = 29.2675*Units.Length.inches;
 
-		public static double momentOfInertiaRetracted = 0.5029945;//Kg m^2
-		public static double momentOfInertiaExtended = 0.73141154;//Kg m^2
+		public static double momentOfInertiaRetracted = 2.226;//Kg m^2
+		public static double momentOfInertiaExtended = 4.1849;//Kg m^2
 	}
 
 	public static class Gripper{
-		public static int pivotNum = 40; //reads from 22
+		public static int pivotNum = 40;
 		public static int rollerNum = 41;
 		public static int resetNum = 9;
 
 		public static int[] gripNum = {6,2};
 
-		public static double mass = 3.39681515*Units.Mass.kilograms;
-		public static double momentOfInertia = 0.10353689;
-		public static double comLength = 0.14759186*Units.Length.meters;
+		public static double mass = 2.9661274*Units.Mass.kilograms;
+		public static double momentOfInertia = 0.10709323;
+		public static double comLength = 0.16288015*Units.Length.meters;
 		public static double angleOffsetFromHatch = 0*Units.Angle.radians;
 		
-		public static double zeroDegVal = 4708;
-		public static double ninetyDegVal = 980;
+		public static double zeroDegVal = 336;
+		public static double ninetyDegVal = 599;
 		public static double maxAngle = 89*Units.Angle.degrees; 
 		public static double minAngle = -112*Units.Angle.degrees; 
 	}

@@ -2,6 +2,8 @@ package subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -28,10 +30,13 @@ public class Telescope{
         telescope = new TalonSRX(Constants.Telescope.telescopeNum);
         telescope.configFactoryDefault();
         telescope.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+        // telescope.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0);
         telescope.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_5Ms);
         telescope.configPeakCurrentLimit(30);
         telescope.configPeakCurrentDuration(500);
         telescope.enableCurrentLimit(true);
+
+        telescope.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed);
 
         senRetract = new Coordinate(Constants.Telescope.retractVal, Constants.Telescope.lenRetract);
         senExtend = new Coordinate(Constants.Telescope.extendVal, Constants.Telescope.lenExtend);
@@ -54,16 +59,18 @@ public class Telescope{
     }
 
     public boolean getReset(){
-        return !reset.get();
+        // return !reset.get();
+        return !telescope.getSensorCollection().isFwdLimitSwitchClosed();
     }
 
     public void setVoltage(double voltage){
         SmartDashboard.putNumber("Telescope voltage out", voltage);
-        telescope.set(ControlMode.PercentOutput, voltage/12);
+        telescope.set(ControlMode.PercentOutput, -voltage/12);
     }
 
     public double getAntigrav(){
-        return 0.51901*Math.sin(MainArm.getInstance().getAngle());
+        // return 0.51901*Math.sin(MainArm.getInstance().getAngle());
+        return 0.36055*Math.sin(MainArm.getInstance().getAngle());
     }
 
     public double getDistance(){

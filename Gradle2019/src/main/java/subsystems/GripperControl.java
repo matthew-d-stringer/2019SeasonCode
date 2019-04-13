@@ -53,7 +53,7 @@ public class GripperControl{
             case disabled:
                 if(RobotState.isEnabled() && TelescopeControl.getInstance().isRunning()){
                     gripper.enableReset();
-                    state = States.fastPreReset;
+                    state = States.running;
                     // state = States.reset;
                 }
                 break;
@@ -101,8 +101,10 @@ public class GripperControl{
                     return;
                 }
                 double feedforward = gripper.getAntigrav();
-                double p = 22.4535;
-                double d = 0.4829;
+                // double p = 22.4535;
+                // double d = 0.4829;
+                double p = 22.6440;
+                double d = 0.4937;
                 double error;
                 if(MainArm.getInstance().getAngle() < Constants.MainArm.insideAngle){
                     // if(Robot.getControlBoard().isCargoMode()){

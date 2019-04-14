@@ -113,6 +113,7 @@ public class DoubleCargoAuto extends AutoMode{
         reverseFromRefill.setReverse(true);
 
         reset = new ArmToLevel(Levels.reset, false, GripperMode.hatch);
+        reset.useTelescope(false);
         low = new ArmToLevel(Levels.low, false, GripperMode.hatch);
         loading = new ArmToLevel(Levels.loading, false, GripperMode.hatch);
     }
@@ -130,15 +131,17 @@ public class DoubleCargoAuto extends AutoMode{
         Gripper.getInstance().hatchRelease();
         // runAction(new WaitAction(0.4));
         runAction(closeGoalTo2ndStop);
+        runAction(reset);
+        // runAction(new ParallelAction(closeGoalTo2ndStop, reset));
         Gripper.getInstance().rollerOff();
         runAction(turnFromGoal);
-        // runAction(new ParallelAction(stopToRefill, loading));
-        runAction(stopToRefill);
+        runAction(new ParallelAction(stopToRefill, loading));
+        // runAction(stopToRefill);
         // // runAction(low);
-        // Gripper.getInstance().hatchGrab();
-        // runAction(finishRefill);
-        // Gripper.getInstance().hatchHold();
-        // runAction(reverseFromRefill);
+        Gripper.getInstance().hatchGrab();
+        runAction(finishRefill);
+        Gripper.getInstance().hatchHold();
+        runAction(reverseFromRefill);
 
         // runAction(new ParallelAction(refillTo3rdStop, low));
         // runAction(placeMidGoal);

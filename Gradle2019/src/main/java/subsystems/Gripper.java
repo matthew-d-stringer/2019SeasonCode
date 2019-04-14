@@ -116,27 +116,27 @@ public class Gripper{
     }
 
     public void hatchGrab(){
-        rollers.set(ControlMode.PercentOutput, -1);
-    }
-
-    public void hatchRelease(){
         rollers.set(ControlMode.PercentOutput, 1);
     }
 
-    public void hatchHold(){
-        rollers.set(ControlMode.PercentOutput, -0.125);
-    }
-
-    public void ballGrab(){
-        rollers.set(ControlMode.PercentOutput, 0.75);//was 80%
-    }
-
-    public void ballRelease(){
+    public void hatchRelease(){
         rollers.set(ControlMode.PercentOutput, -1);
     }
 
+    public void hatchHold(){
+        rollers.set(ControlMode.PercentOutput, 0.125);
+    }
+
+    public void ballGrab(){
+        rollers.set(ControlMode.PercentOutput,-0.75);//was 80%
+    }
+
+    public void ballRelease(){
+        rollers.set(ControlMode.PercentOutput, 1);
+    }
+
     public void ballHold(){
-        rollers.set(ControlMode.PercentOutput, 0.166666);
+        rollers.set(ControlMode.PercentOutput, -0.166666);
     }
 
     public void rollerOff(){

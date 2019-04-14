@@ -34,8 +34,8 @@ public class GroundGripperControl{
     boolean disabled = false;
     boolean climbing = false;
 
-    final double p = 11.4597;
-    final double d = 1.1872;
+    final double p = 9.2506;
+    final double d = 0.9430;
 
     private GroundGripperControl(){
         gripper = GroundGripper.getInstance();
@@ -70,11 +70,11 @@ public class GroundGripperControl{
         climbing = false;
     }
     public void climbing(){
-        setpoint = -5*Units.Angle.degrees;
+        setpoint = 3*Units.Angle.degrees;
         climbing = true;
     }
     public void lowclimbing(){
-        setpoint = -5*Units.Angle.degrees;
+        setpoint = 3*Units.Angle.degrees;
         climbing = true;
     }
 

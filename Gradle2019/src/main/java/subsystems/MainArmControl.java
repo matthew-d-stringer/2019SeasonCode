@@ -194,18 +194,17 @@ public class MainArmControl{
                 // SmartDashboard.putNumber("Arm Temp Setpoint", tempSetpoint/Units.Angle.degrees);
                 // SmartDashboard.putNumber("Arm Error", error/Units.Angle.degrees);
                 // arm.setVoltage(feedForward);
-                if(Util.inErrorRange(setpoint, arm.getAngle(), 6*Units.Angle.degrees)){
+                if(!Util.inErrorRange(setpoint, arm.getAngle(), 1*Units.Angle.degrees)){
                 // if(mpFinished(0.5)){
                     double overallError = setpoint - arm.getAngle();
-                    double range = 1*Units.Angle.degrees;
-                    if(overallError < -range){
-                        feedBack = Math.max(1, feedBack);
-                    }else if(overallError > range){
-                        feedBack = Math.min(1, feedBack);
+                    if(overallError < 0){
+                        feedBack = Math.min(1.5, feedBack);
+                    }else if(overallError > 0){
+                        feedBack = Math.max(-1.5, feedBack);
                     }
-                    arm.setVoltage(feedForward);
-                }else{
                     arm.setVoltage(feedForward+feedBack);
+                }else{
+                    arm.setVoltage(feedForward);
                 }
                 break;
         }

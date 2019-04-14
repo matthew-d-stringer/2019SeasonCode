@@ -77,25 +77,20 @@ public class TeleopPaths{
             double angle = Math.PI/2 - target.getAngle();
             double dist = target.getMagnitude();
 
-            // turn = 1.1*angle;
             turn = 1.05*angle + 0.1*dAngle.Calculate(angle, Timer.getFPGATimestamp());
-            // turn = 2*angle;
-            Coordinate pt1;
-            // if(Robot.getControlBoard().isCargoMode())
-            //     pt1 = new Coordinate(4.5*Units.Length.feet, 0*Units.Length.feet);
-            // else
-            // pt1 = new Coordinate(2.916*Units.Length.feet, 0*Units.Length.feet);
-            Coordinate pt2;
-            if(middle){
-                pt1 = new Coordinate(2.7*Units.Length.feet, 0*Units.Length.feet);
-                pt2 = new Coordinate(3.8*Units.Length.feet, 2*Units.Length.feet); 
-            }else{
-                pt1 = new Coordinate(1.9*Units.Length.feet, 0*Units.Length.feet);
-                pt2 = new Coordinate(3.0*Units.Length.feet, 2*Units.Length.feet); //was 4
-            }
-            forward = Util.mapRange(dist, pt1, pt2);
-            forward = Math.min(forward, 6*Units.Length.feet);
+            // Coordinate pt1;
+            // Coordinate pt2;
+            // if(middle){
+            //     pt1 = new Coordinate(2.7*Units.Length.feet, 0*Units.Length.feet);
+            //     pt2 = new Coordinate(3.8*Units.Length.feet, 2*Units.Length.feet); 
+            // }else{
+            //     pt1 = new Coordinate(1.9*Units.Length.feet, 0*Units.Length.feet);
+            //     pt2 = new Coordinate(3.0*Units.Length.feet, 2*Units.Length.feet); //was 4
+            // }
+            // forward = Util.mapRange(dist, pt1, pt2);
+            // forward = Math.min(forward, 6*Units.Length.feet);
             // forward = 2*Units.Length.feet;
+            forward = 8*Units.Length.feet*Robot.getControlBoard().getJoystickPos().getY();
 
             double outLeft = -turn + forward;
             double outRight = turn + forward;

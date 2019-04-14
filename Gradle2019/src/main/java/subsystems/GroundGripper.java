@@ -67,7 +67,7 @@ public class GroundGripper{
     }
 
     public double getAntigrav(){
-        return 0.50155*Math.cos(getAngle()-Constants.GroundGripper.comOffsetAngle)+0.021256*getAngleVel();
+        return 0.5005*Math.cos(getAngle()-Constants.GroundGripper.comOffsetAngle)+0.042512*getAngleVel();
     }
 
     public double getClimbAntigrav(){

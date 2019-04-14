@@ -120,11 +120,11 @@ public class Robot extends IterativeRobot {
         // driveOut.display();
         // drive.display();
         // mRunner.display();
-        // arm.display();
+        arm.display();
         arm.periodic();
         // telescope.display();
         telescope.periodic();
-        // gripper.display();
+        gripper.display();
         gripper.periodic();
         // groundGripper.display();
         groundGripper.periodic();
@@ -200,11 +200,11 @@ public class Robot extends IterativeRobot {
             armControl.setGriperMode(GripperMode.pickup);
         }
 
-        if(controlBoard.incrementOffset()){
-            armControl.incrementOffset(1);
-        }else if(controlBoard.decrementOffset()){
-            armControl.incrementOffset(-1);
-        }
+        // if(controlBoard.incrementOffset()){
+        //     armControl.incrementOffset(1);
+        // }else if(controlBoard.decrementOffset()){
+        //     armControl.incrementOffset(-1);
+        // }
 
 
         if(controlBoard.armToInside()){
@@ -230,6 +230,14 @@ public class Robot extends IterativeRobot {
             }
             // armPos.setMagnitude(Math.min(controlBoard.armLength(), Constants.Telescope.lenRetract + 5*Units.Length.inches));
             armPos.setMagnitude(Constants.Telescope.lenRetract + 5*Units.Length.inches);
+
+            if(controlBoard.incrementOffset()){
+                setpoints.incrementWristLow(1);
+            }else if(controlBoard.decrementOffset()){
+                setpoints.incrementWristLow(-1);
+            }
+            armControl.setGripperSetpoint(setpoints.getWristLow());
+
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallLow(controlBoard.getCoJoyPos().getY());
                 armPos.setYMaintainMag(setpoints.getBallLow(), controlBoard.flipArm());
@@ -244,6 +252,14 @@ public class Robot extends IterativeRobot {
             armControl.setGriperMode(GripperMode.level);
             // armPos.setMagnitude(controlBoard.armLength());
             armPos.setMagnitude(Constants.Telescope.lenRetract);
+
+            if(controlBoard.incrementOffset()){
+                setpoints.incrementWristMid(1);
+            }else if(controlBoard.decrementOffset()){
+                setpoints.incrementWristMid(-1);
+            }
+            armControl.setGripperSetpoint(setpoints.getWristMid());
+
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallMid(controlBoard.getCoJoyPos().getY());
                 armPos.setYMaintainMag(setpoints.getBallMid(), controlBoard.flipArm());
@@ -255,6 +271,14 @@ public class Robot extends IterativeRobot {
         }
         if(controlBoard.armToHatchThirdLevel()){
             armControl.setGriperMode(GripperMode.level);
+
+            if(controlBoard.incrementOffset()){
+                setpoints.incrementWristHigh(1);
+            }else if(controlBoard.decrementOffset()){
+                setpoints.incrementWristHigh(-1);
+            }
+            armControl.setGripperSetpoint(setpoints.getWristHigh());
+
             double y;
             if(controlBoard.isCargoMode()){
                 setpoints.incrementBallHigh(controlBoard.getCoJoyPos().getY());

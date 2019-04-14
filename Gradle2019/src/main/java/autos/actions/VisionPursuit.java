@@ -13,7 +13,7 @@ import vision.Jevois;
 public class VisionPursuit extends Action{
 
     boolean isDone = false;
-    double distance = 1.9*Units.Length.feet; //was 2.6
+    double distance = 2*Units.Length.feet; //was 1.9
     double finishThresh = 0.4*Units.Length.feet;
     double deccelDist = 1.1*Units.Length.feet;
     double maxVel = 6*Units.Length.feet;

@@ -69,18 +69,18 @@ public class ClimbCode{
             case wait:
                 driveCode.run();
                 climber.setVoltage(0);
-                armControl.setSetpoints(-50*Units.Angle.degrees, 0.1);
+                armControl.setSetpoints(-35*Units.Angle.degrees, 0.1);
                 GroundGripper.getInstance().rollersOff();
                 gripperControl.preClimb();
                 if(controls.climbUp() && MainArmControl.getInstance().finishedMovement()){
                     lowclimbing = controls.lowClimb();
                     climber.reset();
-                    if(lowclimbing){
-                        gripperControl.lowclimbing();
-                    }else{
-                        gripperControl.climbing();
-                    }
-                    // wait.start();
+                    // if(lowclimbing){
+                    //     gripperControl.lowclimbing();
+                    // }else{
+                    //     gripperControl.climbing();
+                    // }
+                    wait.start();
                     state = States.extend;
                 }
                 break;
@@ -88,6 +88,13 @@ public class ClimbCode{
                 // drive.set(DriveOutput.Modes.Velocity, vel, vel);
                 drive.setNoVoltage();
                 GroundGripper.getInstance().rollersOff();
+                if(lowclimbing){
+                    gripperControl.lowclimbing();
+                }else if(wait.get() > 0.5){
+                    gripperControl.climbing();
+                }else{
+                    gripperControl.preClimb();
+                }
                 if(controls.climbUp() /*&& wait.get() > 0.5*/){
                     if(lowclimbing){
                         climber.setVoltage(-5);
@@ -108,6 +115,8 @@ public class ClimbCode{
                     GroundGripper.getInstance().rollersClimb();
                 }else if(controls.climbRetract()){
                     state = States.retract;
+                }else if(controls.climbUp()){
+                    state = States.extend;
                 }else{
                     GroundGripper.getInstance().rollersOff();
                 }

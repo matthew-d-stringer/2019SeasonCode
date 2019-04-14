@@ -9,12 +9,20 @@ public class ArmSetpoints{
 
     double ballLow, ballMid, ballHigh, ballGoal;
 
+    double wristLow;
+    double wristMid;
+    double wristHigh;
+
     double sensitivity = 4;
 
     public ArmSetpoints(){
-        hatchLow = -22*Units.Length.inches;
-        hatchMid = 6*Units.Length.inches;
-        hatchHigh = 30*Units.Length.inches;
+        hatchLow = -20*Units.Length.inches;
+        hatchMid = 12*Units.Length.inches;
+        hatchHigh = 34*Units.Length.inches;
+
+        wristLow = 0;
+        wristMid = 0;
+        wristHigh = 5*Units.Angle.degrees;
 
         ballLow = -7.5*Units.Length.inches;
         ballGoal = -3*Units.Length.inches;//was -3, 6 for loading zone
@@ -73,5 +81,25 @@ public class ArmSetpoints{
     }
     public void incrementBallHigh(double joystick){
         ballHigh += joystick*sensitivity*Units.Length.inches * 0.1;
+    }
+
+    public double getWristLow(){
+        return wristLow;
+    }
+    public double getWristMid(){
+        return wristMid;
+    }
+    public double getWristHigh(){
+        return wristHigh;
+    }
+
+    public void incrementWristLow(double joystick){
+        wristLow += joystick*4*6*Units.Length.inches * 0.1;
+    }
+    public void incrementWristMid(double joystick){
+        wristMid += joystick*4*6*Units.Length.inches * 0.1;
+    }
+    public void incrementWristHigh(double joystick){
+        wristHigh += joystick*4*6*Units.Length.inches * 0.1;
     }
 }

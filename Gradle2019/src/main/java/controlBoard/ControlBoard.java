@@ -108,11 +108,6 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
-    public boolean isCargoMode() {
-        return buttonPad.getRawButton(7);
-    }
-
-    @Override
     public boolean flipArm() {
         // return buttonPad.getRawButton(9);
         return false; //TODO: fix flipping arm
@@ -191,5 +186,15 @@ public class ControlBoard extends IControlBoard{
     @Override
     public boolean ballPistonGrab() {
         return ballPistonGrab.toggleVar(joy.getRawButton(2));
+    }
+
+    @Override
+    public boolean cargoPivot() {
+        return buttonPad.getRawButton(3);
+    }
+
+    @Override
+    public boolean cargoGrab() {
+        return buttonPad.getRawButton(8);
     }
 }

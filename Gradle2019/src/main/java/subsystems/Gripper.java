@@ -26,12 +26,6 @@ public class Gripper{
 
     private TalonSRX pivot, rollers;
     private Coordinate senZero, senNinety;
-    private DoubleSolenoid grip;
-    private DigitalInput reset;
-
-    boolean resetEnabled = true;
-    boolean pReset;
-    boolean hasReset = false;
 
     private Gripper(){
         pivot = new TalonSRX(Constants.Gripper.pivotNum);
@@ -47,24 +41,12 @@ public class Gripper{
         rollers.configPeakCurrentDuration(1000);
         rollers.configPeakCurrentLimit(40);
         rollers.enableCurrentLimit(true);
-
-        reset = new DigitalInput(Constants.Gripper.resetNum);
-
-        grip = new DoubleSolenoid(Constants.Gripper.gripNum[0], Constants.Gripper.gripNum[1]);
-
-        pReset = getReset();
     }
 
     public void display(){
         SmartDashboard.putNumber("Raw Gripper Enc", pivot.getSelectedSensorPosition());
         SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle()/Units.Angle.degrees);
         SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle()/Units.Angle.degrees);
-
-        // SmartDashboard.putNumber("Gripper Current", rollers.getOutputCurrent());
-
-        SmartDashboard.putBoolean("Gripper Reset", getReset());
-        SmartDashboard.putBoolean("Gripper Tach Reset", pivot.getSensorCollection().isFwdLimitSwitchClosed());
-        // SmartDashboard.putBoolean("Gripper Talon Tach", pivot.getForward);
 
         SmartDashboard.putNumber("Gripper Currrent", rollers.getOutputCurrent());
     }
@@ -81,26 +63,6 @@ public class Gripper{
 
     public void reset(){
         pivot.setSelectedSensorPosition(0);
-    }
-
-    public boolean getReset(){
-        return !reset.get();
-    }
-
-    public boolean hasReset(){
-        return hasReset;
-    }
-
-    public void manualReset(){
-        pivot.setSelectedSensorPosition(0);
-    }
-
-    public void enableReset(){
-        resetEnabled = true;
-    }
-
-    public void disableReset(){
-        resetEnabled = false;
     }
 
     /**
@@ -127,30 +89,8 @@ public class Gripper{
         rollers.set(ControlMode.PercentOutput, 0.125);
     }
 
-    public void ballGrab(){
-        rollers.set(ControlMode.PercentOutput,-0.75);//was 80%
-    }
-
-    public void ballRelease(){
-        rollers.set(ControlMode.PercentOutput, 1);
-    }
-
-    public void ballHold(){
-        rollers.set(ControlMode.PercentOutput, -0.166666);
-    }
-
     public void rollerOff(){
         rollers.set(ControlMode.PercentOutput, 0);
-    }
-
-    public void hatchMode(){
-        grip.set(Value.kReverse);
-    }
-    public void ballMode(){
-        grip.set(Value.kForward);
-    }
-    public void ballClamp(){
-        grip.set(Value.kReverse);
     }
 
     /**

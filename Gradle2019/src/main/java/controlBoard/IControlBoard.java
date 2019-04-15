@@ -26,7 +26,6 @@ public abstract class IControlBoard{
 
     public abstract boolean gripperGrab();
 
-    public abstract boolean isCargoMode();
     public abstract boolean flipArm();
     public abstract boolean armToInside();
     public abstract boolean armToBallPickup();
@@ -45,7 +44,11 @@ public abstract class IControlBoard{
     public abstract boolean climbForward();
     public abstract boolean climbRetract();
 
+    //TODO: maybe remove this
     public abstract boolean ballPistonGrab();
+
+    public abstract boolean cargoPivot();
+    public abstract boolean cargoGrab();
 
     public void display(){
         SmartDashboard.putString("Co-joystick pos", getCoJoyPos().display());

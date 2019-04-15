@@ -38,8 +38,8 @@ public class Constants {
 
 		public static double mass = 7.14505445-3.39681515*Units.Mass.kilograms; //everything but the gripper
 
-		public static double zeroDegVal = 310;
-		public static double ninetyDegVal = 566;
+		public static double zeroDegVal = 289;
+		public static double ninetyDegVal = 533;
 
 		public static double insideAngle = -82*Units.Angle.degrees;
 		
@@ -124,6 +124,12 @@ public class Constants {
 		public static int[] guideNums = {7, 3}; //7 is down
 		public static Value down = Value.kForward;
 		public static Value up = Value.kReverse;
+	}
+
+	public static class CargoGripper{
+		public static int rollerNum = 0; //TODO: change this
+		public static int[] pivotNums = {7,3};
+		public static int[] grabNums = {6,2};
 	}
 
     public static class Image{

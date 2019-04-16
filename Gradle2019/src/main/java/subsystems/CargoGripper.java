@@ -1,5 +1,6 @@
 package subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -21,7 +22,23 @@ public class CargoGripper{
     private CargoGripper(){
         pivot = new DoubleSolenoid(Constants.CargoGripper.pivotNums[0], Constants.CargoGripper.pivotNums[1]);
         grabber = new DoubleSolenoid(Constants.CargoGripper.grabNums[0], Constants.CargoGripper.grabNums[1]);
-        //TODO: add roller
+
+        roller = new TalonSRX(Constants.CargoGripper.rollerNum);
+    }
+
+    /*
+     * negative is in and positive is out
+     */
+    public void setVoltage(double voltage){
+        roller.set(ControlMode.PercentOutput, -voltage/12);
+    }
+
+    public void rollersOut(){
+        setVoltage(8);
+    }
+
+    public void rollersOff(){
+        setVoltage(0);
     }
 
     public void upright(){

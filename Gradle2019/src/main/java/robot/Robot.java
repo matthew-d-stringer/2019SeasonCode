@@ -330,6 +330,12 @@ public class Robot extends IterativeRobot {
             cargoGripper.open();
         }
 
+        if(controlBoard.cargoShoot()){
+            cargoGripper.rollersOut();
+        }else{
+            cargoGripper.rollersOff();
+        }
+
         teleopPaths.run();
         driveCode.run();
     }

@@ -127,7 +127,7 @@ public class Constants {
 	}
 
 	public static class CargoGripper{
-		public static int rollerNum = 0; //TODO: change this
+		public static int rollerNum = 8; 
 		public static int[] pivotNums = {7,3};
 		public static int[] grabNums = {6,2};
 	}

@@ -49,6 +49,7 @@ public abstract class IControlBoard{
 
     public abstract boolean cargoPivot();
     public abstract boolean cargoGrab();
+    public abstract boolean cargoShoot();
 
     public void display(){
         SmartDashboard.putString("Co-joystick pos", getCoJoyPos().display());

@@ -70,6 +70,7 @@ public class ClimbCode{
                 driveCode.run();
                 climber.setVoltage(0);
                 armControl.setSetpoints(-35*Units.Angle.degrees, 0.1);
+                // armControl.setSetpoints(-15*Units.Angle.degrees, 0.1);
                 GroundGripper.getInstance().rollersOff();
                 gripperControl.preClimb();
                 if(controls.climbUp() && MainArmControl.getInstance().finishedMovement()){
@@ -90,7 +91,7 @@ public class ClimbCode{
                 GroundGripper.getInstance().rollersOff();
                 if(lowclimbing){
                     gripperControl.lowclimbing();
-                }else if(wait.get() > 0.5){
+                }else if(wait.get() > 0.75){
                     gripperControl.climbing();
                 }else{
                     gripperControl.preClimb();

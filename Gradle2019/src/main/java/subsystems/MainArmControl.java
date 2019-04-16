@@ -30,8 +30,8 @@ public class MainArmControl{
     States state = States.disabled;
     double setpoint = 0;
     MainArm arm;
-    double mpMaxVel = 0.45*Units.Angle.revolutions; //was 0.45
-    double mpMaxAcc = 0.2*Units.Angle.revolutions; //was 0.6
+    double mpMaxVel = 0.9*Units.Angle.revolutions; //was 0.45
+    double mpMaxAcc = 0.2*Units.Angle.revolutions; //was 0.2
     double mpAcc = mpMaxAcc;
     Coordinate mpAccCalc1 = new Coordinate(10*Units.Angle.degrees, mpMaxAcc);
     Coordinate mpAccCalc2 = new Coordinate(180*Units.Angle.degrees, 1.4*Units.Angle.revolutions);
@@ -58,8 +58,8 @@ public class MainArmControl{
         mpStartAngle = arm.getAngle();
         mp = new TrapezoidalMp(mpStartAngle, new TrapezoidalMp.constraints(setpoint, mpMaxVel, mpMaxAcc));
 
-        armFilter = new LowPassFilter(0.8);
-        // armFilter = new LowPassFilter(1);
+        // armFilter = new LowPassFilter(0.8);
+        armFilter = new LowPassFilter(1);
     }
 
     public void commandBallClearence(boolean ballClearence){

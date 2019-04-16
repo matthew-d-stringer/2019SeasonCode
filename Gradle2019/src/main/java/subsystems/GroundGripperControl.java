@@ -70,7 +70,7 @@ public class GroundGripperControl{
         climbing = false;
     }
     public void climbing(){
-        setpoint = 3*Units.Angle.degrees;
+        setpoint = 6*Units.Angle.degrees;
         climbing = true;
     }
     public void lowclimbing(){

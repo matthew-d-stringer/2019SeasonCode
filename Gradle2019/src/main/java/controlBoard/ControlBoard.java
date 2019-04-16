@@ -64,12 +64,14 @@ public class ControlBoard extends IControlBoard{
 
     @Override
     public boolean slowDrive() {
-        return joy.getRawButton(1);
+        // return joy.getRawButton(1);
+        return false;
     }
 
     @Override
     public boolean visionDrive() {
-        return joy.getRawButton(7);
+        // return joy.getRawButton(7);
+        return joy.getRawButton(1);
     }
 
     @Override

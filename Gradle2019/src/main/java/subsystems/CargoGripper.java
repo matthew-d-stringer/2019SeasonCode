@@ -34,7 +34,7 @@ public class CargoGripper{
     }
 
     public void rollersOut(){
-        setVoltage(8);
+        setVoltage(12);
     }
 
     public void rollersOff(){

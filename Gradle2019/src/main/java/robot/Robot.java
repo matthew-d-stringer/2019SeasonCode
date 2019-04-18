@@ -126,11 +126,11 @@ public class Robot extends IterativeRobot {
         // mRunner.display();
         arm.display();
         arm.periodic();
-        // telescope.display();
+        telescope.display();
         telescope.periodic();
         gripper.display();
         gripper.periodic();
-        // groundGripper.display();
+        groundGripper.display();
         groundGripper.periodic();
         // try{
         //     Jevois.getInstance().run();

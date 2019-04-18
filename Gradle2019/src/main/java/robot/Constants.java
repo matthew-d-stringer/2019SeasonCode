@@ -38,8 +38,8 @@ public class Constants {
 
 		public static double mass = 7.14505445-3.39681515*Units.Mass.kilograms; //everything but the gripper
 
-		public static double zeroDegVal = 289;
-		public static double ninetyDegVal = 533;
+		public static double zeroDegVal = 309;
+		public static double ninetyDegVal = 557;
 
 		public static double insideAngle = -82*Units.Angle.degrees;
 		
@@ -59,7 +59,7 @@ public class Constants {
 
 		public static double retractVal = 0;
 		// public static double extendVal = 4880;
-		public static double extendVal = -6723;
+		public static double extendVal = -6357;
 
 		public static double lenRetract = 24.2675*Units.Length.inches, lenExtend = 36.7009*Units.Length.inches;
 		public static double comRetract = 0.4908*Units.Length.meters, comExtend = 0.663*Units.Length.meters;

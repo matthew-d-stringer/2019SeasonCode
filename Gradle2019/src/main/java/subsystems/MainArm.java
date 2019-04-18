@@ -10,8 +10,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import coordinates.Coordinate;
 import coordinates.Heading;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
+import utilPackage.Derivative;
 import utilPackage.Units;
 import utilPackage.Util;
 
@@ -29,13 +31,16 @@ public class MainArm{
 
     final double sensorToAngleConv, angleToSensorConv;
 
+    private Derivative senVel;
+
     private boolean disable = false;
 
     private MainArm(){
         pivot = new TalonSRX(Constants.MainArm.pivotNum);
         // pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         pivot.configSelectedFeedbackSensor(FeedbackDevice.Analog);
-        pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
+        // pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
+        pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_5Ms);
 
         // pivotSlave = new TalonSRX(Constants.MainArm.slaveNum);
         pivotSlave = Constants.GroundGripper.pivotEncoder;
@@ -51,11 +56,15 @@ public class MainArm{
         comRetract = new Coordinate(Constants.Telescope.lenRetract, Constants.Telescope.comRetract);
         comExtend = new Coordinate(Constants.Telescope.lenExtend, Constants.Telescope.comExtend);
 
+        senVel = new Derivative();
+        senVel.reset(Timer.getFPGATimestamp(), getAngle());
+
         SmartDashboard.putBoolean("Arm Reset", false);
     }
 
     public void display(){
         SmartDashboard.putNumber("Raw Arm Enc", pivot.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Raw Arm Enc Vel", pivot.getSelectedSensorVelocity());
         SmartDashboard.putNumber("Arm Enc", Units.convertUnits(getAngle(), Units.Angle.degrees));
         SmartDashboard.putNumber("Arm Enc Vel", Units.convertUnits(getAngleVel(), Units.Angle.degrees));
         SmartDashboard.putNumber("Arm Antigrav", getAntigrav());
@@ -68,9 +77,7 @@ public class MainArm{
     }
 
     public void periodic(){
-        if(getReset()){
-            pivot.setSelectedSensorPosition(0);
-        }
+        senVel.Calculate(getAngle(), Timer.getFPGATimestamp());
     }
 
     public void disable(boolean disable){
@@ -99,7 +106,8 @@ public class MainArm{
     }
 
     public double getAngleVel(){
-        return pivot.getSelectedSensorVelocity()*Util.slope(senZero, senNinety)/0.1;
+        // return pivot.getSelectedSensorVelocity()*Util.slope(senZero, senNinety)/0.1;
+        return senVel.getOut();
     }
 
     public double getAntigrav(){

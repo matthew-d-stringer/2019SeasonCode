@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import robot.Constants;
+import utilPackage.Derivative;
 import utilPackage.Units;
 import utilPackage.Util;
 
@@ -37,6 +38,7 @@ public class Gripper{
         senZero = new Coordinate(Constants.Gripper.zeroDegVal, 0);
         senNinety = new Coordinate(Constants.Gripper.ninetyDegVal, Math.PI/2);
 
+
         rollers = Constants.Drive.rightEncoder;
         rollers.configPeakCurrentDuration(1000);
         rollers.configPeakCurrentLimit(40);
@@ -45,7 +47,9 @@ public class Gripper{
 
     public void display(){
         SmartDashboard.putNumber("Raw Gripper Enc", pivot.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Raw Gripper Enc Vel", pivot.getSelectedSensorVelocity());
         SmartDashboard.putNumber("Rel Gripper Enc", getRelAngle()/Units.Angle.degrees);
+        SmartDashboard.putNumber("Rel Gripper Enc Vel", getRelAngleVel()/Units.Angle.degrees);
         SmartDashboard.putNumber("Abs Gripper Enc", getAbsAngle()/Units.Angle.degrees);
 
         SmartDashboard.putNumber("Gripper Currrent", rollers.getOutputCurrent());

@@ -44,14 +44,10 @@ public class MainArmControl{
 
     LowPassFilter armFilter;
 
-    // double p = 9.7581;
-    // double d = 1.8418;
-    // double p = 5.1717;
-    // double d = 1.6148;
-    // double p = 11.3698;
-    // double d = 2.2307;
-    double p = 7.3458;
-    double d = 1.9795;
+    // double p = 7.3458;
+    // double d = 1.9795;
+    double p = 9.2912;
+    double d = 1.8668;
 
     private MainArmControl(){
         arm = MainArm.getInstance();

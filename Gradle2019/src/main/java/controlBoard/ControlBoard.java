@@ -197,7 +197,7 @@ public class ControlBoard extends IControlBoard{
 
     @Override
     public boolean cargoGrab() {
-        return buttonPad.getRawButton(8);
+        return !buttonPad.getRawButton(8);
     }
 
     @Override

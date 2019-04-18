@@ -1,5 +1,9 @@
 package robot;
 
+import autos.actions.ArmToLevel;
+import autos.actions.SeriesAction;
+import autos.actions.VisionPursuit;
+import autos.actions.ArmToLevel.Levels;
 import autos.modes.*;
 import controlBoard.*;
 import coordinates.Coordinate;
@@ -67,6 +71,8 @@ public class Robot extends IterativeRobot {
 
     SendableChooser autoChooser;
 
+    VisionPursuit testVision;
+
     @Override
     public void robotInit() {
         try{
@@ -84,6 +90,8 @@ public class Robot extends IterativeRobot {
         gripper = Gripper.getInstance();
         groundGripper = GroundGripper.getInstance();
         climber = Climber.getInstance();
+
+        testVision = new VisionPursuit();
 
         driveOut.start();
 
@@ -368,19 +376,34 @@ public class Robot extends IterativeRobot {
         // mode.end();
     }
 
+    ArmToLevel armToLevel;
+    SeriesAction vision;
     @Override
     public void testInit() {
-        armControl.disable(true);
+        // Heading armPos = new Heading();
+        // armPos.setMagnitude(Constants.Telescope.lenRetract + 5*Units.Length.inches);
+        // armPos.setYMaintainMag(setpoints.getHatchLow(), controlBoard.flipArm());
+        // armControl.setArmPosition(armPos);
+        // armControl.disable(true);
         telescope.setVoltage(0);
         gripper.setVoltage(0);
+        // gripper.hatchGrab();
+        gripper.rollerOff();
         groundGripper.rollersOff();
         arm.setVoltage(0);
+
+        armToLevel = new ArmToLevel(Levels.loading, false, autos.actions.ArmToLevel.GripperMode.hatch);
+        vision = new SeriesAction(armToLevel, testVision);
+        vision.resetTeleop();
+        testVision.resetTeleop();
     }
 
     @Override
     public void testPeriodic() {
-        arm.setVoltage(arm.getAntigrav());
+        // arm.setVoltage(arm.getAntigrav());
         // groundGripper.setVoltage(12*controlBoard.getJoystickPos().getY() + groundGripper.getAntigrav());
+        // vision.runTeleop();
+        // testVision.runTeleop();
         // GroundGripperControl.getInstance().run();
         // GroundGripper.getInstance().rollersClimb();
     }

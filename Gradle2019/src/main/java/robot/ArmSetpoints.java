@@ -17,12 +17,12 @@ public class ArmSetpoints{
 
     public ArmSetpoints(){
         hatchLow = -21.5*Units.Length.inches;
-        hatchMid = 12*Units.Length.inches;
+        hatchMid = 9*Units.Length.inches;
         hatchHigh = 34*Units.Length.inches;
 
         wristLow = 0;
         wristMid = 0;
-        wristHigh = 5*Units.Angle.degrees;
+        wristHigh = 0*Units.Angle.degrees;
 
         ballLow = -7.5*Units.Length.inches;
         ballGoal = -3*Units.Length.inches;//was -3, 6 for loading zone

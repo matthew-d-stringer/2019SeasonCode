@@ -38,8 +38,8 @@ public class Constants {
 
 		public static double mass = 7.14505445-3.39681515*Units.Mass.kilograms; //everything but the gripper
 
-		public static double zeroDegVal = 309;
-		public static double ninetyDegVal = 557;
+		public static double zeroDegVal = 297;
+		public static double ninetyDegVal = 556;
 
 		public static double insideAngle = -82*Units.Angle.degrees;
 		
@@ -100,7 +100,7 @@ public class Constants {
 		public static double encAt90 = 5280; 
 		//NOT ARM GRIPPER
 
-		public static double maxAngle = 162*Units.Angle.degrees; 
+		public static double maxAngle = 166*Units.Angle.degrees; 
 		public static double ballGrabAngle = 39*Units.Angle.degrees; 
 		public static double inClereance = 155*Units.Angle.degrees;
 		public static double outClereance = 45*Units.Angle.degrees;
@@ -128,8 +128,8 @@ public class Constants {
 
 	public static class CargoGripper{
 		public static int rollerNum = 8; 
-		public static int[] pivotNums = {7,3};
-		public static int[] grabNums = {6,2};
+		public static int[] pivotNums = {0,5};
+		public static int[] grabNums = {2,6};
 	}
 
     public static class Image{

@@ -80,7 +80,7 @@ public class DoubleCargoAuto extends AutoMode{
         stopToRefill.setlookAhead(5*Units.Length.feet);
         stopToRefill.setTurnCorrection(0.15);
 
-        finishRefill = new VisionPursuit(1.8*Units.Length.feet);
+        finishRefill = new VisionPursuit(1.9*Units.Length.feet);
         // finishRefill = new VisionPursuit();
         finishRefill.disableAfterTime(2.5);
         finishRefill.setFinishThresh(0.3*Units.Length.feet);

@@ -84,12 +84,12 @@ public class TeleopPaths{
             //     pt1 = new Coordinate(2.7*Units.Length.feet, 0*Units.Length.feet);
             //     pt2 = new Coordinate(3.8*Units.Length.feet, 2*Units.Length.feet); 
             // }else{
-            //     pt1 = new Coordinate(1.9*Units.Length.feet, 0*Units.Length.feet);
-            //     pt2 = new Coordinate(3.0*Units.Length.feet, 2*Units.Length.feet); //was 4
+            //     pt1 = new Coordinate(2.4*Units.Length.feet, 0*Units.Length.feet);
+            //     pt2 = new Coordinate(3.5*Units.Length.feet, 2*Units.Length.feet); //was 4
             // }
             // forward = Util.mapRange(dist, pt1, pt2);
             // forward = Math.min(forward, 6*Units.Length.feet);
-            // forward = 2*Units.Length.feet;
+
             forward = 8*Units.Length.feet*Robot.getControlBoard().getJoystickPos().getY();
 
             double outLeft = -turn + forward;

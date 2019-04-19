@@ -59,7 +59,7 @@ public class DoubleCargoAuto extends AutoMode{
         placeCloseGoal = new VisionPursuit();
         placeCloseGoal.disableAfterTime(2.5);
         placeCloseGoal.setFinishThresh(0.3*Units.Length.feet);
-        placeCloseGoal.setDeccelDist(1.1*Units.Length.feet);
+        placeCloseGoal.setDeccelDist(1.4*Units.Length.feet); //was 1.1
 
 
         stopToCloseGoal = DrivePath.createFromFileOnRoboRio(path, "1stStopToCloseGoal", medium, 1);
@@ -80,11 +80,11 @@ public class DoubleCargoAuto extends AutoMode{
         stopToRefill.setlookAhead(5*Units.Length.feet);
         stopToRefill.setTurnCorrection(0.15);
 
-        finishRefill = new VisionPursuit(1.9*Units.Length.feet);
+        finishRefill = new VisionPursuit(2.2*Units.Length.feet);
         // finishRefill = new VisionPursuit();
         finishRefill.disableAfterTime(2.5);
         finishRefill.setFinishThresh(0.3*Units.Length.feet);
-        finishRefill.setDeccelDist(0.9*Units.Length.feet);
+        finishRefill.setDeccelDist(1*Units.Length.feet);
         // finishRefill.setDeccelDist(0.8*Units.Length.feet);
         // finishRefill.setFinishThresh(0.4*Units.Length.feet);
 
@@ -138,10 +138,10 @@ public class DoubleCargoAuto extends AutoMode{
         runAction(new ParallelAction(stopToRefill, loading));
         // runAction(stopToRefill);
         // // runAction(low);
-        Gripper.getInstance().hatchGrab();
-        runAction(finishRefill);
-        Gripper.getInstance().hatchHold();
-        runAction(reverseFromRefill);
+        // Gripper.getInstance().hatchGrab();
+        // runAction(finishRefill);
+        // Gripper.getInstance().hatchHold();
+        // runAction(reverseFromRefill); 
 
         // runAction(new ParallelAction(refillTo3rdStop, low));
         // runAction(placeMidGoal);

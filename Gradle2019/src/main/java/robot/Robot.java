@@ -140,6 +140,9 @@ public class Robot extends IterativeRobot {
         gripper.periodic();
         groundGripper.display();
         groundGripper.periodic();
+        if(Constants.isCompBot){
+            led.setLED(!controlBoard.visionLED());
+        }
         // try{
         //     Jevois.getInstance().run();
         // }catch(Exception e){

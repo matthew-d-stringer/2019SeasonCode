@@ -80,6 +80,11 @@ public class ControlBoard extends IControlBoard{
     }
 
     @Override
+    public boolean visionLED() {
+        return buttonPad.getRawButton(4);
+    }
+
+    @Override
     public boolean autoStop() {
         return buttonPad.getRawButton(14);
     }

@@ -14,6 +14,7 @@ public abstract class IControlBoard{
     public abstract boolean slowDrive();
     public abstract boolean visionDrive();
     public abstract boolean visionDrivePressed();
+    public abstract boolean visionLED();
 
     public abstract boolean autoStop();
 

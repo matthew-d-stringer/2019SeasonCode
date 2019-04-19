@@ -40,8 +40,8 @@ public class Gripper{
 
 
         rollers = Constants.Drive.rightEncoder;
-        rollers.configPeakCurrentDuration(1000);
-        rollers.configPeakCurrentLimit(40);
+        rollers.configPeakCurrentDuration(2000);
+        rollers.configPeakCurrentLimit(50);
         rollers.enableCurrentLimit(true);
     }
 

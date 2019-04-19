@@ -20,7 +20,7 @@ public class ArmSetpoints{
         hatchMid = 9*Units.Length.inches;
         hatchHigh = 34*Units.Length.inches;
 
-        wristLow = 0;
+        wristLow = 4*Units.Angle.degrees;
         wristMid = 0;
         wristHigh = 0*Units.Angle.degrees;
 

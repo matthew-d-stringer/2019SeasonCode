@@ -62,7 +62,6 @@ public class SplineSegmentFiller{
         segment = null;
         for(int i = 0; i < points.size()-1; i++){
             cSpline.setPoints(points.get(i), points.get(i+1));
-            // System.out.println("Adding spline #"+(i+1));
             addSpline();
         }
         return segment;
@@ -72,7 +71,6 @@ public class SplineSegmentFiller{
         for(int i = 0; i <= pointsPerSpline; i++){
             double t = ((double)i)/pointsPerSpline;
             Coordinate point = cSpline.calculatePosition(t);
-            // System.out.println("Adding point t:"+"\t"+point.display("point"));
             if(segment == null){
                 segment = new TrajectoryList(point);
             }else{

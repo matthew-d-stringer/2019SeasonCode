@@ -144,6 +144,16 @@ public class Trajectory{
         data.calculate(this, robotPos); 
     }
     
+
+    /*
+        Checks if the trajectory is relevent.
+        The relevent trajectory is the trajectory that the robot is currently following
+
+        Each path consists of multiple trajectories. When the robot is traveling along the path,
+        it needs to know which trajectory to use. This is especially important for when the robot
+        is reaching the end of its current trajectory and needs to start traveling on the next one.
+
+    */
     public boolean isRelevant(Coordinate robotPos){
         fillRobotData(robotPos);
         switch(relevantSettings){
@@ -151,13 +161,9 @@ public class Trajectory{
                 double BetaBack = Util.round(data.getBetaBack(), 8);
                 double BetaFront = Util.round(data.getBetaFront(), 8);
 
-                // boolean inFrontRange = Math.abs(data.getA2()) < BetaFront 
-                //     || Util.inErrorRange(Math.abs(data.getA2()), BetaFront, 2*Units.Angle.degrees);
                 boolean inFrontRange = data.getA2() >= -BetaFront && 
                     data.getA2() <= - BetaFront + 180*Units.Angle.degrees;
 
-                // boolean inBackRange = Math.abs(data.getA1()) < BetaBack
-                //     || Util.inErrorRange(Math.abs(data.getA1()), BetaBack, 2*Units.Angle.degrees);
                 boolean inBackRange = data.getA1() <= BetaBack && 
                     data.getA1() >= BetaBack - 180*Units.Angle.degrees;
 
@@ -194,17 +200,8 @@ public class Trajectory{
      */
     public Coordinate calculateGoalPoint(Coordinate robotPos, double lookAhead){
         fillRobotData(robotPos);
-        //if first path and Q1 is bigger than lookAhead
-        // if(id == 0 && data.getQ1() > lookAhead){
-            //then use this path and use the first node
-            // return begin;
-        //common case
-        /*}else*/ 
+        
         if(data.getQ1() <= lookAhead && data.getQ2() >= lookAhead){
-            // double LP  = getHeading().getMagnitude();
-            // double cosLambdaTop = Math.pow(data.getQ2(), 2)-Math.pow(data.getQ1(), 2) - LP;
-            // double cosLambdaBottom = -2*LP*data.getQ1();
-            //double cosLambda = cosLambdaTop/cosLambdaBottom;
             double cosLambda = Math.cos(data.getA1());
             double distOnPath = data.getQ1()*cosLambda +
                 Math.sqrt(data.getQ1()*data.getQ1()*(cosLambda*cosLambda-1)+lookAhead*lookAhead);

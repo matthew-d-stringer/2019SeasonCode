@@ -42,7 +42,6 @@ public class ProfileHolder{
                 holder[index] = minimumVel * Util.checkSign(vals[1]);
             else
                 holder[index] = vals[1];
-            // System.out.println("Dist: "+vals[0]+" Vel: "+vals[1]);
         }
     }
 

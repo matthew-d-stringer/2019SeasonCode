@@ -1,5 +1,9 @@
 package path;
 
+/*
+    Takes a path (TajectoryList.java) and gets the robot to follow it
+*/
+
 import coordinates.*;
 import drive.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,7 +57,6 @@ public class DriveFollower{
         Pos2D robotPos = null; 
         boolean reverse = false;
         if(velocity < 0){
-            // robotPos = new Pos2D(PositionTracker.getInstance().getReversePosition());
             robotPos = new Pos2D(PositionTracker.getInstance().getPosition());
             reverse = true;
             velocity = Math.abs(velocity);
@@ -63,8 +66,7 @@ public class DriveFollower{
         SmartDashboard.putNumber("Follower Heading", robotPos.getHeading().getAngle());
         SmartDashboard.putString("Follower Heading Full", robotPos.getHeading().display());
         Coordinate goalPosition = path.findGoalPos(robotPos.getPos(), lookAhead);
-        // System.out.println(goalPosition.display("Goal Pos"));
-        // System.out.println(goalPosition == null);
+;
         if(goalPosition == null || goalPosition.getX() == Double.NaN || goalPosition.getY() == Double.NaN){
             System.out.println(robotPos.getPos().multC(1/Units.Length.feet).display("Last Known Robot Pos"));
             SmartDashboard.putString("Follower Message", "Goal Pos is null (HELP)");
@@ -83,7 +85,6 @@ public class DriveFollower{
 
         switch(mode){
             case PurePuresuit:
-                // updatePurePursuit(eta, lookAhead, velocity, reverse);
                 updatePurePursuit(eta, distToGoalPos, velocity, reverse);
             break;
         }

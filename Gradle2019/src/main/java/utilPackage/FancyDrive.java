@@ -27,9 +27,9 @@ public class FancyDrive {
 	@SuppressWarnings("unused")
 	public void run(){
 		if(!Robot.getControlBoard().slowDrive()){
-			kWheelNonLinearity = 0.005;
+			kWheelNonLinearity = 1;
 		}else{
-			kWheelNonLinearity = 0.00001;
+			kWheelNonLinearity = 1;
 		}
 		double wheel = Robot.getControlBoard().getJoystickPos().getX()*1;
 		boolean isQuickTurn = Robot.getControlBoard().quickTurn();

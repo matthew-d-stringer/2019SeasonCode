@@ -39,6 +39,7 @@ public class MainArm{
         pivot = new TalonSRX(Constants.MainArm.pivotNum);
         // pivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         pivot.configSelectedFeedbackSensor(FeedbackDevice.Analog);
+        // pivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         // pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_1Ms);
         pivot.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_5Ms);
 

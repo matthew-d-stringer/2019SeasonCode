@@ -155,7 +155,6 @@ public class TrapezoidalMp {
 			acceleration = 0;
 			currentPhase = phase.constSpeed;
 		}else if(time <= endDeccel){
-//			relatedTime = time - endConstSpeed;
 			double TimeLeft = (endDeccel - time);
 			velocity = maxAccel * TimeLeft;
 			position = setpoint - (TimeLeft*TimeLeft*maxAccel/2);
@@ -167,11 +166,6 @@ public class TrapezoidalMp {
 			acceleration = 0;
 			currentPhase = phase.done;
 		}
-		
-//		SmartDashboard.putNumber("TrapezoidalMP::EndConstSpeed", endConstSpeed);
-//		SmartDashboard.putNumber("TrapezoidalMP::EndDeccel", endDeccel);
-//		SmartDashboard.putString("TrapezoidalMP::CurrentPhase", currentPhase.toString());
-//		SmartDashboard.putNumber("TrapezoidalMP::time", time);
 		
 		double[] out  = {position*setpointSign+startSetpoint, velocity*setpointSign, 
 				acceleration*setpointSign};

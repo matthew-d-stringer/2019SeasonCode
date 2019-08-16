@@ -30,7 +30,6 @@ public class Jevois extends Thread{
     Coordinate placementOffset;
     Coordinate position;
     Heading PT;
-    // SerialReader reader;
     SerialPort serial;
     Target target;
     double horizontalAngleOffset = 0;
@@ -38,7 +37,6 @@ public class Jevois extends Thread{
     boolean useVision = false;
 
     private Jevois(){
-        // reader = new SerialReader(0);
         this.setPriority(4);
         placementOffset = new Coordinate(-6.5, 2.25);
         placementOffset.mult(Units.Length.inches);
@@ -53,16 +51,10 @@ public class Jevois extends Thread{
         serial.enableTermination();
         startJevois();
         while(!this.interrupted()){
-            // serial.writeString("ping\n");
             String rawInput = serial.readString();
-            // System.out.println(rawInput);
-            // if(!rawInput.isBlank())
-            //     System.out.println("Jevois output: "+rawInput.trim());
-            // else
-                // System.out.println("Jevois output is blank");
+
             double[] input = getNumberData(rawInput);
             if(input == null){
-                // Timer.delay(0.25);
                 useVision = false;
                 continue;
             }
@@ -73,9 +65,6 @@ public class Jevois extends Thread{
             useVision = true;
             position = getDeltaDistance(PositionTracker.getInstance().getPosition(), target.angleX(), target.calcDistance());
             System.out.println(getPT().multC(1/Units.Length.inches).display("PT vector")+"\n");
-            // Heading pt = getPT();
-            // System.out.print("PT angle: "+(pt.getAngle()-Math.PI/2));
-            // System.out.println("\tdist: "+pt.getMagnitude()+"\n");
             Timer.delay(0.01);
         }
     }
@@ -93,11 +82,6 @@ public class Jevois extends Thread{
     }
 
     private void startJevois(){
-        // reader.sendMessage("setmapping2 YUYV 320 240 60.0 JeVois PythonTest");
-        // reader.sendMessage("setpar serlog None");
-        // reader.sendMessage("setpar serout All");
-        // reader.sendMessage("setcam absexp 100");
-        // reader.sendMessage("streamon");
         serial.writeString("streamoff\n");
         serial.writeString("setmapping2 YUYV 320 240 60.0 JeVois PythonTest\n");
         serial.writeString("setpar serlog None\n");
@@ -126,7 +110,6 @@ public class Jevois extends Thread{
                 System.out.println(input);
             return null;
         }
-        // System.out.println("Received: "+rawInput);
         String[] items = input.split(",");
         double[] numberData = new double[items.length];
         for(int i = 0; i < items.length; i++){
@@ -149,12 +132,8 @@ public class Jevois extends Thread{
         this.PT = new Heading(TP);
         TP.mult(-1);
 
-        // System.out.println(TP.multC(1/Units.Length.inches).display("Relative dist from pos"));
-
         Heading forHeading = robotPos.getHeading();
         Heading perpHeading = forHeading.perpendicularCwC();
-        // System.out.println(forHeading.display("Forward Heading"));
-        // System.out.println(perpHeading.display("Perp Heading"));
         double x1 = perpHeading.getX();
         double x2 = forHeading.getX();
         double x3 = perpHeading.getY();
@@ -165,6 +144,5 @@ public class Jevois extends Thread{
         TPabs.setY(-x3*TP.getX() + x1*TP.getY());
         TPabs.mult(1/(x1*x4-x2*x3));
         return TPabs;
-        // return TP;
     }
 }

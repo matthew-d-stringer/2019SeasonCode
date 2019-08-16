@@ -20,7 +20,6 @@ public class Log {
 	}
 	private void setup(){		
 		if (!logFile.exists()) {
-//			System.out.println("Creating");
 			try {
 				logFile.createNewFile();
 			} catch (IOException e) {

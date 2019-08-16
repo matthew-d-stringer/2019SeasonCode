@@ -38,8 +38,6 @@ public class Target{
     public double[] target = {3.31, 5.82557203}; //TODO
 
     public double calcDistance(){
-        // double averageHeight = getAvgDims().getY();
-        // double distance = 5605.44 * (Math.pow(averageHeight, -0.9758289));
         double heightLeft = ct1.getContourDimensions().getY();
         double heightRight = ct2.getContourDimensions().getY();
         double dist = (calcDistanceHelper(heightLeft)+calcDistanceHelper(heightRight))/2;
@@ -47,8 +45,6 @@ public class Target{
     }
 
     private double calcDistanceHelper(double height){
-        // return 15702.43*Math.pow(height, -1.22916);
-        // return 10949.85*Math.pow(height, -1.13836);
         return 15726.97* Math.pow(height, -1.241622);
     }
 

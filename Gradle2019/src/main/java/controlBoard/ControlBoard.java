@@ -23,11 +23,7 @@ public class ControlBoard extends IControlBoard{
     @Override
     public Heading getJoystickPos() {
         double y = -joy.getY();
-        // if(Util.inErrorRange(y, 0, 0.05)){
-        //     y = 0;
-        // }
         return new Heading(wheel.getX(), y);
-        // return new Heading(joy.getX(), -joy.getY());
     }
 
     @Override
@@ -39,11 +35,7 @@ public class ControlBoard extends IControlBoard{
     public Heading getCoJoyPos(){
         Heading out = new Heading();
         out.setX(coJoy.getX());
-        // if(-coJoy.getY() == 1.0){
-        //     out.setY(0);
-        // }else{
-            out.setY(-coJoy.getY());
-        // }
+        out.setY(-coJoy.getY());
         return out;
     }
 
@@ -64,13 +56,11 @@ public class ControlBoard extends IControlBoard{
 
     @Override
     public boolean slowDrive() {
-        // return joy.getRawButton(1);
         return false;
     }
 
     @Override
     public boolean visionDrive() {
-        // return joy.getRawButton(7);
         return joy.getRawButton(1);
     }
 
@@ -182,12 +172,12 @@ public class ControlBoard extends IControlBoard{
 
     @Override
     public boolean gripperShoot() {
-        return /*coJoy.getRawButton(1) ||*/ joy.getRawButton(6);
+        return joy.getRawButton(6);
     }
 
     @Override
     public boolean gripperShootPressed() {
-        return /*coJoy.getRawButtonPressed(1) ||*/ joy.getRawButtonPressed(6);
+        return joy.getRawButtonPressed(6);
     }
 
     @Override

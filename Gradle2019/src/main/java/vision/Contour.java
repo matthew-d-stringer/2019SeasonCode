@@ -69,11 +69,4 @@ public class Contour{
         return new Coordinate(w, h);
     }
 
-    /*
-    public double[][][] contourData = {{TopLeft, contourAngles[0]},
-        {TopRight, contourAngles[1]},
-        {BottomLeft, contourAngles[2]},
-        {BottomRight, contourAngles[3]}
-    };
-    */    
 }

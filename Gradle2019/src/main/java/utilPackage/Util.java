@@ -87,10 +87,5 @@ public class Util {
 		return (pt2.getY() - pt1.getY())/(pt2.getX() - pt1.getX());
 	}
 	
-//	public static void main(String[] args) {
-//		for(double time = 0; time <= 5; time+=0.5){
-//			double out = sinWaveOccilation(time, 45, 20, 5);
-//			System.out.println(time+","+out);
-//		}
-//	}
+
 }

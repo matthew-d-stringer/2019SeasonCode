@@ -44,24 +44,14 @@ public class PositionTracker extends Thread implements IPositionTracker{
     }
 
     public void resetHeading(){
-        // vmxPi.reset();
-        // offset = 0;
         offset = getRawAngle();
     }
 
     public void robotForward(){
-        // vmxPi.reset();
-        // offset = 0;
-
-        // angle - cangle = 0
         offset = getRawAngle();
     }
 
     public void robotBackward(){
-        // vmxPi.reset();
-        // offset = 180;
-        
-        // angle - cangle = 180
         offset = getRawAngle() + 180;
     }
 
@@ -85,26 +75,17 @@ public class PositionTracker extends Thread implements IPositionTracker{
             double dt = Timer.getFPGATimestamp() - last;
             last = Timer.getFPGATimestamp();
 
-            // if(RobotState.isOperatorControl()){
-            //     break;
-            // }
             pHeading.setAngle(heading.getAngle());
             heading.setRobotAngle(getAngle());
-            // Heading tempHeading = new Heading(heading);
             Heading tempHeading = Heading.headingBetweenHeadings(heading, pHeading);
             
             pCircum = cCircum;
             cCircum = Util.average(Arrays.asList(mDrive.getLeftPosition(), mDrive.getRightPosition()));
             double dCircum = cCircum - pCircum;
-            // System.out.println("dCircum: "+dCircum);
             pAngle = cAngle;
             cAngle = getEncoderAngle(mDrive);
             double dAngle = Math.abs(cAngle - pAngle);
 
-            // if(dAngle == Double.NaN){
-            //     dAngle = 0;
-            // }
-            // System.out.println("dAngle: "+dAngle);
             double radius = dCircum/dAngle;
             double distance;
             if(!Double.isFinite(radius) || Double.isNaN(radius) || radius == 0 || 
@@ -112,10 +93,7 @@ public class PositionTracker extends Thread implements IPositionTracker{
                 distance = dCircum;
             }else{
                 distance = radius*Math.sqrt(Math.max(2-2*Math.cos(dAngle), 0));
-                // System.out.println("Radius: "+radius);
-                // System.out.println("Distance: "+distance+"\n");
             }
-            // distance = dCircum;
             tempHeading.setMagnitude(distance);
     
             Pos2D nextPos = new Pos2D(position, tempHeading);
@@ -141,7 +119,6 @@ public class PositionTracker extends Thread implements IPositionTracker{
     }
 
     private double getAngle(){
-        // return (vmxPi.getAngle()-offset)*Units.Angle.degrees;
         return (getRawAngle()-offset)*Units.Angle.degrees;
     }
     
@@ -151,7 +128,6 @@ public class PositionTracker extends Thread implements IPositionTracker{
 
     @Override
     public synchronized Pos2D getPosition() {
-        // return new Pos2D(new Coordinate(position), new Heading(heading));
         return fullPos;
     }
 
@@ -172,7 +148,6 @@ public class PositionTracker extends Thread implements IPositionTracker{
 
     public void display(){
         if(SmartDashboard.getBoolean("Reset Location", false)){
-            // setInitPos(new Coordinate());
             double x = SmartDashboard.getNumber("Location Reset X (feet)",0);
             double y = SmartDashboard.getNumber("Location Reset Y (feet)",0);
             setInitPosFeet(x, y);

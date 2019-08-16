@@ -38,9 +38,7 @@ public class DriveController {
 	public Coordinate run(Coordinate cVels){
 		errorRight = goalRight - cVels.getX();
 		errorLeft = goalLeft - cVels.getY();
-		// System.out.println("Error Right: "+errorRight);
-		// System.out.println("Error Left: "+errorLeft);
-
+		
 		feedBack.setX(0.0001974*errorLeft + 0.3814*errorRight);
 		feedBack.setY(0.3814*errorLeft + 0.0001974*errorRight);
 		
@@ -48,7 +46,6 @@ public class DriveController {
 		feedForward.setY(0.4167*dGoalLeft + 0.01277*dGoalRight + 2.385*goalLeft + 1.406e-17*goalRight);
 		
 		output = feedForward.addC(feedBack);
-		// output = feedForward;
 		return output;
 	}
 	

@@ -13,8 +13,7 @@ public class CubicSpline implements Spline{
     public void setPoints(Pos2D start, Pos2D end){
         this.start = start;
         this.end = end;
-        // start.getHeading().setMagnitude(10);
-        // end.getHeading().setMagnitude(10);
+        
         createConstants();
     }
 

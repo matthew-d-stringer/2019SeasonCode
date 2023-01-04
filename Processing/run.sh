@@ -1,1 +1,0 @@
-processing-java --sketch="C://Users/3250/git/2019SeasonCode/Processing" --run --force
